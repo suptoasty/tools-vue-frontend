@@ -95,10 +95,51 @@
 </template>
 
 <script>
+import CourseService from "@/services/CourseService.js";
+
 export default {
   name: "HelloWorld",
   props: {
     msg: String
+  },
+  created: function() {
+
+    //CRUD tests
+    CourseService.getCourse("1")
+      .then(response => {
+        console.log("get course");
+        console.log(response);
+      })
+      .catch(error => {
+        console.log("there was an error:" + error.response);
+      });
+
+    CourseService.postCourse({ name: "test"})
+      .then(response => {
+        console.log("post course");
+        console.log(response);
+      })
+      .catch(error => {
+        console.log("there was an error:" + error.response);
+      });
+
+    CourseService.deleteCourse("1")
+      .then(response => {
+        console.log("delete course");
+        console.log(response);
+      })
+      .catch(error => {
+        console.log("there was an error:" + error.response);
+      });
+
+    CourseService.putCourse("1", { name: "test"})
+      .then(response => {
+        console.log("put course");
+        console.log(response);
+      })
+      .catch(error => {
+        console.log("there was an error:" + error.response);
+      });
   }
 };
 </script>
