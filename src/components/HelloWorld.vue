@@ -78,9 +78,8 @@
         </v-row>
       </v-col>
     </v-row>
-
-    <v-btn></v-btn>
   </v-container>
+  
 </template>
 
 <script>
