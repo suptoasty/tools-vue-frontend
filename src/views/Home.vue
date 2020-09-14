@@ -12,7 +12,7 @@
         sm="5"
         md="5"
       >
-        <ClassListing :classObject="{ name: 'SEIV' }"/>
+        <ClassListing :classObject="{ name: 'SEIV class' }"/>
       </v-col>
     </v-row>
   </v-container>
