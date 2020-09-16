@@ -39,20 +39,13 @@
       <v-col
         cols="5"
       >
-        <ClassListing :classObject="{ name: 'SEIV class', description: 'A lot of things happen' }"/>
-        <ClassListing :classObject="{ name: 'SEIV class', description: 'A lot of things happen' }"/>
-      </v-col>
-    </v-row>
-    <v-row
-      align="center"
-      justify="center"
-    >
-      <v-col>
-        <v-pagination
-          :length="4"
-          v-model="page"
-          circle
-        ></v-pagination>
+        <v-data-table
+          :headers="headers"
+          :items="classes"
+          :items-per-page="5"
+          class="elevation-1"
+        ></v-data-table>
+        
       </v-col>
     </v-row>
   </v-container>
@@ -60,12 +53,12 @@
 
 <script>
 // @ is an alias to /src
-import ClassListing from "@/components/ClassListing.vue";
+//import ClassListing from "@/components/ClassListing.vue";
 
 export default {
   name: "Home",
   components: {
-    ClassListing
+    //ClassListing
   },
   data: () => ({
     searchOptions: [
@@ -75,6 +68,14 @@ export default {
       'Credit Hours',
       'Field of Study',
       'Class Level'
+    ],
+    headers: [
+      {text: 'Name', value: 'course_name'},
+      {text: 'Description', value: 'course_desc'}
+    ],
+    classes: [
+      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
+      { course_name: 'SEIV', course_desc: 'A lot of things happen' }
     ],
     page: 1
   })
