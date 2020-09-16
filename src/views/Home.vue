@@ -24,30 +24,26 @@
             >
             </v-text-field>
             <v-overflow-btn
-              class="my-n2"
+              class="my-0"
               :items="searchOptions"
               label="Search By"
             ></v-overflow-btn>
         </v-row>
+        <v-row
+          align="center"
+          justify="center"
+        >
+          <v-data-table
+            :headers="headers"
+            :items="classes"
+            :items-per-page="5"
+            class="elevation-1"
+          ></v-data-table>
+        </v-row>
       </v-col>
     </v-row>
 
-    <v-row
-      align="center"
-      justify="center"
-    >
-      <v-col
-        cols="5"
-      >
-        <v-data-table
-          :headers="headers"
-          :items="classes"
-          :items-per-page="5"
-          class="elevation-1"
-        ></v-data-table>
-        
-      </v-col>
-    </v-row>
+    
   </v-container>
 </template>
 
@@ -74,6 +70,13 @@ export default {
       {text: 'Description', value: 'course_desc'}
     ],
     classes: [
+      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
+      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
+      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
+      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
+      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
+      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
+      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
       { course_name: 'SEIV', course_desc: 'A lot of things happen' },
       { course_name: 'SEIV', course_desc: 'A lot of things happen' }
     ],
