@@ -1,6 +1,6 @@
 <template>
     <v-card
-    class="elevation-12 mb-4"
+    class="elevation-3 mb-4"
     height=150
     style="overflow: hidden"
     >
@@ -17,7 +17,7 @@
                 :ripple="false"
                 link
                 >
-                    <v-icon style="font-style:normal">{{classObject.name}}</v-icon>
+                    <v-icon style="font-style:normal">{{classObject.course_name}}</v-icon>
                 </v-btn>
             </v-toolbar-title>
             <v-spacer></v-spacer>
@@ -51,7 +51,7 @@
             </v-tooltip>
         </v-toolbar>
         <v-card-text>
-            <p>{{classObject.description}}</p>
+            <p>{{classObject.course_desc}}</p>
         </v-card-text>
         <v-card-actions>
         </v-card-actions>

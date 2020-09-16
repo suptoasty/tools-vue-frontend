@@ -38,7 +38,13 @@
             :items="classes"
             :items-per-page="5"
             class="elevation-1"
-          ></v-data-table>
+          >
+            <template v-slot:item="row">
+              <tr> 
+                <ClassListing :classObject="row.item"/>
+              </tr>
+            </template>
+          </v-data-table>
         </v-row>
       </v-col>
     </v-row>
@@ -50,11 +56,12 @@
 <script>
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
+import ClassListing from "@/components/ClassListing.vue";
 
 export default {
   name: "Home",
   components: {
-    //ClassListing
+    ClassListing
   },
   data: () => ({
     searchOptions: [
@@ -66,8 +73,7 @@ export default {
       'Class Level'
     ],
     headers: [
-      {text: 'Name', value: 'course_name'},
-      {text: 'Description', value: 'course_desc'}
+      {text: 'Name', value: 'course_name'}
     ],
     classes: [
       { course_name: 'SEIV', course_desc: 'A lot of things happen' },
