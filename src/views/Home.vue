@@ -49,7 +49,7 @@
 
 <script>
 // @ is an alias to /src
-//import ClassListing from "@/components/ClassListing.vue";
+import CourseService from "@/services/CourseService.js";
 
 export default {
   name: "Home",
@@ -81,6 +81,15 @@ export default {
       { course_name: 'SEIV', course_desc: 'A lot of things happen' }
     ],
     page: 1
-  })
+  }),
+  created() {
+    CourseService.getCourses()
+      .then(response => {
+      this.classes = response.data;
+    })
+    .catch(error => {
+      console.log('there was an error:' + error.response)
+    })
+  }
 };
 </script>
