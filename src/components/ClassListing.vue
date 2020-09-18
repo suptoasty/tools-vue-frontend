@@ -9,7 +9,7 @@
         dark
         flat
         >
-            <v-toolbar-title @click="log('hello')"
+            <v-toolbar-title @click="$router.push({ name: 'ClassShow', params: { id: classObject.course_id } })"
             >
                 <v-btn
                 small

@@ -76,15 +76,7 @@ export default {
       {text: 'Name', value: 'course_name'}
     ],
     classes: [
-      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
-      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
-      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
-      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
-      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
-      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
-      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
-      { course_name: 'SEIV', course_desc: 'A lot of things happen' },
-      { course_name: 'SEIV', course_desc: 'A lot of things happen' }
+      { course_id: 1, course_name: 'SEIV', course_desc: 'A lot of things happen' }
     ],
     page: 1
   }),
