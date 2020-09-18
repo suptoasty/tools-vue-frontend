@@ -20,14 +20,6 @@ export default {
     }
   },
   created() {
-    // CourseService.getCourses()
-    // .then(response => {
-    //   this.courses = response.data;
-    //   console.log(this.courses);
-    // })
-    // .catch(error => {
-    //   console.log("created error: " + error.response)
-    // })
     CourseService.getCourse(this.courseIndex)
     .then(response => {
       this.course = response.data[0];
