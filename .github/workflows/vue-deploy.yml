@@ -24,4 +24,4 @@ jobs:
                     SOURCE: "dist/"
                     REMOTE_HOST: "team1.eaglesoftwareteam.com"
                     REMOTE_USER: ubuntu
-                    TARGET: "/var/www/html/courses-frontend"
+                    TARGET: "/var/www/html/"
