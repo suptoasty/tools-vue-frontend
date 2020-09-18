@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Class: </h1>
-    <DisplayCourse :courseObject="course" :coursesObject="courses"/>
+    <DisplayCourse :coursesObject="courses"/>
   </div>
 </template>
 
@@ -15,7 +15,6 @@ export default {
   },
   data() {
     return{
-      course: [{course_name: "SEIV"}],
       courses: []
     }
   },

@@ -1,7 +1,7 @@
 <template>
     <div>
-        <p>hello {{courseObject[0].course_name}}</p>
-        <p>a class: {{coursesObject[0].course_name}}</p>
+        <p>class index {{$route.params.courseIndex}}</p>
+        <p>Class name: {{coursesObject[$route.params.courseIndex].course_name}}</p>
     </div>
 </template>
 
@@ -9,7 +9,6 @@
 export default {
     name: "ViewCourse",
     props: {
-        courseObject: Array,
         coursesObject: Array
     },
     data: () => ({
