@@ -1,10 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? "http://team1.eaglesoftwareteam.com/"
-      : "http://localhost:3001/",
+  baseURL: "http://localhost:3001/",
   withCredentials: false,
   headers: {
     Accept: "application/json",
