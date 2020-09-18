@@ -1,15 +1,17 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: process.env.NODE_ENV === "production"
+      ? "http://team1.eaglesoftwareteam.com/"
+      : "http://localhost:3001/",
   withCredentials: false,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
     "X-Requested-With": "XMLHttpRequest",
     crossDomain: true,
-    "Access-Control-Allow-Origin": "*"
-  }
+    "Access-Control-Allow-Origin": "*",
+  },
 });
 
 export default {
@@ -22,7 +24,7 @@ export default {
   postCourse(course) {
     return apiClient.post("/courseapi/courses", {
       //course object here
-      name: course.name
+      name: course.name,
     });
   },
   deleteCourse(id) {
@@ -31,7 +33,7 @@ export default {
   putCourse(id, course) {
     return apiClient.put("/courseapi/courses/" + id, {
       //course object here
-      name: course.name
+      name: course.name,
     });
-  }
+  },
 };
