@@ -1,30 +1,36 @@
 <template>
-    <v-container
-    fluid
-  >
-    <v-row
-      align="center"
-      justify="center"
-    >
-      <v-col
-        cols="2"
-        sm="5"
-        md="5"
-      >
-        <DisplayClass :classObject="{ name: 'SEIV class' }"/>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div>
+    <h1>Class: </h1>
+    <DisplayCourse :courseObject="course" :coursesObject="courses"/>
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import DisplayClass from "@/components/DisplayClass.vue";
-
+import CourseService from "@/services/CourseService.js";
+import DisplayCourse from '@/components/DisplayCourse.vue'
 export default {
-  name: "ViewCourse",
   components: {
-    DisplayClass
+    DisplayCourse
+  },
+  data() {
+    return{
+      course: [{course_name: "SEIV"}],
+      courses: []
+    }
+  },
+  created() {
+    CourseService.getCourses()
+    .then(response => {
+      this.courses = response.data;
+      console.log(this.courses);
+    })
+    .catch(error => {
+      console.log("created error: " + error.response)
+    })
   }
 };
+
+
+
 </script>
