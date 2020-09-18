@@ -12,14 +12,13 @@ const routes = [
     name: "ViewCourse",
     component: ViewCourse,
     props: true
-  },
-  
+  }
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 export default router;

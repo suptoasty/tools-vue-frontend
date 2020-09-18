@@ -1,46 +1,48 @@
 <template>
-    <v-card class="elevation-12">
-        <v-toolbar
-        color="primary"
-        dark
-        flat
-        >
-        <v-toolbar-title>{{classObject.name}}</v-toolbar-title>
-        <v-spacer></v-spacer>
-        </v-toolbar>
-        <v-card-text>
-            <v-form>
-                <v-text-field
-                label="Login"
-                name="login"
-                prepend-icon="mdi-account"
-                type="text"
-                ></v-text-field>
-
-                <v-text-field
-                id="password"
-                label="Password"
-                name="password"
-                prepend-icon="mdi-lock"
-                type="password"
-                ></v-text-field>
-            </v-form>
-        </v-card-text>
-        <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary">Login</v-btn>
-        </v-card-actions>
-    </v-card>
+  <v-card class="elevation-3 mb-4" height="150" style="overflow: hidden">
+    <v-toolbar color="primary" dark flat>
+      <v-toolbar-title @click="log('hello')">
+        <v-btn small text :ripple="false" link>
+          <v-icon style="font-style:normal">{{classObject.course_name}}</v-icon>
+        </v-btn>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn small text fab v-bind="attrs" v-on="on">
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+        </template>
+        <span>Edit</span>
+      </v-tooltip>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn small text fab v-bind="attrs" v-on="on">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </template>
+        <span>Delete</span>
+      </v-tooltip>
+    </v-toolbar>
+    <v-card-text>
+      <p>{{classObject.course_desc}}</p>
+    </v-card-text>
+    <v-card-actions></v-card-actions>
+  </v-card>
 </template>
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "ClassListing",
 
   props: {
-      classObject: Object
+    classObject: Object
   },
-  data: () => ({
-  })
+  data: () => ({}),
+  methods: {
+    log(message) {
+      console.log(message);
+    }
+  }
 };
 </script>
