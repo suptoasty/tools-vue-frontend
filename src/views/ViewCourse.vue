@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Class: </h1>
-    <DisplayCourse :coursesObject="courses"/>
+    <DisplayCourse :courseObject="course"/>
   </div>
 </template>
 
@@ -13,16 +13,25 @@ export default {
   components: {
     DisplayCourse
   },
+  props: ['courseIndex'],
   data() {
     return{
-      courses: []
+      course: Object
     }
   },
   created() {
-    CourseService.getCourses()
+    // CourseService.getCourses()
+    // .then(response => {
+    //   this.courses = response.data;
+    //   console.log(this.courses);
+    // })
+    // .catch(error => {
+    //   console.log("created error: " + error.response)
+    // })
+    CourseService.getCourse(this.courseIndex)
     .then(response => {
-      this.courses = response.data;
-      console.log(this.courses);
+      this.course = response.data[0];
+      console.log(this.course);
     })
     .catch(error => {
       console.log("created error: " + error.response)

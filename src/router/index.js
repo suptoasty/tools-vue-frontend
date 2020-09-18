@@ -12,9 +12,10 @@ const routes = [
     component: Home
   },*/
   {
-    path: "/:courseIndex",
+    path: "/class/:courseIndex",
     name: "ViewCourse",
-    component: ViewCourse
+    component: ViewCourse,
+    props: true
   },
   /*{
     path: "/about",
