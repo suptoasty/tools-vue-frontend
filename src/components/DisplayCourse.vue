@@ -59,6 +59,11 @@
                 <v-btn color = "primary">Delete</v-btn>
             </v-col>
         </v-row>
+        <v-row>
+            <v-col>
+                <v-btn color = "primary" :to="{ name: 'Home' }">Back</v-btn>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 

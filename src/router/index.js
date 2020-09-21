@@ -28,7 +28,7 @@ const routes = [
     props: true
   },
   {
-    path: "/class/add/",
+    path: "/add/",
     name: "AddCourse",
     component: AddCourse,
     props: true

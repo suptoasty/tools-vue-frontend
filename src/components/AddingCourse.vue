@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-row>
-            <h1>Edit Course</h1>
+            <h1>Add Course</h1>
         </v-row>
         <v-row>
             <v-col>
@@ -73,13 +73,29 @@
 import CourseService from "@/services/CourseService.js";
 export default {
     name: "AddCourse",
-    props: ['courseObject'],
     methods:{
         addClass(){
-            console.log("button clicked");
-            console.log(this.course_num);
-            console.log(this.course_name);
-            CourseService.postCourse(this.courseObject);
+            let courseObject = {
+                course_name: {}, 
+                course_dept: {},
+                course_num: {},
+                course_level: {},
+                course_hours: {},
+                course_desc: {}
+            };
+            courseObject.course_name = this.course_name;
+            courseObject.course_dept = this.course_dept;
+            courseObject.course_num = this.course_num;
+            courseObject.course_level = this.course_level;
+            courseObject.course_hours = this.course_hours;
+            courseObject.course_desc = this.course_desc;
+            CourseService.postCourse(courseObject)
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log("There was an error" + error.response)
+            });
         }
     },
     data: () => ({
