@@ -1,14 +1,16 @@
 <template>
     <v-container>
         <v-row>
-            <h1>{{ courseObject.course_name }}</h1>
+            <h1>Edit Course</h1>
         </v-row>
         <v-row>
             <v-col>
                 Course name:
             </v-col>
             <v-col>
-                <p>{{ courseObject.course_name }}</p>
+                <v-text-field
+                v-model = "courseObject.course_name"
+                ></v-text-field>
             </v-col>
         </v-row>
         <v-row>
@@ -16,7 +18,9 @@
                 Course Number:
             </v-col>
             <v-col>
-                <p>{{ courseObject.course_num }}</p>
+                <v-text-field
+                v-model="courseObject.course_num"
+                ></v-text-field>
             </v-col>
         </v-row>
         <v-row>
@@ -24,7 +28,9 @@
                 Description:
             </v-col>
             <v-col>
-                <p>{{ courseObject.course_desc }}</p>
+                <v-text-field
+                v-model = "courseObject.course_desc"
+                ></v-text-field>
             </v-col>
         </v-row>
         <v-row>
@@ -32,7 +38,9 @@
                 Course Hours:
             </v-col>
             <v-col>
-                <p>{{ courseObject.course_hours }}</p>
+                <v-text-field
+                v-model = "courseObject.course_hours"
+                ></v-text-field>
             </v-col>
         </v-row>
         <v-row>
@@ -40,7 +48,9 @@
                 Course Department:
             </v-col>
             <v-col>
-                <p>{{ courseObject.course_dept }}</p>
+                <v-text-field
+                v-model = "courseObject.course_dept"
+                ></v-text-field>
             </v-col>
         </v-row>
         <v-row>
@@ -48,11 +58,13 @@
                 Class Level:
             </v-col>
             <v-col>
-                <p>{{ courseObject.course_level }}</p>
+                <v-text-field
+                v-model = "courseObject.course_level"
+                ></v-text-field>
             </v-col>
         </v-row>
         <v-row>
-            <v-btn color = "primary" :to="{ name: 'EditCourse', params: {courseIndex: courseObject.course_id}}">Edit</v-btn>
+            <v-btn color="primary" :to="{ name: 'ViewCourse', params: { courseIndex: courseObject.course_id }}">Save</v-btn>
         </v-row>
     </v-container>
 </template>
@@ -61,8 +73,9 @@
 export default {
     name: "ViewCourse",
     props: ['courseObject'],
+    
     data: () => ({
-
+        
     }),
 }
 </script>
