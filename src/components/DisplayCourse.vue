@@ -52,7 +52,12 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-btn color = "primary" :to="{ name: 'EditCourse', params: {courseIndex: courseObject.course_id}}">Edit</v-btn>
+            <v-col>
+                <v-btn color = "primary" :to="{ name: 'EditCourse', params: {courseIndex: courseObject.course_id}}">Edit</v-btn>
+            </v-col>
+            <v-col>
+                <v-btn color = "primary">Delete</v-btn>
+            </v-col>
         </v-row>
     </v-container>
 </template>
@@ -65,4 +70,7 @@ export default {
 
     }),
 }
+/*
+location.reload()
+*/
 </script>
