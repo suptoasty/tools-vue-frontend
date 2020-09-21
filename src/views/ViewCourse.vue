@@ -7,16 +7,16 @@
 <script>
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
-import DisplayCourse from '@/components/DisplayCourse.vue'
+import DisplayCourse from "@/components/DisplayCourse.vue";
 export default {
   components: {
     DisplayCourse
   },
   props: ['courseIndex'],
   data() {
-    return{
+    return {
       course: Object
-    }
+    };
   },
   created() {
     CourseService.getCourse(this.courseIndex)
