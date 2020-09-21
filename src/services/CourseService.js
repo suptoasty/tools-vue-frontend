@@ -14,6 +14,17 @@ const apiClient = axios.create({
   },
 });
 
+/*
+  {
+    course_name:
+    course_num:
+    course_desc
+    course_dept
+    course_level
+    course_hours
+
+  }
+*/
 export default {
   getCourses() {
     return apiClient.get("/courseapi/courses/");
@@ -24,7 +35,12 @@ export default {
   postCourse(course) {
     return apiClient.post("/courseapi/courses", {
       //course object here
-      name: course.name,
+      course_name: course.course_name,
+      course_num: course.course_num,
+      course_desc: course.course_desc,
+      course_dept: course.course_dept,
+      course_level: course.course_level,
+      course_hours: course.course_hours
     });
   },
   deleteCourse(id) {
@@ -33,7 +49,13 @@ export default {
   putCourse(id, course) {
     return apiClient.put("/courseapi/courses/" + id, {
       //course object here
-      name: course.name,
+      course_name: course.course_name,
+      course_num: course.course_num,
+      course_desc: course.course_desc,
+      course_dept: course.course_dept,
+      course_level: course.course_level,
+      course_hours: course.course_hours
+      
     });
   },
 };
