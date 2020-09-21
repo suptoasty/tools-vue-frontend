@@ -1,16 +1,16 @@
 <template>
   <div>
-    <DisplayCourse :courseObject="course"/>
+    <EditingCourse :courseObject="course"/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
-import DisplayCourse from '@/components/DisplayCourse.vue'
+import EditingCourse from '@/components/EditingCourse.vue'
 export default {
   components: {
-    DisplayCourse
+    EditingCourse
   },
   props: ['courseIndex'],
   data() {

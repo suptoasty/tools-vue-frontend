@@ -1,16 +1,16 @@
 <template>
   <div>
-    <DisplayCourse :courseObject="course"/>
+    <AddingCourse :courseObject="course"/>
   </div>
 </template>
-
+<!--I was thinking that Lane can just pass this a random course and then I will just edit that course in the add page and then push it so that I do not have to make a new course object-->
 <script>
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
-import DisplayCourse from '@/components/DisplayCourse.vue'
+import AddingCourse from '@/components/AddingCourse.vue'
 export default {
   components: {
-    DisplayCourse
+    AddingCourse
   },
   props: ['courseIndex'],
   data() {
