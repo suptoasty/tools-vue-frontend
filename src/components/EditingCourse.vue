@@ -64,16 +64,24 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-btn color="primary" :to="{ name: 'ViewCourse', params: { courseIndex: courseObject.course_id }}">Save</v-btn>
+            <v-btn v-on:click.native = "saveClass" color="primary" :to="{ name: 'ViewCourse', params: { courseIndex: courseObject.course_id }}">Save</v-btn>
         </v-row>
     </v-container>
 </template>
 
 <script>
+import CourseService from "@/services/CourseService.js";
 export default {
     name: "ViewCourse",
     props: ['courseObject'],
-    
+    methods:{
+        saveClass(){
+            console.log("button clicked");
+            console.log(this.courseObject.course_id);
+            console.log(this.courseObject);
+            CourseService.putCourse(this.courseObject.course_id, this.courseObject);
+        }
+    },
     data: () => ({
         
     }),
