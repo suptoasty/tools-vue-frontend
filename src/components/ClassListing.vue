@@ -1,7 +1,7 @@
 <template>
   <v-card class="elevation-3 mb-4" height="150" style="overflow: hidden">
     <v-toolbar color="primary" dark flat>
-      <v-toolbar-title @click="log('hello')">
+      <v-toolbar-title @click="$router.push({ name: 'ViewCourse', params: {courseIndex: classObject.course_id} })">
         <v-btn small text :ripple="false" link>
           <v-icon style="font-style:normal">{{classObject.course_name}}</v-icon>
         </v-btn>

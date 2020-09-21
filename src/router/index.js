@@ -2,7 +2,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import ViewCourse from "../views/ViewCourse.vue";
-import ClassShow from "../views/ClassShow.vue";
 
 Vue.use(VueRouter);
 
