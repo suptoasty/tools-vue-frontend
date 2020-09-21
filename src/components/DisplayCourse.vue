@@ -1,10 +1,3 @@
-<!--<template>
-    <div>
-        <p>class index {{$route.params.courseIndex}}</p>
-        <p>Class name: {{courseObject.course_name}}</p>
-    </div>
-</template>-->
-
 <template>
     <v-container>
         <v-row>
