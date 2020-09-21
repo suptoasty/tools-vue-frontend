@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Class: </h1>
     <DisplayCourse :courseObject="course"/>
   </div>
 </template>
