@@ -9,12 +9,11 @@ import AddCourse from "../views/AddCourse.vue";
 Vue.use(VueRouter);
 
 const routes = [
-  
   {
     path: "/class/:courseIndex",
     name: "ViewCourse",
     component: ViewCourse,
-    props: true
+    props: true,
   },
   {
     path: "/",
@@ -25,14 +24,14 @@ const routes = [
     path: "/class/edit/:courseIndex/",
     name: "EditCourse",
     component: EditCourse,
-    props: true
+    props: true,
   },
   {
     path: "/class/add/",
     name: "AddCourse",
     component: AddCourse,
-    props: true
-  }
+    props: true,
+  },
 ];
 
 const router = new VueRouter({
@@ -42,5 +41,3 @@ const router = new VueRouter({
 });
 
 export default router;
-
-
