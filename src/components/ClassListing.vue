@@ -1,7 +1,9 @@
 <template>
   <v-card class="elevation-3 mb-4" height="150" style="overflow: hidden">
     <v-toolbar color="primary" dark flat>
-      <v-toolbar-title @click="$router.push({ name: 'ViewCourse', params: {courseIndex: classObject.course_id} })">
+      <v-toolbar-title
+        @click="$router.push({ name: 'ViewCourse', params: {courseIndex: classObject.course_id} })"
+      >
         <v-btn small text :ripple="false" link>
           <v-icon style="font-style:normal">{{classObject.course_name}}</v-icon>
         </v-btn>
@@ -17,7 +19,7 @@
       </v-tooltip>
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn small text fab v-bind="attrs" v-on="on">
+          <v-btn small text fab v-bind="attrs" v-on="on" @click="onDelete(classObject)">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </template>
@@ -42,6 +44,10 @@ export default {
   methods: {
     log(message) {
       console.log(message);
+    },
+    onDelete(course) {
+      console.log("Emiting Delete for: " + course.course_name);
+      this.$root.$emit("deleteCourse", course);
     }
   }
 };
