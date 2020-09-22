@@ -13,12 +13,15 @@
           <v-data-table :headers="headers" :items="classes" :items-per-page="5" class="elevation-1">
             <template v-slot:item="row">
               <tr>
-                <ClassListing :classObject="row.item" />
+                <td>
+                  <ClassListing :classObject="row.item" />
+                </td>
               </tr>
             </template>
           </v-data-table>
         </v-row>
       </v-col>
+      <DeleteConfirmation />
     </v-row>
   </v-container>
 </template>
@@ -27,11 +30,13 @@
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
 import ClassListing from "@/components/ClassListing.vue";
+import DeleteConfirmation from "@/components/DeleteConfirmation.vue";
 
 export default {
   name: "Home",
   components: {
-    ClassListing
+    ClassListing,
+    DeleteConfirmation
   },
   data: () => ({
     searchOptions: [
