@@ -33,6 +33,7 @@ export default {
       console.log("DELETING: " + id);
       this.dialog = false;
       await CourseService.deleteCourse(id);
+      await this.$root.$emit('CourseDeleted');
       router.push({ name: "Home" });
     },
     onCancel() {
