@@ -5,13 +5,20 @@
         @click="$router.push({ name: 'ViewCourse', params: {courseIndex: classObject.course_id} })"
       >
         <v-btn small text :ripple="false" link>
-          <v-icon style="font-style:normal">{{classObject.course_name}}</v-icon>
+          <p style="font-style:normal; font-size:2em">{{wrappedName}}</p>
         </v-btn>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn small text fab v-bind="attrs" v-on="on">
+          <v-btn
+            small
+            text
+            fab
+            v-bind="attrs"
+            v-on="on"
+            @click="$router.push({ name: 'EditCourse', params: {courseIndex: classObject.course_id} })"
+          >
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
         </template>
@@ -40,7 +47,6 @@ export default {
   props: {
     classObject: Object
   },
-  data: () => ({}),
   methods: {
     log(message) {
       console.log(message);
@@ -49,6 +55,21 @@ export default {
       console.log("Emiting Delete for: " + course.course_name);
       this.$root.$emit("deleteCourse", course);
     }
+  },
+  computed: {
+      wrappedName () {
+        if (typeof (this.classObject.course_name) == "string") {
+          if (this.classObject.course_name.length < 50) {
+            return this.classObject.course_name;
+          }
+          else {
+            return this.classObject.course_name.substring(0, 50) + "...";
+          }
+        }
+        else {
+          return "";
+        }
+      }
   }
 };
 </script>
