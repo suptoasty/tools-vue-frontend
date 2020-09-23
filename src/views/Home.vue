@@ -149,6 +149,17 @@ export default {
       .catch(error => {
         console.log("there was an error:" + error.response);
       });
+  },
+  mounted() {
+    this.$root.$on('CourseDeleted', () => {
+      CourseService.getCourses()
+      .then(response => {
+        this.classes = response.data;
+      })
+      .catch(error => {
+        console.log("there was an error:" + error.response);
+      });
+    });
   }
 };
 </script>
