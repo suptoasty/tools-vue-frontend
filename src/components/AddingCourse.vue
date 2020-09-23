@@ -81,10 +81,13 @@ export default {
     props: [],
     methods:{
         addClass(){
-            console.log("button clicked");
-            console.log(this.course_num);
-            console.log(this.course_name);
-            CourseService.postCourse(this.courseObject);
+            CourseService.postCourse(this.courseObject)
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log("There was an error" + error.response)
+            });
         }
     },
     data: () => ({
