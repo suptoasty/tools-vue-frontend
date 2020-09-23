@@ -64,13 +64,19 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-btn v-on:click.native = "addClass" color="primary" :to="{ name: 'Home'}">Add</v-btn>
+            <v-col>
+                <v-btn v-on:click.native = "addClass" color="primary">Add</v-btn>
+            </v-col>
+            <v-col>
+                <v-btn color="primary" :to="{ name: 'Home'}">Back</v-btn>
+            </v-col>
         </v-row>
     </v-container>
 </template>
 
 <script>
 import CourseService from "@/services/CourseService.js";
+import router from "@/router/index.js";
 export default {
     name: "AddCourse",
     methods:{
@@ -91,6 +97,7 @@ export default {
             courseObject.course_desc = this.course_desc;
             CourseService.postCourse(courseObject)
             .then(response => {
+                router.push({ name: 'Home'});
                 console.log(response.data);
             })
             .catch(error => {

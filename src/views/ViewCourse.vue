@@ -19,14 +19,20 @@ export default {
     }
   },
   created() {
-    CourseService.getCourse(this.courseIndex)
-    .then(response => {
-      this.course = response.data[0];
-      console.log(this.course);
-    })
-    .catch(error => {
-      console.log("created error: " + error.response)
-    })
+    console.log("View course created");
+    this.getCourse();
+  },
+  methods: {
+    getCourse () {
+      CourseService.getCourse(this.courseIndex)
+      .then(response => {
+        this.course = response.data[0];
+        console.log(this.course);
+      })
+      .catch(error => {
+        console.log("created error: " + error.response)
+      })
+    }
   }
 };
 

@@ -64,13 +64,14 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-btn v-on:click.native = "saveClass" color="primary" :to="{ name: 'ViewCourse', params: { courseIndex: courseObject.course_id }}">Save</v-btn>
+            <v-btn v-on:click.native = "saveClass" color="primary">Save</v-btn>
         </v-row>
     </v-container>
 </template>
 
 <script>
 import CourseService from "@/services/CourseService.js";
+import router from "@/router/index.js";
 export default {
     name: "EditCourse",
     props: ['courseObject'],
@@ -79,7 +80,13 @@ export default {
             console.log("button clicked");
             console.log(this.courseObject.course_id);
             console.log(this.courseObject);
-            CourseService.putCourse(this.courseObject.course_id, this.courseObject);
+            CourseService.putCourse(this.courseObject.course_id, this.courseObject)
+            .then( () => {
+                router.push({ name: 'ViewCourse', params: { courseIndex: this.courseObject.course_id }});
+            })
+            .catch(error => {
+                console.log("Save class error: " + error.response);
+            });
         }
     },
     data: () => ({

@@ -11,7 +11,7 @@ Vue.use(VueRouter);
 const routes = [
   
   {
-    path: "/class/:courseIndex",
+    path: "/view/:courseIndex",
     name: "ViewCourse",
     component: ViewCourse,
     props: true
@@ -22,7 +22,7 @@ const routes = [
     component: Home,
   },
   {
-    path: "/class/edit/:courseIndex/",
+    path: "/edit/:courseIndex/",
     name: "EditCourse",
     component: EditCourse,
     props: true
