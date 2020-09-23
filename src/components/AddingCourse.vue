@@ -5,11 +5,11 @@
         </v-row>
         <v-row>
             <v-col>
-                Course name:
+                Course Name:
             </v-col>
             <v-col>
                 <v-text-field
-                v-model="course_name"
+                v-model="courseObject.course_name"
                 ></v-text-field>
             </v-col>
         </v-row>
@@ -19,7 +19,7 @@
             </v-col>
             <v-col>
                 <v-text-field
-                v-model="course_num"
+                v-model="courseObject.course_num"
                 ></v-text-field>
             </v-col>
         </v-row>
@@ -29,7 +29,7 @@
             </v-col>
             <v-col>
                 <v-text-field
-                v-model="course_desc"
+                v-model="courseObject.course_desc"
                 ></v-text-field>
             </v-col>
         </v-row>
@@ -39,7 +39,7 @@
             </v-col>
             <v-col>
                 <v-text-field
-                v-model="course_hours"
+                v-model="courseObject.course_hours"
                 ></v-text-field>
             </v-col>
         </v-row>
@@ -49,7 +49,7 @@
             </v-col>
             <v-col>
                 <v-text-field
-                v-model="course_dept"
+                v-model="courseObject.course_dept"
                 ></v-text-field>
             </v-col>
         </v-row>
@@ -59,12 +59,17 @@
             </v-col>
             <v-col>
                 <v-text-field
-                v-model="course_level"
+                v-model="courseObject.course_level"
                 ></v-text-field>
             </v-col>
         </v-row>
         <v-row>
-            <v-btn v-on:click.native = "addClass" color="primary" :to="{ name: 'Home'}">Add</v-btn>
+            <v-col>
+                <v-btn v-on:click.native = "addClass" color="primary" :to="{ name: 'Home'}">Add</v-btn>
+            </v-col>
+            <v-col>
+                <v-btn color="primary" :to="{ name: 'Home' }">Cancel</v-btn>
+            </v-col>
         </v-row>
     </v-container>
 </template>
@@ -73,23 +78,10 @@
 import CourseService from "@/services/CourseService.js";
 export default {
     name: "AddCourse",
+    props: [],
     methods:{
         addClass(){
-            let courseObject = {
-                course_name: {}, 
-                course_dept: {},
-                course_num: {},
-                course_level: {},
-                course_hours: {},
-                course_desc: {}
-            };
-            courseObject.course_name = this.course_name;
-            courseObject.course_dept = this.course_dept;
-            courseObject.course_num = this.course_num;
-            courseObject.course_level = this.course_level;
-            courseObject.course_hours = this.course_hours;
-            courseObject.course_desc = this.course_desc;
-            CourseService.postCourse(courseObject)
+            CourseService.postCourse(this.courseObject)
             .then(response => {
                 console.log(response.data);
             })
@@ -99,12 +91,14 @@ export default {
         }
     },
     data: () => ({
-        course_name: "",
-        course_dept: "",
-        course_num: "",
-        course_level: "",
-        course_hours: "",
-        course_desc: ""
+        courseObject: {
+            course_name: "",
+            course_dept: "",
+            course_num: "",
+            course_level: "",
+            course_hours: "",
+            course_desc: ""
+        }
     }),
 }
 </script>
