@@ -53,7 +53,7 @@
         </v-row>
         <v-row>
             <v-col>
-                <v-btn color = "primary" :to="{ name: 'EditCourse', params: {courseIndex: courseObject.course_id}}">Edit</v-btn>
+                <v-btn color = "primary" :to="{ name: 'EditCourse', params: {courseIndex: courseObject.course_id, returnTo: 'ViewCourse'}}">Edit</v-btn>
             </v-col>
             <v-col>
                 <v-btn color = "primary">Delete</v-btn>
@@ -65,7 +65,7 @@
 <script>
 export default {
     name: "ViewCourse",
-    props: ['courseObject'],
+    props: ['courseObject', 'returnTo'],
     data: () => ({
 
     }),

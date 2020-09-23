@@ -1,6 +1,6 @@
 <template>
   <div>
-    <EditingCourse :courseObject="course"/>
+    <EditingCourse :courseObject="course" :returnTo="returnTo" />
   </div>
 </template>
 
@@ -12,10 +12,10 @@ export default {
   components: {
     EditingCourse
   },
-  props: ['courseIndex'],
+  props: ['courseIndex', 'returnTo'],
   data() {
     return{
-      course: Object
+      course: Object,
     }
   },
   created() {

@@ -51,7 +51,7 @@
                         fab
                         v-bind="attrs"
                         v-on="on"
-                        @click="$router.push({ name: 'ViewCourse', params: {courseIndex: item.course_id} })"
+                        @click="$router.push({ name: 'ViewCourse', params: {courseIndex: item.course_id, returnTo: 'Home'} })"
                       >
                         <v-icon>mdi-book-open-variant</v-icon>
                       </v-btn>
@@ -68,7 +68,7 @@
                         fab
                         v-bind="attrs"
                         v-on="on"
-                        @click="$router.push({ name: 'EditCourse', params: {courseIndex: item.course_id} })"
+                        @click="$router.push({ name: 'EditCourse', params: {courseIndex: item.course_id, returnTo: 'Home'} })"
                       >
                         <v-icon>mdi-pencil</v-icon>
                       </v-btn>

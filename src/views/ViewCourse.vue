@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DisplayCourse :courseObject="course"/>
+    <DisplayCourse :courseObject="course" />
   </div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
   components: {
     DisplayCourse
   },
-  props: ['courseIndex'],
+  props: ['courseIndex', 'returnTo'],
   data() {
     return {
       course: Object

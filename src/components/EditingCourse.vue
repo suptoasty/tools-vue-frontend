@@ -65,10 +65,10 @@
         </v-row>
         <v-row>
             <v-col>
-                <v-btn v-on:click.native = "saveClass" color="primary" :to="{ name: 'ViewCourse', params: { courseIndex: courseObject.course_id }}">Save</v-btn>
+                <v-btn v-on:click.native = "saveClass" color="primary" :to="{ name: returnTo, params: { courseIndex: courseObject.course_id }}">Save</v-btn>
             </v-col>
             <v-col>
-                <v-btn color="primary" :to="{ name: 'ViewCourse', params: { courseIndex: courseObject.course_id }}">Cancel</v-btn>
+                <v-btn color="primary" :to="{ name: returnTo, params: { courseIndex: courseObject.course_id }}">Cancel</v-btn>
             </v-col>
         </v-row>
     </v-container>
@@ -78,7 +78,7 @@
 import CourseService from "@/services/CourseService.js";
 export default {
     name: "EditCourse",
-    props: ['courseObject'],
+    props: ['courseObject', 'returnTo'],
     methods:{
         saveClass(){
             console.log("button clicked");
