@@ -14,6 +14,7 @@
 
 <script>
 import CourseService from "@/services/CourseService.js";
+import router from "@/router/index.js";
 
 export default {
   name: "DeleteConfirmation",
@@ -30,8 +31,9 @@ export default {
     },
     async onDelete(id) {
       console.log("DELETING: " + id);
-      await CourseService.deleteCourse(id);
       this.dialog = false;
+      await CourseService.deleteCourse(id);
+      router.push({ name: "Home" });
     },
     onCancel() {
       this.dialog = false;
