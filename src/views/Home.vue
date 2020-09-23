@@ -5,31 +5,28 @@
         <v-row align="center" justify="center">
           <h1 class="text-center h1">Course List</h1>
         </v-row>
-        <v-row align="center" justify="center">
-          <v-btn color="primary" @click="$router.push({ name: 'AddCourse' })">Add Course</v-btn>
-        </v-row>
         <v-row>
           <v-col cols="12">
+            filters
+            <v-chip-group
+              multiple
+              active-class="primary--text"
+              @change="onUpdateSearch"
+            >
+              <v-chip v-for="tag in searchOptions" :key="tag">
+                {{tag}}
+              </v-chip>
+            </v-chip-group>
+            <v-input>
+
             <v-text-field
               label="Search Courses"
               v-model="search"
+              outlined
             >
             </v-text-field>
-          </v-col>
-          <v-col cols="12">
-            <v-select
-              v-model="includeInSearch"
-              :items="searchOptions"
-              chips
-              label="Search By"
-              multiple
-            >
-            <template v-slot:selection="{ item }">
-              <v-chip>
-                <span>{{ item }}</span>
-              </v-chip>
-            </template>
-            </v-select>
+              <v-btn color="primary" class="mb-7" @click="$router.push({ name: 'AddCourse' })" outlined x-large>Add Course</v-btn>
+            </v-input>
           </v-col>
         </v-row>
         <v-row align="center" justify="center">
@@ -117,16 +114,14 @@ export default {
     onDelete(course) {
       console.log("Emiting Delete for: " + course.course_name);
       this.$root.$emit("deleteCourse", course);
+    },
+    onUpdateSearch(filters) {
+      this.includeInSearch = [];
+      for(let i = 0; i < filters.length; i++) {
+        console.log(this.searchOptions[filters[i]]);
+        this.includeInSearch.push(this.searchOptions[filters[i]]);
+      }
     }
-    // onSort: function(items, index, isDesc) {
-    //   items.sort((a, b) => {
-    //     console.log(isDesc);
-    //     if (a.course_id > b.course_id) return -1;
-    //     if (a.course_id < b.course_id) return 1;
-    //     return 0;
-    //   });
-    //   return items;
-    // }
   },
   computed: {
       headers () {
