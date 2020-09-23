@@ -64,7 +64,12 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-btn v-on:click.native = "saveClass" color="primary">Save</v-btn>
+            <v-col>
+                <v-btn v-on:click.native = "saveClass" color="primary">Save</v-btn>
+            </v-col>
+            <v-col>
+                <v-btn color="primary" :to="{ name: 'ViewCourse', params: { courseIndex: courseObject.course_id }}">Cancel</v-btn>
+            </v-col>
         </v-row>
     </v-container>
 </template>
