@@ -1,27 +1,27 @@
 name: DEPLOY TO STAGING
 
 on:
-    pull_request:
-        types : [closed]
-        branches:
-            - dev
+  pull_request:
+    types: [closed]
+    branches:
+      - dev
 
 jobs:
-    aws-deploy:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-              with:
-                  ref: dev
-            - uses: actions/setup-node@v1
-            - run: npm install
-            - run: npm run build
-            - name: Deploy to Server
-              uses: easingthemes/ssh-deploy@v2.1.1
-              env:
-                    SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-                    ARGS: "-rltgoDzvO --delete"
-                    SOURCE: "dist/"
-                    REMOTE_HOST: "team1.eaglesoftwareteam.com"
-                    REMOTE_USER: ubuntu
-                    TARGET: "/var/www/html/"
+  aws-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: dev
+      - uses: actions/setup-node@v1
+      - run: npm install
+      - run: npm run build
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@v2.1.1
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "dist/"
+          REMOTE_HOST: "team1.eaglesoftwareteam.com"
+          REMOTE_USER: ubuntu
+          TARGET: "/var/www/html/"
