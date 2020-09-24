@@ -7,25 +7,31 @@
         </v-row>
         <v-row>
           <v-col cols="12">
-            filters
-            <v-chip-group
-              multiple
-              active-class="primary--text"
-              @change="onUpdateSearch"
-            >
-              <v-chip v-for="tag in searchOptions" :key="tag">
-                {{tag}}
-              </v-chip>
-            </v-chip-group>
+            <v-card flat>
+              <v-card-subtitle>
+                Filters:
+                <v-chip-group
+                  multiple
+                  active-class="primary--text"
+                  @change="onUpdateSearch"
+                >
+                  <v-chip v-for="tag in searchOptions" :key="tag">
+                    {{ tag }}
+                  </v-chip>
+                </v-chip-group>
+              </v-card-subtitle>
+            </v-card>
             <v-input>
-
-            <v-text-field
-              label="Search Courses"
-              v-model="search"
-              outlined
-            >
-            </v-text-field>
-              <v-btn color="primary" class="mb-7" @click="$router.push({ name: 'AddCourse' })" outlined x-large>Add Course</v-btn>
+              <v-text-field label="Search Courses" v-model="search" outlined>
+              </v-text-field>
+              <v-btn
+                color="primary"
+                class="mb-7"
+                @click="$router.push({ name: 'AddCourse' })"
+                outlined
+                x-large
+                >Add Course</v-btn
+              >
             </v-input>
           </v-col>
         </v-row>
@@ -48,7 +54,12 @@
                         fab
                         v-bind="attrs"
                         v-on="on"
-                        @click="$router.push({ name: 'ViewCourse', params: {courseIndex: item.course_id} })"
+                        @click="
+                          $router.push({
+                            name: 'ViewCourse',
+                            params: { courseIndex: item.course_id }
+                          })
+                        "
                       >
                         <v-icon>mdi-book-open-variant</v-icon>
                       </v-btn>
@@ -65,7 +76,12 @@
                         fab
                         v-bind="attrs"
                         v-on="on"
-                        @click="$router.push({ name: 'EditCourse', params: {courseIndex: item.course_id} })"
+                        @click="
+                          $router.push({
+                            name: 'EditCourse',
+                            params: { courseIndex: item.course_id }
+                          })
+                        "
                       >
                         <v-icon>mdi-pencil</v-icon>
                       </v-btn>
@@ -76,7 +92,14 @@
                 <td>
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
-                      <v-btn small text fab v-bind="attrs" v-on="on" @click="onDelete(item)">
+                      <v-btn
+                        small
+                        text
+                        fab
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="onDelete(item)"
+                      >
                         <v-icon>mdi-delete</v-icon>
                       </v-btn>
                     </template>
@@ -117,24 +140,48 @@ export default {
     },
     onUpdateSearch(filters) {
       this.includeInSearch = [];
-      for(let i = 0; i < filters.length; i++) {
+      for (let i = 0; i < filters.length; i++) {
         console.log(this.searchOptions[filters[i]]);
         this.includeInSearch.push(this.searchOptions[filters[i]]);
       }
     }
   },
   computed: {
-      headers () {
-        return [
-          { text: "Name", value: "course_name", filterable: this.includeInSearch.includes("Name") },
-          { text: "Department", value: "course_dept", filterable: this.includeInSearch.includes("Department") },
-          { text: "Number", value: "course_num", filterable: this.includeInSearch.includes("Number") },
-          { text: "Level", value: "course_level", filterable: this.includeInSearch.includes("Level") },
-          { text: "Hours", value: "course_hours", filterable: this.includeInSearch.includes("Hours") },
-          { text: "Description", value: "course_desc", filterable: this.includeInSearch.includes("Description") },
-          { text: "Actions", value: "actions" },
-        ]
-      }
+    headers() {
+      return [
+        {
+          text: "Name",
+          value: "course_name",
+          filterable: this.includeInSearch.includes("Name")
+        },
+        {
+          text: "Department",
+          value: "course_dept",
+          filterable: this.includeInSearch.includes("Department")
+        },
+        {
+          text: "Number",
+          value: "course_num",
+          filterable: this.includeInSearch.includes("Number")
+        },
+        {
+          text: "Level",
+          value: "course_level",
+          filterable: this.includeInSearch.includes("Level")
+        },
+        {
+          text: "Hours",
+          value: "course_hours",
+          filterable: this.includeInSearch.includes("Hours")
+        },
+        {
+          text: "Description",
+          value: "course_desc",
+          filterable: this.includeInSearch.includes("Description")
+        },
+        { text: "Actions", value: "actions" }
+      ];
+    }
   },
   created() {
     CourseService.getCourses()
@@ -146,14 +193,14 @@ export default {
       });
   },
   mounted() {
-    this.$root.$on('CourseDeleted', () => {
+    this.$root.$on("CourseDeleted", () => {
       CourseService.getCourses()
-      .then(response => {
-        this.classes = response.data;
-      })
-      .catch(error => {
-        console.log("there was an error:" + error.response);
-      });
+        .then(response => {
+          this.classes = response.data;
+        })
+        .catch(error => {
+          console.log("there was an error:" + error.response);
+        });
     });
   }
 };
