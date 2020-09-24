@@ -65,7 +65,7 @@
                         fab
                         v-bind="attrs"
                         v-on="on"
-                        @click="$router.push({ name: 'EditCourse', params: {courseIndex: item.course_id} })"
+                        @click="$router.push({ name: 'EditCourse', params: { courseIndex: item.course_id, returnTo: 'Home' } })"
                       >
                         <v-icon>mdi-pencil</v-icon>
                       </v-btn>
