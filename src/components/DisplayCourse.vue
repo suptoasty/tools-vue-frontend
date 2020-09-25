@@ -43,7 +43,7 @@
       <v-col>
         <v-btn
           color="primary"
-          :to="{ name: 'EditCourse', params: {courseIndex: courseObject.course_id}}"
+          :to="{ name: 'EditCourse', params: { courseIndex: courseObject.course_id, returnTo: 'ViewCourse' }}"
         >Edit</v-btn>
       </v-col>
       <v-col>
