@@ -13,7 +13,7 @@
                 <v-chip-group
                   multiple
                   active-class="primary--text"
-                  @change="onUpdateSearch"
+                  v-model="includeInSearch"
                 >
                   <v-chip v-for="tag in searchOptions" :key="tag">
                     {{ tag }}
@@ -123,8 +123,8 @@ export default {
   },
   data: () => ({
     search: "",
-    searchOptions: ["Name", "Department", "Number", "Level", "Description"],
-    includeInSearch: ["Name", "Department", "Number", "Level", "Description"],
+    searchOptions: ["Name", "Department", "Number", "Level", "Hours", "Description"],
+    includeInSearch: [0, 1, 2, 3, 4, 5],
     classes: [],
     page: 1
   }),
@@ -132,13 +132,6 @@ export default {
     onDelete(course) {
       console.log("Emiting Delete for: " + course.course_name);
       this.$root.$emit("deleteCourse", course);
-    },
-    onUpdateSearch(filters) {
-      this.includeInSearch = [];
-      for (let i = 0; i < filters.length; i++) {
-        console.log(this.searchOptions[filters[i]]);
-        this.includeInSearch.push(this.searchOptions[filters[i]]);
-      }
     }
   },
   computed: {
@@ -147,32 +140,32 @@ export default {
         {
           text: "Name",
           value: "course_name",
-          filterable: this.includeInSearch.includes("Name")
+          filterable: this.includeInSearch.includes(0)
         },
         {
           text: "Department",
           value: "course_dept",
-          filterable: this.includeInSearch.includes("Department")
+          filterable: this.includeInSearch.includes(1)
         },
         {
           text: "Number",
           value: "course_num",
-          filterable: this.includeInSearch.includes("Number")
+          filterable: this.includeInSearch.includes(2)
         },
         {
           text: "Level",
           value: "course_level",
-          filterable: this.includeInSearch.includes("Level")
+          filterable: this.includeInSearch.includes(3)
         },
         {
           text: "Hours",
           value: "course_hours",
-          filterable: this.includeInSearch.includes("Hours")
+          filterable: this.includeInSearch.includes(4)
         },
         {
           text: "Description",
           value: "course_desc",
-          filterable: this.includeInSearch.includes("Description")
+          filterable: this.includeInSearch.includes(5)
         },
         { text: "Actions", value: "actions" }
       ];
