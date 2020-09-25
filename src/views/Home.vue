@@ -22,16 +22,17 @@
               </v-card-subtitle>
             </v-card>
             <v-input>
-              <v-text-field label="Search Courses" v-model="search" outlined>
+              <v-text-field label="Search Courses" v-model="search" outlined height="59" >
               </v-text-field>
               <v-btn
                 color="primary"
-                class="mb-7"
+                class="mb-8 ml-3"
                 @click="$router.push({ name: 'AddCourse' })"
                 outlined
+                height="59"
                 x-large
-                >Add Course</v-btn
-              >
+                right
+                >Add Course</v-btn>
             </v-input>
           </v-col>
         </v-row>
