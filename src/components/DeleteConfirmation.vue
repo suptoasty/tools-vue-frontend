@@ -5,7 +5,7 @@
       <v-card-text>All Contents Will Be Deleted! This Cannot Be Undone!</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" text @click="onDelete(courseID)">Delete</v-btn>
+        <v-btn color="red darken-1" text @click="onDelete(courseID)">Delete</v-btn>
         <v-btn color="green darken-1" text @click="onCancel()">Cancel</v-btn>
       </v-card-actions>
     </v-card>
