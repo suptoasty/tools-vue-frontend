@@ -1,11 +1,14 @@
 <template>
     <v-container>
         <v-row>
-            <h1>Edit Course</h1>
+            <v-col>
+                <h1>Edit Course</h1>
+            </v-col>
         </v-row>
+        <v-divider></v-divider>
         <v-row>
             <v-col>
-                Course name:
+                <p>Course name:</p>
             </v-col>
             <v-col>
                 <v-text-field
@@ -15,7 +18,7 @@
         </v-row>
         <v-row>
             <v-col>
-                Course Number:
+                <p>Course Number:</p>
             </v-col>
             <v-col>
                 <v-text-field
@@ -25,7 +28,7 @@
         </v-row>
         <v-row>
             <v-col>
-                Description:
+                <p>Description:</p>
             </v-col>
             <v-col>
                 <v-text-field
@@ -35,7 +38,7 @@
         </v-row>
         <v-row>
             <v-col>
-                Course Hours:
+                <p>Course Hours:</p>
             </v-col>
             <v-col>
                 <v-text-field
@@ -45,7 +48,7 @@
         </v-row>
         <v-row>
             <v-col>
-                Course Department:
+                <p>Course Department:</p>
             </v-col>
             <v-col>
                 <v-text-field
@@ -55,7 +58,7 @@
         </v-row>
         <v-row>
             <v-col>
-                Class Level:
+                <p>Class Level:</p>
             </v-col>
             <v-col>
                 <v-text-field
@@ -64,10 +67,10 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col>
+            <v-col align = "center">
                 <v-btn v-on:click.native = "saveClass" color="primary">Save</v-btn>
             </v-col>
-            <v-col>
+            <v-col align = "center">
                 <v-btn color="primary" :to="{ name: this.returnTo, params: { courseIndex: courseObject.course_id }}">Cancel</v-btn>
             </v-col>
         </v-row>

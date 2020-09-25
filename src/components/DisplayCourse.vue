@@ -1,40 +1,43 @@
 <template>
   <v-container>
     <v-row>
-      <h1>{{ courseObject.course_name }}</h1>
+      <v-col>
+        <h1>{{ courseObject.course_name }}</h1>
+      </v-col>
     </v-row>
+    <v-divider></v-divider>
     <v-row>
-      <v-col>Course name:</v-col>
+      <v-col><p>Course name:</p></v-col>
       <v-col>
         <p>{{ courseObject.course_name }}</p>
       </v-col>
     </v-row>
     <v-row>
-      <v-col>Course Number:</v-col>
+      <v-col><p>Course Number:</p></v-col>
       <v-col>
         <p>{{ courseObject.course_num }}</p>
       </v-col>
     </v-row>
     <v-row>
-      <v-col>Description:</v-col>
+      <v-col><p>Description:</p></v-col>
       <v-col>
         <p>{{ courseObject.course_desc }}</p>
       </v-col>
     </v-row>
     <v-row>
-      <v-col>Course Hours:</v-col>
+      <v-col><p>Course Hours:</p></v-col>
       <v-col>
         <p>{{ courseObject.course_hours }}</p>
       </v-col>
     </v-row>
     <v-row>
-      <v-col>Course Department:</v-col>
+      <v-col><p>Course Department:</p></v-col>
       <v-col>
         <p>{{ courseObject.course_dept }}</p>
       </v-col>
     </v-row>
     <v-row>
-      <v-col>Class Level:</v-col>
+      <v-col><p>Class Level:</p></v-col>
       <v-col>
         <p>{{ courseObject.course_level }}</p>
       </v-col>
