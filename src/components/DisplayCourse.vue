@@ -49,8 +49,6 @@
       <v-col>
         <v-btn color="primary" @click="onDelete(courseObject)">Delete</v-btn>
       </v-col>
-    </v-row>
-    <v-row>
       <v-col>
         <v-btn color="primary" :to="{ name: 'Home' }">Back</v-btn>
       </v-col>
