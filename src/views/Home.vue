@@ -96,7 +96,7 @@
                         v-on="on"
                         @click="onDelete(item)"
                       >
-                        <v-icon>mdi-delete</v-icon>
+                        <v-icon color="red darken-2">mdi-delete</v-icon>
                       </v-btn>
                     </template>
                     <span>Delete</span>
