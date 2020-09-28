@@ -1,12 +1,12 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="290">
     <v-card>
-      <v-card-title class="headline">Would you like to delete {{modalTitle}}</v-card-title>
-      <v-card-text>All Contents Will Be Deleted! This Cannot Be Undone!</v-card-text>
+      <v-card-title class="headline" style="word-break: normal">Delete "{{modalTitle}}"?</v-card-title>
+      <v-card-text>All Contents Will Be Deleted! <br/> This Cannot Be Undone!</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" text @click="onDelete(courseID)">Delete</v-btn>
-        <v-btn color="green darken-1" text @click="onCancel()">Cancel</v-btn>
+        <v-btn color="red darken-1" text @click="onDelete(courseID)">Delete</v-btn>
+        <v-btn color="primary" text @click="onCancel()">Cancel</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
