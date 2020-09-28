@@ -22,14 +22,14 @@
               </v-card-subtitle>
             </v-card>
             <v-input>
-              <v-text-field label="Search Courses" v-model="search" outlined height="59" >
+              <v-text-field label="Search Courses" v-model="search" outlined height="59">
               </v-text-field>
               <v-btn
-                color="primary"
+                color="blue lighten-1 white--text"
                 class="mb-8 ml-3"
                 @click="$router.push({ name: 'AddCourse' })"
                 outlined
-                height="59"
+                height="40"
                 x-large
                 right
                 >Add Course</v-btn>
@@ -96,7 +96,7 @@
                         v-on="on"
                         @click="onDelete(item)"
                       >
-                        <v-icon>mdi-delete</v-icon>
+                        <v-icon color="red darken-2">mdi-delete</v-icon>
                       </v-btn>
                     </template>
                     <span>Delete</span>
