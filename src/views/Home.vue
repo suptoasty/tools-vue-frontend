@@ -22,17 +22,32 @@
               </v-card-subtitle>
             </v-card>
             <v-input>
-              <v-text-field label="Search Courses" v-model="search" outlined height="59">
+              <v-text-field
+                label="Search Courses"
+                v-model="search"
+                outlined
+                height="59"
+              >
               </v-text-field>
               <v-btn
                 color="blue lighten-1 white--text"
                 class="mb-8 ml-3"
-                @click="$router.push({ name: 'AddCourse' })"
+                @click="
+                  $router.push({
+                    name: 'AddCourse',
+                    params: {
+                      courseIndex: undefined,
+                      returnTo: 'Home',
+                      isAdd: true,
+                    },
+                  })
+                "
                 outlined
                 height="40"
                 x-large
                 right
-                >Add Course</v-btn>
+                >Add Course</v-btn
+              >
             </v-input>
           </v-col>
         </v-row>
@@ -58,7 +73,7 @@
                         @click="
                           $router.push({
                             name: 'ViewCourse',
-                            params: { courseIndex: item.course_id }
+                            params: { courseIndex: item.course_id },
                           })
                         "
                       >
@@ -77,7 +92,16 @@
                         fab
                         v-bind="attrs"
                         v-on="on"
-                        @click="$router.push({ name: 'EditCourse', params: { courseIndex: item.course_id, returnTo: 'Home' } })"
+                        @click="
+                          $router.push({
+                            name: 'EditCourse',
+                            params: {
+                              courseIndex: item.course_id,
+                              returnTo: 'Home',
+                              isAdd: false,
+                            },
+                          })
+                        "
                       >
                         <v-icon>mdi-pencil</v-icon>
                       </v-btn>
@@ -120,20 +144,27 @@ import DeleteConfirmation from "@/components/DeleteConfirmation.vue";
 export default {
   name: "Home",
   components: {
-    DeleteConfirmation
+    DeleteConfirmation,
   },
   data: () => ({
     search: "",
-    searchOptions: ["Name", "Department", "Number", "Level", "Hours", "Description"],
+    searchOptions: [
+      "Name",
+      "Department",
+      "Number",
+      "Level",
+      "Hours",
+      "Description",
+    ],
     includeInSearch: [0, 1, 2, 3, 4, 5],
     classes: [],
-    page: 1
+    page: 1,
   }),
   methods: {
     onDelete(course) {
       console.log("Emiting Delete for: " + course.course_name);
       this.$root.$emit("deleteCourse", course);
-    }
+    },
   },
   computed: {
     headers() {
@@ -141,56 +172,56 @@ export default {
         {
           text: "Name",
           value: "course_name",
-          filterable: this.includeInSearch.includes(0)
+          filterable: this.includeInSearch.includes(0),
         },
         {
           text: "Department",
           value: "course_dept",
-          filterable: this.includeInSearch.includes(1)
+          filterable: this.includeInSearch.includes(1),
         },
         {
           text: "Number",
           value: "course_num",
-          filterable: this.includeInSearch.includes(2)
+          filterable: this.includeInSearch.includes(2),
         },
         {
           text: "Level",
           value: "course_level",
-          filterable: this.includeInSearch.includes(3)
+          filterable: this.includeInSearch.includes(3),
         },
         {
           text: "Hours",
           value: "course_hours",
-          filterable: this.includeInSearch.includes(4)
+          filterable: this.includeInSearch.includes(4),
         },
         {
           text: "Description",
           value: "course_desc",
-          filterable: this.includeInSearch.includes(5)
+          filterable: this.includeInSearch.includes(5),
         },
-        { text: "Actions", value: "actions" }
+        { text: "Actions", value: "actions" },
       ];
-    }
+    },
   },
   created() {
     CourseService.getCourses()
-      .then(response => {
+      .then((response) => {
         this.classes = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("there was an error:" + error.response);
       });
   },
   mounted() {
     this.$root.$on("CourseDeleted", () => {
       CourseService.getCourses()
-        .then(response => {
+        .then((response) => {
           this.classes = response.data;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log("there was an error:" + error.response);
         });
     });
-  }
+  },
 };
 </script>
