@@ -5,7 +5,7 @@
         <v-row>
           <v-col>
             <h1 v-if="isAdd">Add Course</h1>
-            <h1 v->Edit Course</h1>
+            <h1 v-else>Edit Course</h1>
           </v-col>
         </v-row>
         <v-divider></v-divider>
