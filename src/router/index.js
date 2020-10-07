@@ -3,10 +3,16 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import ViewCourse from "../views/ViewCourse.vue";
 import EditCourse from "../views/EditCourse.vue";
-import AddCourse from "../views/AddCourse.vue";
-//import ClassShow from "../views/ClassShow.vue";
 
 Vue.use(VueRouter);
+
+function dynamicPropsFn(route) {
+  return {
+    returnTo: route.params.returnTo,
+    courseIndex: route.params.courseIndex,
+    isAdd: route.params.isAdd,
+  };
+}
 
 const routes = [
   {
@@ -24,13 +30,13 @@ const routes = [
     path: "/edit/:courseIndex/",
     name: "EditCourse",
     component: EditCourse,
-    props: true,
+    props: dynamicPropsFn,
   },
   {
     path: "/add/",
     name: "AddCourse",
-    component: AddCourse,
-    props: true,
+    component: EditCourse,
+    props: dynamicPropsFn,
   },
 ];
 
