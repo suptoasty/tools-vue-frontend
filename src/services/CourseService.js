@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: process.env.NODE_ENV === "production"
+  baseURL:
+    process.env.NODE_ENV === "production"
       ? "http://team1.eaglesoftwareteam.com/"
       : "http://localhost:3001/",
   withCredentials: false,
@@ -12,10 +13,20 @@ const apiClient = axios.create({
     crossDomain: true,
     "Access-Control-Allow-Origin": "*",
   },
+  transformRequest: (data, headers) => {
+    // let user = localStorage.getItem("user");
+    let token = localStorage.getItem("token");
+    let authHeader = "";
+    if (token != null && token != "") authHeader = "Bearer " + token;
+    headers.common["Authorization"] = authHeader;
+    return JSON.stringify(data);
+  },
 });
 
-
 export default {
+  login(user) {
+    return apiClient.post("/courseapi/auth/login", user);
+  },
   getCourses() {
     return apiClient.get("/courseapi/courses/");
   },
@@ -29,7 +40,7 @@ export default {
       course_desc: course.course_desc,
       course_dept: course.course_dept,
       course_level: course.course_level,
-      course_hours: course.course_hours
+      course_hours: course.course_hours,
     });
   },
   deleteCourse(id) {
@@ -42,7 +53,7 @@ export default {
       course_desc: course.course_desc,
       course_dept: course.course_dept,
       course_level: course.course_level,
-      course_hours: course.course_hours
+      course_hours: course.course_hours,
     });
   },
 };
