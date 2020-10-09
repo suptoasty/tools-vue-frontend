@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import ViewCourse from "../views/ViewCourse.vue";
 import EditCourse from "../views/EditCourse.vue";
 import Login from "../views/Login.vue";
+import { getStore } from "@/config/util.js";
 
 Vue.use(VueRouter);
 
@@ -15,9 +16,13 @@ function dynamicPropsFn(route) {
   };
 }
 
+const studentRoutes = ["ViewCourse", "Home"];
+
+const advisorRoutes = ["ViewCourse", "Home", "EditCourse", "AddCourse"];
+
 const routes = [
   {
-    path: "/",
+    path: "/login",
     name: "Login",
     component: Login,
   },
@@ -29,6 +34,7 @@ const routes = [
   },
   {
     path: "/home",
+    alias: "/",
     name: "Home",
     component: Home,
   },
@@ -53,8 +59,31 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== "Login" && true /*!isAuthenticated*/) next({ name: "Login" });
-  else next();
+  //if the route name is not the login page, then check authentication for route
+  if (to.name !== "Login") {
+    console.log(getStore("user"));
+
+    //find out if the user can go to the route
+    let isAuthenticated = false;
+    let user = getStore("user");
+    if (user) {
+      let userRole = user.role;
+      switch (userRole) {
+        case "advisor":
+          //if we can find the route name in advisors routes, then the advisor can go to the route
+          isAuthenticated = advisorRoutes.includes(to.name) !== undefined;
+          break;
+        case "student":
+          //if we can find the route name in student routes, then the student can go to the route
+          isAuthenticated = studentRoutes.includes(to.name) !== undefined;
+          break;
+      }
+    }
+
+    //redirect to login if user not authenticated to go to the route
+    if (!isAuthenticated) next({ name: "Login" });
+    else next();
+  } else next();
 });
 
 export default router;

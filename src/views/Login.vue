@@ -48,23 +48,26 @@ export default {
       this.$gAuth
         .signIn()
         .then((GoogleUser) => {
-          // on success do something
-          console.log("GoogleUser", GoogleUser);
-          // var userInfo = {
-          //   loginType: "google",
-          //   google: GoogleUser
-          // };
-          //TODO: Implement setStore to store the token auth in local storeage
-          //use the token in future requests to the backend
           let user = {
             email: GoogleUser.nt.Wt,
             token: GoogleUser.wc.id_token,
           };
-          CourseService.login(user);
-          setStore("user", { name: "bob" });
-
-          //TODO: store token here
-          router.push({ name: "Home" });
+          CourseService.login(user)
+            .then((response) => {
+              //get the user role from the response
+              let returnedObject = response.data[0];
+              if (returnedObject.advisor !== null) {
+                user.role = "advisor";
+              } else if (returnedObject.student !== null) {
+                user.role = "student";
+              }
+              //store the use role in local storage
+              setStore("user", user);
+              router.push({ name: "Home" });
+            })
+            .catch((error) => {
+              console.log("Save class error: " + error.response);
+            });
         })
         .catch((error) => {
           console.log("error", error);
