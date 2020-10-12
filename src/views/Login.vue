@@ -1,7 +1,7 @@
 <template>
   <div>
-    <p>Hi</p>
-    <a href="#" class="google-signup" @click.prevent="loginWithGoogle">
+    <p>Login</p>
+    <v-btn @click.prevent="loginWithGoogle">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="18"
@@ -30,7 +30,7 @@
         </g>
       </svg>
       Google
-    </a>
+    </v-btn>
   </div>
 </template>
 
