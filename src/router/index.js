@@ -16,39 +16,54 @@ function dynamicPropsFn(route) {
   };
 }
 
-const studentRoutes = ["ViewCourse", "Home"];
-
-const advisorRoutes = ["ViewCourse", "Home", "EditCourse", "AddCourse"];
-
 const routes = [
   {
     path: "/login",
     name: "Login",
     component: Login,
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: "/view/:courseIndex",
     name: "ViewCourse",
     component: ViewCourse,
     props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["student", "advisor"]
+    }
   },
   {
     path: "/home",
     alias: "/",
     name: "Home",
     component: Home,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["student", "advisor"]
+    }
   },
   {
     path: "/edit/:courseIndex/",
     name: "EditCourse",
     component: EditCourse,
     props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"]
+    }
   },
   {
     path: "/add/",
     name: "AddCourse",
     component: EditCourse,
     props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"]
+    }
   },
 ];
 
@@ -59,28 +74,24 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  //if the route name is not the login page, then check authentication for route
-  if (to.name !== "Login") {
+  //if the route requires authorization, check the use's roles
+  console.log(to);
+  if (to.meta.requiresAuth === true) {
     console.log(getStore("user"));
 
     //find out if the user can go to the route
     let isAuthenticated = false;
     let user = getStore("user");
     if (user) {
-      let userRole = user.role;
-      switch (userRole) {
-        case "advisor":
-          //if we can find the route name in advisors routes, then the advisor can go to the route
-          isAuthenticated = advisorRoutes.includes(to.name) !== undefined;
-          break;
-        case "student":
-          //if we can find the route name in student routes, then the student can go to the route
-          isAuthenticated = studentRoutes.includes(to.name) !== undefined;
-          break;
-      }
+      user.roles.forEach( (role) => {
+        //if the route's authorized roles includes one of our user roles, then the user is authorized
+        if (to.meta.authorizedRoles.includes(role)) {
+          isAuthenticated = true;
+        }
+      });
     }
 
-    //redirect to login if user not authenticated to go to the route
+    //redirect to login if user not authorized to go to the route
     if (!isAuthenticated) next({ name: "Login" });
     else next();
   } else next();
