@@ -5,6 +5,7 @@ import ViewCourse from "../views/ViewCourse.vue";
 import ViewAdvisors from "../views/ViewAdvisors.vue";
 import EditCourse from "../views/EditCourse.vue";
 import Login from "../views/Login.vue";
+import TestEdit from "../views/TestEdit.vue";
 import { getStore } from "@/config/util.js";
 
 Vue.use(VueRouter);
@@ -12,7 +13,7 @@ Vue.use(VueRouter);
 function dynamicPropsFn(route) {
   return {
     returnTo: route.params.returnTo,
-    courseIndex: route.params.courseIndex,
+    index: route.params.index,
     isAdd: route.params.isAdd,
   };
 }
@@ -27,7 +28,7 @@ const routes = [
     }
   },
   {
-    path: "/view/:courseIndex",
+    path: "/viewcourse/:index",
     name: "ViewCourse",
     component: ViewCourse,
     props: true,
@@ -41,6 +42,10 @@ const routes = [
     name: "ViewAdvisors",
     component: ViewAdvisors,
     props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"]
+    }
   },
   {
     path: "/home",
@@ -53,7 +58,7 @@ const routes = [
     }
   },
   {
-    path: "/edit/:courseIndex/",
+    path: "/editcourse/:index/",
     name: "EditCourse",
     component: EditCourse,
     props: dynamicPropsFn,
@@ -63,9 +68,29 @@ const routes = [
     }
   },
   {
-    path: "/add/",
+    path: "/editadvisor/:index/",
+    name: "EditAdvisor",
+    component: TestEdit, //need to change later
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"]
+    }
+  },
+  {
+    path: "/addcourse/",
     name: "AddCourse",
     component: EditCourse,
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"]
+    }
+  },
+  {
+    path: "/addadvisor/",
+    name: "AddAdvisor",
+    component: TestEdit, //need to change later
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,

@@ -36,7 +36,7 @@
                   $router.push({
                     name: 'AddCourse',
                     params: {
-                      courseIndex: undefined,
+                      index: undefined,
                       returnTo: 'Home',
                       isAdd: true,
                     },
@@ -73,7 +73,7 @@
                         @click="
                           $router.push({
                             name: 'ViewCourse',
-                            params: { courseIndex: item.course_id },
+                            params: { index: item.course_id },
                           })
                         "
                       >
@@ -96,7 +96,7 @@
                           $router.push({
                             name: 'EditCourse',
                             params: {
-                              courseIndex: item.course_id,
+                              index: item.course_id,
                               returnTo: 'Home',
                               isAdd: false,
                             },
@@ -203,7 +203,7 @@ export default {
       ];
     },
   },
-  created() {
+  mounted() {
     CourseService.getCourses()
       .then((response) => {
         this.classes = response.data;
@@ -211,8 +211,6 @@ export default {
       .catch((error) => {
         console.log("there was an error:" + error.response);
       });
-  },
-  mounted() {
     this.$root.$on("CourseDeleted", () => {
       CourseService.getCourses()
         .then((response) => {

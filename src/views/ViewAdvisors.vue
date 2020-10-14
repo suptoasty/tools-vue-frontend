@@ -34,9 +34,9 @@
                 class="mb-8 ml-3"
                 @click="
                   $router.push({
-                    name: 'AddCourse',
+                    name: 'AddAdvisor',
                     params: {
-                      courseIndex: undefined,
+                      index: undefined,
                       returnTo: 'Home',
                       isAdd: true,
                     },
@@ -72,32 +72,10 @@
                         v-on="on"
                         @click="
                           $router.push({
-                            name: 'ViewCourse',
-                            params: { courseIndex: item.course_id },
-                          })
-                        "
-                      >
-                        <v-icon>mdi-book-open-variant</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>View</span>
-                  </v-tooltip>
-                </td>
-                <td>
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        small
-                        text
-                        fab
-                        v-bind="attrs"
-                        v-on="on"
-                        @click="
-                          $router.push({
-                            name: 'EditCourse',
+                            name: 'EditAdvisor',
                             params: {
-                              courseIndex: item.course_id,
-                              returnTo: 'Home',
+                              index: item.advisor_id,
+                              returnTo: 'ViewAdvisors',
                               isAdd: false,
                             },
                           })
@@ -179,7 +157,7 @@ export default {
       ];
     },
   },
-  created() {
+  mounted() {
     CourseService.getAdvisors()
       .then((response) => {
         this.advisors = response.data;
@@ -187,8 +165,6 @@ export default {
       .catch((error) => {
         console.log("there was an error:" + error.response);
       });
-  },
-  mounted() {
     this.$root.$on("CourseDeleted", () => {
       CourseService.getCourses()
         .then((response) => {
