@@ -29,7 +29,7 @@
                 height="59"
               >
               </v-text-field>
-              <v-btn
+              <v-btn v-if="userRoles.includes('advisor')"
                 color="blue lighten-1 white--text"
                 class="mb-8 ml-3"
                 @click="
