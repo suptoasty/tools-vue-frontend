@@ -56,4 +56,7 @@ export default {
       course_hours: course.course_hours,
     });
   },
+  getAdvisors() {
+    return apiClient.get("/courseapi/advisor/");
+  },
 };
