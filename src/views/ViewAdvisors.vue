@@ -37,7 +37,7 @@
                     name: 'AddAdvisor',
                     params: {
                       index: undefined,
-                      returnTo: 'Home',
+                      returnTo: 'ViewAdvisors',
                       isAdd: true,
                     },
                   })
@@ -121,7 +121,7 @@ import DeleteConfirmation from "@/components/DeleteConfirmation.vue";
 import { getStore } from "@/config/util.js";
 
 export default {
-  name: "Home",
+  name: "ViewAdvisors",
   components: {
     DeleteConfirmation,
   },
