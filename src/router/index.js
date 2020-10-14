@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import ViewCourse from "../views/ViewCourse.vue";
+import ViewAdvisors from "../views/ViewAdvisors.vue";
 import EditCourse from "../views/EditCourse.vue";
 import Login from "../views/Login.vue";
 import { getStore } from "@/config/util.js";
@@ -34,6 +35,12 @@ const routes = [
       requiresAuth: true,
       authorizedRoles: ["student", "advisor"]
     }
+  },
+  {
+    path: "/viewadvisors",
+    name: "ViewAdvisors",
+    component: ViewAdvisors,
+    props: true,
   },
   {
     path: "/home",
