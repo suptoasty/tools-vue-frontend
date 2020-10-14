@@ -29,7 +29,7 @@
                 height="59"
               >
               </v-text-field>
-              <v-btn
+              <v-btn v-if="userRoles.includes('advisor')"
                 color="blue lighten-1 white--text"
                 class="mb-8 ml-3"
                 @click="
@@ -83,7 +83,7 @@
                     <span>View</span>
                   </v-tooltip>
                 </td>
-                <td>
+                <td v-if="userRoles.includes('advisor')">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
@@ -109,7 +109,7 @@
                     <span>Edit</span>
                   </v-tooltip>
                 </td>
-                <td>
+                <td v-if="userRoles.includes('advisor')">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
@@ -140,6 +140,7 @@
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
 import DeleteConfirmation from "@/components/DeleteConfirmation.vue";
+import { getStore } from "@/config/util.js";
 
 export default {
   name: "Home",
@@ -159,6 +160,7 @@ export default {
     includeInSearch: [0, 1, 2, 3, 4, 5],
     classes: [],
     page: 1,
+    userRoles: [],
   }),
   methods: {
     onDelete(course) {
@@ -204,6 +206,7 @@ export default {
     },
   },
   mounted() {
+    this.userRoles = getStore("user").roles;
     CourseService.getCourses()
       .then((response) => {
         this.classes = response.data;
