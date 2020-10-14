@@ -13,7 +13,7 @@ export default {
     EditingCourse,
   },
   props: {
-    courseIndex: {
+    index: {
       default: undefined,
     },
     returnTo: {
@@ -30,12 +30,12 @@ export default {
       course: {},
     };
   },
-  created() {
+  mounted() {
     this.getCourse();
   },
   methods: {
     getCourse() {
-      CourseService.getCourse(this.courseIndex)
+      CourseService.getCourse(this.index)
         .then((response) => {
           this.course = response.data[0];
         })
