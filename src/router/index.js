@@ -5,7 +5,7 @@ import ViewCourse from "../views/ViewCourse.vue";
 import ViewAdvisors from "../views/ViewAdvisors.vue";
 import EditCourse from "../views/EditCourse.vue";
 import Login from "../views/Login.vue";
-//import { getStore } from "@/config/util.js";
+import { getStore } from "@/config/util.js";
 
 Vue.use(VueRouter);
 
@@ -17,9 +17,9 @@ function dynamicPropsFn(route) {
   };
 }
 
-//const studentRoutes = ["ViewCourse", "Home"];
+const studentRoutes = ["ViewCourse", "Home"];
 
-//const advisorRoutes = ["ViewCourse", "Home", "EditCourse", "AddCourse", "ViewAdvisors"];
+const advisorRoutes = ["ViewCourse", "Home", "EditCourse", "AddCourse", "ViewAdvisors"];
 
 const routes = [
   {
@@ -65,7 +65,7 @@ const router = new VueRouter({
   routes,
 });
 
-/*router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => {
   //if the route name is not the login page, then check authentication for route
   if (to.name !== "Login") {
     console.log(getStore("user"));
@@ -91,6 +91,6 @@ const router = new VueRouter({
     if (!isAuthenticated) next({ name: "Login" });
     else next();
   } else next();
-});*/
+});
 
 export default router;
