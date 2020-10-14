@@ -2,7 +2,7 @@
   <v-card class="elevation-3 mb-4" height="150" style="overflow: hidden">
     <v-toolbar color="primary" dark flat>
       <v-toolbar-title
-        @click="$router.push({ name: 'ViewCourse', params: {courseIndex: classObject.course_id} })"
+        @click="$router.push({ name: 'ViewCourse', params: {index: classObject.course_id} })"
       >
         <v-btn small text :ripple="false" link>
           <p style="font-style:normal; font-size:2em">{{wrappedName}}</p>
@@ -17,7 +17,7 @@
             fab
             v-bind="attrs"
             v-on="on"
-            @click="$router.push({ name: 'EditCourse', params: {courseIndex: classObject.course_id} })"
+            @click="$router.push({ name: 'EditCourse', params: {index: classObject.course_id} })"
           >
             <v-icon>mdi-pencil</v-icon>
           </v-btn>

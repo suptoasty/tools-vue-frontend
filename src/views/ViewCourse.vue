@@ -16,19 +16,19 @@ export default {
     DisplayCourse,
     DeleteConfirmation
   },
-  props: ["courseIndex"],
+  props: ["index"],
   data() {
     return {
       course: Object
     };
   },
-  created() {
+  mounted() {
     console.log("View course created");
     this.getCourse();
   },
   methods: {
     getCourse () {
-      CourseService.getCourse(this.courseIndex)
+      CourseService.getCourse(this.index)
       .then(response => {
         this.course = response.data[0];
         console.log(this.course);

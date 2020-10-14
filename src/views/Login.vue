@@ -78,7 +78,6 @@ export default {
     },
   },
   computed: {},
-  created() {},
   mounted() {},
 };
 </script>
