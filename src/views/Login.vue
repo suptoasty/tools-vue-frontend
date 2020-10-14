@@ -51,15 +51,18 @@ export default {
           let user = {
             email: GoogleUser.nt.Wt,
             token: GoogleUser.wc.id_token,
+            roles: [],
           };
           CourseService.login(user)
             .then((response) => {
               //get the user role from the response
+              console.log(response.data[0]);
               let returnedObject = response.data[0];
               if (returnedObject.advisor !== null) {
-                user.role = "advisor";
-              } else if (returnedObject.student !== null) {
-                user.role = "student";
+                user.roles.push("advisor");
+              }
+              if (returnedObject.student !== null) {
+                user.roles.push("student");
               }
               //store the use role in local storage
               setStore("user", user);
