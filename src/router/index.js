@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import ViewCourse from "../views/ViewCourse.vue";
 import ViewAdvisors from "../views/ViewAdvisors.vue";
+import ViewSemesters from "../views/ViewSemesters.vue";
 import ViewStudents from "../views/ViewStudents.vue";
 import EditCourse from "../views/EditCourse.vue";
 import Login from "../views/Login.vue";
@@ -36,6 +37,16 @@ const routes = [
     meta: {
       requiresAuth: true,
       authorizedRoles: ["student", "advisor"]
+    }
+  },
+  {
+    path: "/viewsemesters",
+    name: "ViewSemesters",
+    component: ViewSemesters,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"]
     }
   },
   {
