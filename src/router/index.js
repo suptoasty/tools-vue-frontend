@@ -3,10 +3,11 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import ViewCourse from "../views/ViewCourse.vue";
 import ViewAdvisors from "../views/ViewAdvisors.vue";
+import ViewStudents from "../views/ViewStudents.vue";
 import EditCourse from "../views/EditCourse.vue";
 import Login from "../views/Login.vue";
 import TestEdit from "../views/TestEdit.vue";
-import { getStore } from "@/config/util.js";
+//import { getStore } from "@/config/util.js";
 
 Vue.use(VueRouter);
 
@@ -41,6 +42,16 @@ const routes = [
     path: "/viewadvisors",
     name: "ViewAdvisors",
     component: ViewAdvisors,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"]
+    }
+  },
+  {
+    path: "/viewstudents",
+    name: "ViewStudents",
+    component: ViewStudents,
     props: true,
     meta: {
       requiresAuth: true,
@@ -105,7 +116,7 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+/*router.beforeEach((to, from, next) => {
   //if the route requires authorization, check the use's roles
   console.log(to);
   if (to.meta.requiresAuth === true) {
@@ -127,6 +138,6 @@ router.beforeEach((to, from, next) => {
     if (!isAuthenticated) next({ name: "Login" });
     else next();
   } else next();
-});
+});*/
 
 export default router;

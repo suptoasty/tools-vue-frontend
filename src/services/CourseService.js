@@ -154,6 +154,9 @@ export default {
   //---------------------
 
   //---------------------
-  //TODO: something else?
+  //TODO: students
   //---------------------
+  getStudents() {
+    return apiClient.get("/courseapi/students/");
+  },
 };

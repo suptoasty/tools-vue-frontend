@@ -3,7 +3,7 @@
     <v-row align="center" justify="center">
       <v-col cols="7">
         <v-row align="center" justify="center">
-          <h1 class="text-center h1">Advisors List</h1>
+          <h1 class="text-center h1">Students List</h1>
         </v-row>
         <v-row>
           <v-col cols="12">
@@ -23,7 +23,7 @@
             </v-card>
             <v-input>
               <v-text-field
-                label="Search Advisors"
+                label="Search Students"
                 v-model="search"
                 outlined
                 height="59"
@@ -34,10 +34,10 @@
                 class="mb-8 ml-3"
                 @click="
                   $router.push({
-                    name: 'AddAdvisor',
+                    name: 'AddStudent',
                     params: {
-                      index: undefined,
-                      returnTo: 'ViewAdvisors',
+                      index: student_id,
+                      returnTo: 'ViewStudents',
                       isAdd: true,
                     },
                   })
@@ -46,7 +46,7 @@
                 height="40"
                 x-large
                 right
-                >Add Advisor</v-btn
+                >Add Student</v-btn
               >
             </v-input>
           </v-col>
@@ -54,7 +54,7 @@
         <v-row align="center" justify="center">
           <v-data-table
             :headers="headers"
-            :items="advisors"
+            :items="students"
             :items-per-page="10"
             :search="search"
             class="elevation-1"
@@ -72,10 +72,10 @@
                         v-on="on"
                         @click="
                           $router.push({
-                            name: 'EditAdvisor',
+                            name: 'EditStudent',
                             params: {
-                              index: item.advisor_id,
-                              returnTo: 'ViewAdvisors',
+                              index: item.student_id,
+                              returnTo: 'ViewStudents',
                               isAdd: false,
                             },
                           })
@@ -121,18 +121,21 @@ import DeleteConfirmation from "@/components/DeleteConfirmation.vue";
 //import { getStore } from "@/config/util.js";
 
 export default {
-  name: "ViewAdvisors",
+  name: "ViewStudents",
   components: {
     DeleteConfirmation,
   },
   data: () => ({
     search: "",
     searchOptions: [
+      "ID",
       "Name",
-      "Department",
+      "Major",
+      "GraduationDate",
+      "Advisor"
     ],
-    includeInSearch: [0, 1],
-    advisors: [],
+    includeInSearch: [0, 1, 2, 3, 4],
+    students: [],
     page: 1,
     userRoles: [],
   }),
@@ -146,32 +149,48 @@ export default {
     headers() {
       return [
         {
-          text: "Name",
-          value: "advisor_fname",
+          text: "ID",
+          value: "student_id",
           filterable: this.includeInSearch.includes(0),
         },
         {
-          text: "Department",
-          value: "advisor_department",
+          text: "Name",
+          value: "student_fname",
           filterable: this.includeInSearch.includes(1),
         },
+        {
+          text: "Major",
+          value: "student_major",
+          filterable: this.includeInSearch.includes(2),
+        },
+        {
+          text: "GraduationDate",
+          value: "student_graduation_date",
+          filterable: this.includeInSearch.includes(3),
+        },
+        {
+          text: "Advisor",
+          value: "advisor",
+          filterable: this.includeInSearch.includes(4),
+        },
+        
         { text: "Actions", value: "actions" },
       ];
     },
   },
   mounted() {
     //this.userRoles = getStore("user").roles;
-    CourseService.getAdvisors()
+    CourseService.getStudents()
       .then((response) => {
-        this.advisors = response.data;
+        this.students = response.data;
       })
       .catch((error) => {
         console.log("there was an error:" + error.response);
       });
-    this.$root.$on("CourseDeleted", () => {
+    this.$root.$on("StudentDeleted", () => {
       CourseService.getCourses()
         .then((response) => {
-          this.advisors = response.data;
+          this.students = response.data;
         })
         .catch((error) => {
           console.log("there was an error:" + error.response);
