@@ -5,6 +5,7 @@ import ViewCourse from "../views/ViewCourse.vue";
 import ViewAdvisors from "../views/ViewAdvisors.vue";
 import ViewSemesters from "../views/ViewSemesters.vue";
 import ViewStudents from "../views/ViewStudents.vue";
+import ViewDegrees from "../views/ViewDegrees.vue";
 import EditCourse from "../views/EditCourse.vue";
 import Login from "../views/Login.vue";
 import TestEdit from "../views/TestEdit.vue";
@@ -63,6 +64,16 @@ const routes = [
     path: "/viewstudents",
     name: "ViewStudents",
     component: ViewStudents,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"]
+    }
+  },
+  {
+    path: "/viewdegrees",
+    name: "ViewDegrees",
+    component: ViewDegrees,
     props: true,
     meta: {
       requiresAuth: true,
