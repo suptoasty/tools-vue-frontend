@@ -19,6 +19,15 @@ function dynamicPropsFn(route) {
   };
 }
 
+function userRegistrationProps(route) {
+  return {
+    returnTo: route.params.returnTo,
+    index: route.params.index,
+    isAdd: route.params.isAdd,
+    isAdvisor: route.params.isAdvisor,
+  };
+}
+
 const routes = [
   {
     path: "/login",
@@ -102,7 +111,7 @@ const routes = [
     path: "/register",
     name: "UserRegistration",
     component: UserRegistration,
-    props: dynamicPropsFn,
+    props: userRegistrationProps,
     meta: {
       reguiresAuth: false,
       authorizedRoles: [],
