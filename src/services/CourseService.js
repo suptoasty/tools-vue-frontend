@@ -73,7 +73,6 @@ export default {
     return apiClient.post("/courseapi/advisor", {
       advisor_department: advisor.advisor_department,
       advisor_fname: advisor.advisor_fname,
-      // advisor_id: advisor.advisor_id,
       advisor_initial: advisor.advisor_initial,
       advisor_lname: advisor.advisor_lname,
     });
@@ -85,7 +84,6 @@ export default {
     return apiClient.put("/courseapi/advisor/" + id, {
       advisor_department: advisor.advisor_department,
       advisor_fname: advisor.advisor_fname,
-      // advisor_id: advisor.advisor_id,
       advisor_initial: advisor.advisor_initial,
       advisor_lname: advisor.advisor_lname,
     });
@@ -103,7 +101,6 @@ export default {
     return apiClient.post("/courseapi/degrees", {
       degree_dept: degree.degree_dept,
       degree_hours: degree.degree_hours,
-      degree_id: degree.degree_id,
       degree_name: degree.degree_name,
     });
   },
@@ -114,7 +111,6 @@ export default {
     return apiClient.put("/courseapi/degrees/" + id, {
       degree_dept: degree.degree_dept,
       degree_hours: degree.degree_hours,
-      degree_id: degree.degree_id,
       degree_name: degree.degree_name,
     });
   },
@@ -129,7 +125,6 @@ export default {
   },
   postDegreePlan(degreePlan) {
     return apiClient.post("/courseapi/degree-plans", {
-      degree_plan_id: degreePlan.degree_plan_id,
       degree: degreePlan.degree,
       course: degreePlan.course,
     });
@@ -139,7 +134,6 @@ export default {
   },
   putDegreePlan(id, degreePlan) {
     return apiClient.put("/courseapi/degree-plans/" + id, {
-      degree_plan_id: degreePlan.degree_plan_id,
       degree: degreePlan.degree,
       course: degreePlan.course,
     });
