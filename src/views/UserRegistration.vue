@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="valid">
     <v-container>
-      <v-checkbox label="Advisor" v-model="isAdvisor">Is Advisor</v-checkbox>
+      <v-checkbox label="Advisor" v-model="isAdvisorData">Is Advisor</v-checkbox>
       <v-row>
         <v-col cols="12" md="4">
           <v-text-field
@@ -31,7 +31,7 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="isAdvisor">
+      <v-row v-if="isAdvisorData">
         <v-col cols="12" md="4">
           <v-text-field
             v-model="department"
@@ -79,6 +79,23 @@ import router from "@/router/index.js";
 
 export default {
   name: "UserRegistration",
+  props: {
+    index: {
+      default: undefined,
+    },
+    returnTo: {
+      type: String,
+      default: undefined,
+    },
+    isAdd: {
+      type: Boolean,
+      default: false,
+    },
+    isAdvisor: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data: () => ({
     //data
     firstName: "",
@@ -92,7 +109,7 @@ export default {
     //
     // checks
     valid: false,
-    isAdvisor: false,
+    isAdvisorData: false,
     nameRules: [
       v => !!v || "Name is required",
       v => v.length <= 30 || "Name must be less than 10 characters"
@@ -113,6 +130,8 @@ export default {
     CourseService.getAdvisors().then(response => {
       this.advisorList = response.data;
     });
+
+    this.isAdvisorData = this.isAdvisor;
   },
   methods: {
     createUser() {
@@ -124,7 +143,7 @@ export default {
         advisor: null
       };
 
-      if (this.isAdvisor) {
+      if (this.isAdvisorData) {
         this.createAdvisor(user);
       } else {
         this.createStudent(user);
