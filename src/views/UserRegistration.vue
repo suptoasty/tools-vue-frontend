@@ -2,7 +2,6 @@
   <v-form v-model="valid">
     <v-container>
       <v-checkbox v-if="isAdd" label="Advisor" v-model="isAdvisorData">Is Advisor</v-checkbox>
-      <v-checkbox v-else disabled label="Advisor" v-model="isAdvisorData">Is Advisor</v-checkbox>
       <v-row>
         <v-col cols="12" md="4">
           <v-text-field
