@@ -80,8 +80,8 @@ const routes = [
   {
     path: "/editadvisor/:index/",
     name: "EditAdvisor",
-    component: TestEdit, //need to change later
-    props: dynamicPropsFn,
+    component: UserRegistration, //need to change later
+    props: userRegistrationProps,
     meta: {
       requiresAuth: true,
       authorizedRoles: ["advisor"],
@@ -100,8 +100,8 @@ const routes = [
   {
     path: "/addadvisor/",
     name: "AddAdvisor",
-    component: TestEdit, //need to change later
-    props: dynamicPropsFn,
+    component: UserRegistration, //need to change later
+    props: userRegistrationProps,
     meta: {
       requiresAuth: true,
       authorizedRoles: ["advisor"],
@@ -113,10 +113,20 @@ const routes = [
     component: UserRegistration,
     props: userRegistrationProps,
     meta: {
-      reguiresAuth: false,
+      requiresAuth: false,
       authorizedRoles: [],
     },
   },
+  {
+    path: "/removeme",
+    name: "RemoveMe",
+    component: TestEdit,
+    props: userRegistrationProps,
+    meta: {
+      requiresAuth: false,
+      authorizedRoles: [],
+    }
+  }
 ];
 
 const router = new VueRouter({

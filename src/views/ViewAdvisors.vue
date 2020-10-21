@@ -39,6 +39,7 @@
                       index: undefined,
                       returnTo: 'ViewAdvisors',
                       isAdd: true,
+                      isAdvisor: true,
                     },
                   })
                 "
@@ -77,6 +78,7 @@
                               index: item.advisor_id,
                               returnTo: 'ViewAdvisors',
                               isAdd: false,
+                              isAdvisor: true,
                             },
                           })
                         "
