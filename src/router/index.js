@@ -120,6 +120,16 @@ const routes = [
     },
   },
   {
+    path: "/addterm/",
+    name: "AddTerm",
+    component: EditTerm,
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"],
+    },
+  },
+  {
     path: "/addadvisor/",
     name: "AddAdvisor",
     component: UserRegistration, //need to change later
