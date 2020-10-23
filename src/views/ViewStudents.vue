@@ -36,7 +36,7 @@
                   $router.push({
                     name: 'AddStudent',
                     params: {
-                      index: student_id,
+                      index: undefined,
                       returnTo: 'ViewStudents',
                       isAdd: true,
                     },

@@ -113,8 +113,68 @@ const routes = [
   {
     path: "/editadvisor/:index/",
     name: "EditAdvisor",
-    component: UserRegistration, //need to change later
+    component: UserRegistration,
     props: userRegistrationProps,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"],
+    },
+  },
+  {
+    path: "/editstudent/:index/",
+    name: "EditStudent",
+    component: TestEdit, //need to change later
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["student"],
+    },
+  },
+  {
+    path: "/editdegree/:index/",
+    name: "EditDegree",
+    component: TestEdit, //need to change later
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"],
+    },
+  },
+  {
+    path: "/editsemester/:index/",
+    name: "EditSemester",
+    component: TestEdit, //need to change later
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"],
+    },
+  },
+  {
+    path: "/addstudent/",
+    name: "AddStudent",
+    component: TestEdit, //need to change later
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"],
+    },
+  },
+  {
+    path: "/adddegree/",
+    name: "AddDegree",
+    component: TestEdit, //need to change later
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"],
+    },
+  },
+  {
+    path: "/addsemester/",
+    name: "AddSemester",
+    component: TestEdit, //need to change later
+    props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
       authorizedRoles: ["advisor"],
