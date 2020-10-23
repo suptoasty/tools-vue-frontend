@@ -3,6 +3,9 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import ViewCourse from "../views/ViewCourse.vue";
 import ViewAdvisors from "../views/ViewAdvisors.vue";
+import ViewSemesters from "../views/ViewSemesters.vue";
+import ViewStudents from "../views/ViewStudents.vue";
+import ViewDegrees from "../views/ViewDegrees.vue";
 import EditCourse from "../views/EditCourse.vue";
 import CoursePlan from "../views/CoursePlan.vue";
 import Login from "../views/Login.vue";
@@ -56,6 +59,16 @@ const routes = [
     },
   },
   {
+    path: "/viewsemesters",
+    name: "ViewSemesters",
+    component: ViewSemesters,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"]
+    }
+  },
+  {
     path: "/viewadvisors",
     name: "ViewAdvisors",
     component: ViewAdvisors,
@@ -64,6 +77,26 @@ const routes = [
       requiresAuth: true,
       authorizedRoles: ["advisor"],
     },
+  },
+  {
+    path: "/viewstudents",
+    name: "ViewStudents",
+    component: ViewStudents,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"]
+    }
+  },
+  {
+    path: "/viewdegrees",
+    name: "ViewDegrees",
+    component: ViewDegrees,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"]
+    }
   },
   {
     path: "/home",
@@ -88,8 +121,68 @@ const routes = [
   {
     path: "/editadvisor/:index/",
     name: "EditAdvisor",
-    component: UserRegistration, //need to change later
+    component: UserRegistration,
     props: userRegistrationProps,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"],
+    },
+  },
+  {
+    path: "/editstudent/:index/",
+    name: "EditStudent",
+    component: TestEdit, //need to change later
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["student"],
+    },
+  },
+  {
+    path: "/editdegree/:index/",
+    name: "EditDegree",
+    component: TestEdit, //need to change later
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"],
+    },
+  },
+  {
+    path: "/editsemester/:index/",
+    name: "EditSemester",
+    component: TestEdit, //need to change later
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"],
+    },
+  },
+  {
+    path: "/addstudent/",
+    name: "AddStudent",
+    component: TestEdit, //need to change later
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"],
+    },
+  },
+  {
+    path: "/adddegree/",
+    name: "AddDegree",
+    component: TestEdit, //need to change later
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"],
+    },
+  },
+  {
+    path: "/addsemester/",
+    name: "AddSemester",
+    component: TestEdit, //need to change later
+    props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
       authorizedRoles: ["advisor"],

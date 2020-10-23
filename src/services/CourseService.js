@@ -171,6 +171,7 @@ export default {
   //---------------------
   // Users
   //---------------------
+
   getUsers() {
     return apiClient.get("/courseapi/users");
   },
