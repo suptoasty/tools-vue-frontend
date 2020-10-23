@@ -9,6 +9,7 @@ import TestEdit from "../views/TestEdit.vue";
 import UserRegistration from "../views/UserRegistration.vue";
 import EditTerm from "@/views/EditTerm.vue";
 import ViewTerm from "@/views/ViewTerm.vue";
+import TermListing from "@/views/TermListing.vue";
 import { getStore } from "@/config/util.js";
 
 Vue.use(VueRouter);
@@ -53,6 +54,16 @@ const routes = [
     path: "/viewterm/:index",
     name: "ViewTerm",
     component: ViewTerm,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["student", "advisor"],
+    },
+  },
+  {
+    path: "/termlisting",
+    name: "TermListing",
+    component: TermListing,
     props: true,
     meta: {
       requiresAuth: true,
