@@ -142,10 +142,14 @@ export default {
   //---------------------
   //TODO: semesters
   //---------------------
+    getSemesters() {
+    return apiClient.get("/courseapi/semesters/");
+  },
 
   //---------------------
   // Users
   //---------------------
+
   getUsers() {
     return apiClient.get("/courseapi/users");
   },

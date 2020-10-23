@@ -3,6 +3,9 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import ViewCourse from "../views/ViewCourse.vue";
 import ViewAdvisors from "../views/ViewAdvisors.vue";
+import ViewSemesters from "../views/ViewSemesters.vue";
+import ViewStudents from "../views/ViewStudents.vue";
+import ViewDegrees from "../views/ViewDegrees.vue";
 import EditCourse from "../views/EditCourse.vue";
 import Login from "../views/Login.vue";
 import TestEdit from "../views/TestEdit.vue";
@@ -48,6 +51,16 @@ const routes = [
     },
   },
   {
+    path: "/viewsemesters",
+    name: "ViewSemesters",
+    component: ViewSemesters,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"]
+    }
+  },
+  {
     path: "/viewadvisors",
     name: "ViewAdvisors",
     component: ViewAdvisors,
@@ -56,6 +69,26 @@ const routes = [
       requiresAuth: true,
       authorizedRoles: ["advisor"],
     },
+  },
+  {
+    path: "/viewstudents",
+    name: "ViewStudents",
+    component: ViewStudents,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"]
+    }
+  },
+  {
+    path: "/viewdegrees",
+    name: "ViewDegrees",
+    component: ViewDegrees,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"]
+    }
   },
   {
     path: "/home",
