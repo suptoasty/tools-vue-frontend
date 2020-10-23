@@ -118,7 +118,7 @@
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
 import DegreeDeleteConfirmation from "@/components/DegreeDeleteConfirmation.vue";
-//import { getStore } from "@/config/util.js";
+import { getStore } from "@/config/util.js";
 
 export default {
   name: "ViewDegrees",
@@ -166,7 +166,7 @@ export default {
     },
   },
   mounted() {
-    //this.userRoles = getStore("user").roles;
+    this.userRoles = getStore("user").roles;
     CourseService.getDegrees()
       .then((response) => {
         this.degrees = response.data;
