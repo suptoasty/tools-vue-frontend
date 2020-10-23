@@ -9,6 +9,7 @@ import ViewDegrees from "../views/ViewDegrees.vue";
 import EditCourse from "../views/EditCourse.vue";
 import Login from "../views/Login.vue";
 import TestEdit from "../views/TestEdit.vue";
+import UserRegistration from "../views/UserRegistration.vue";
 import { getStore } from "@/config/util.js";
 
 Vue.use(VueRouter);
@@ -21,14 +22,23 @@ function dynamicPropsFn(route) {
   };
 }
 
+function userRegistrationProps(route) {
+  return {
+    returnTo: route.params.returnTo,
+    index: route.params.index,
+    isAdd: route.params.isAdd,
+    isAdvisor: route.params.isAdvisor,
+  };
+}
+
 const routes = [
   {
     path: "/login",
     name: "Login",
     component: Login,
     meta: {
-      requiresAuth: false
-    }
+      requiresAuth: false,
+    },
   },
   {
     path: "/viewcourse/:index",
@@ -37,8 +47,8 @@ const routes = [
     props: true,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["student", "advisor"]
-    }
+      authorizedRoles: ["student", "advisor"],
+    },
   },
   {
     path: "/viewsemesters",
@@ -57,8 +67,8 @@ const routes = [
     props: true,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["advisor"]
-    }
+      authorizedRoles: ["advisor"],
+    },
   },
   {
     path: "/viewstudents",
@@ -87,8 +97,8 @@ const routes = [
     component: Home,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["student", "advisor"]
-    }
+      authorizedRoles: ["student", "advisor"],
+    },
   },
   {
     path: "/editcourse/:index/",
@@ -97,18 +107,18 @@ const routes = [
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["advisor"]
-    }
+      authorizedRoles: ["advisor"],
+    },
   },
   {
     path: "/editadvisor/:index/",
     name: "EditAdvisor",
-    component: TestEdit, //need to change later
-    props: dynamicPropsFn,
+    component: UserRegistration, //need to change later
+    props: userRegistrationProps,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["advisor"]
-    }
+      authorizedRoles: ["advisor"],
+    },
   },
   {
     path: "/addcourse/",
@@ -117,19 +127,39 @@ const routes = [
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["advisor"]
-    }
+      authorizedRoles: ["advisor"],
+    },
   },
   {
     path: "/addadvisor/",
     name: "AddAdvisor",
-    component: TestEdit, //need to change later
-    props: dynamicPropsFn,
+    component: UserRegistration, //need to change later
+    props: userRegistrationProps,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["advisor"]
-    }
+      authorizedRoles: ["advisor"],
+    },
   },
+  {
+    path: "/register",
+    name: "UserRegistration",
+    component: UserRegistration,
+    props: userRegistrationProps,
+    meta: {
+      requiresAuth: false,
+      authorizedRoles: [],
+    },
+  },
+  {
+    path: "/removeme",
+    name: "RemoveMe",
+    component: TestEdit,
+    props: userRegistrationProps,
+    meta: {
+      requiresAuth: false,
+      authorizedRoles: [],
+    }
+  }
 ];
 
 const router = new VueRouter({
@@ -148,7 +178,7 @@ router.beforeEach((to, from, next) => {
     let isAuthenticated = false;
     let user = getStore("user");
     if (user) {
-      user.roles.forEach( (role) => {
+      user.roles.forEach((role) => {
         //if the route's authorized roles includes one of our user roles, then the user is authorized
         if (to.meta.authorizedRoles.includes(role)) {
           isAuthenticated = true;

@@ -24,7 +24,6 @@ const apiClient = axios.create({
 });
 
 export default {
-
   //---------------------
   //courses
   //---------------------
@@ -74,9 +73,8 @@ export default {
     return apiClient.post("/courseapi/advisor", {
       advisor_department: advisor.advisor_department,
       advisor_fname: advisor.advisor_fname,
-      advisor_id: advisor.advisor_id,
       advisor_initial: advisor.advisor_initial,
-      advisor_lname: advisor.advisor_lname
+      advisor_lname: advisor.advisor_lname,
     });
   },
   deleteAdvisor(id) {
@@ -86,9 +84,8 @@ export default {
     return apiClient.put("/courseapi/advisor/" + id, {
       advisor_department: advisor.advisor_department,
       advisor_fname: advisor.advisor_fname,
-      advisor_id: advisor.advisor_id,
       advisor_initial: advisor.advisor_initial,
-      advisor_lname: advisor.advisor_lname
+      advisor_lname: advisor.advisor_lname,
     });
   },
   //---------------------
@@ -104,8 +101,7 @@ export default {
     return apiClient.post("/courseapi/degrees", {
       degree_dept: degree.degree_dept,
       degree_hours: degree.degree_hours,
-      degree_id: degree.degree_id,
-      degree_name: degree.degree_name
+      degree_name: degree.degree_name,
     });
   },
   deleteDegree(id) {
@@ -115,8 +111,7 @@ export default {
     return apiClient.put("/courseapi/degrees/" + id, {
       degree_dept: degree.degree_dept,
       degree_hours: degree.degree_hours,
-      degree_id: degree.degree_id,
-      degree_name: degree.degree_name
+      degree_name: degree.degree_name,
     });
   },
   //---------------------
@@ -130,9 +125,8 @@ export default {
   },
   postDegreePlan(degreePlan) {
     return apiClient.post("/courseapi/degree-plans", {
-      degree_plan_id: degreePlan.degree_plan_id,
       degree: degreePlan.degree,
-      course: degreePlan.course
+      course: degreePlan.course,
     });
   },
   deleteDegreePlan(id) {
@@ -140,25 +134,88 @@ export default {
   },
   putDegreePlan(id, degreePlan) {
     return apiClient.put("/courseapi/degree-plans/" + id, {
-      degree_plan_id: degreePlan.degree_plan_id,
       degree: degreePlan.degree,
-      course: degreePlan.course
+      course: degreePlan.course,
     });
   },
-  //---------------------
-  //TODO: course plans
-  //---------------------
 
   //---------------------
   //TODO: semesters
   //---------------------
-  getSemesters() {
+    getSemesters() {
     return apiClient.get("/courseapi/semesters/");
   },
+
   //---------------------
-  //TODO: students
+  // Users
+  //---------------------
+
+  getUsers() {
+    return apiClient.get("/courseapi/users");
+  },
+
+  getUser(id) {
+    return apiClient.get("/courseapi/users/" + id);
+  },
+
+  postUser(user) {
+    return apiClient.post("/courseapi/users", {
+      user_name: user.user_name,
+      user_password: user.user_password,
+      user_email: user.user_email,
+      student: user.student,
+      advisor: user.advisor,
+    });
+  },
+
+  putUser(id, user) {
+    return apiClient.put("/courseapi/users/" + id, {
+      user_name: user.user_name,
+      user_password: user.user_password,
+      user_email: user.user_email,
+      student: user.student,
+      advisor: user.advisor,
+    });
+  },
+
+  deleteUser(id) {
+    return apiClient.delete("/courseapi/users/" + id);
+  },
+
+  //---------------------
+  // Students
   //---------------------
   getStudents() {
-    return apiClient.get("/courseapi/students/");
+    return apiClient.get("/courseapi/students");
+  },
+
+  getStudent(id) {
+    return apiClient.get("/courseapi/students/" + id);
+  },
+
+  postStudent(student) {
+    return apiClient.post("/courseapi/students", {
+      student_fname: student.student_fname,
+      student_lname: student.student_lname,
+      student_initial: student.student_initial,
+      student_graduation_date: student.student_graduation_date,
+      degree: student.degree,
+      advisor: student.advisor,
+    });
+  },
+
+  putStudent(id, student) {
+    return apiClient.put("/courseapi/students/" + id, {
+      student_fname: student.student_fname,
+      student_lname: student.student_lname,
+      student_initial: student.student_initial,
+      student_graduation_date: student.student_graduation_date,
+      degree: student.degree,
+      advisor: student.advisor,
+    });
+  },
+
+  deleteStudent(id) {
+    return apiClient.delete("/courseapi/students/" + id);
   },
 };
