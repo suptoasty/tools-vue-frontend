@@ -274,15 +274,15 @@ export default {
   // Course Plan Items
   //---------------------
   getCoursePlanItems(coursePlanId) {
-    return apiClient.get("/courseapi/course-plan/" + coursePlanId);
+    return apiClient.get("/courseapi/course-plan/" + coursePlanId + "/items");
   },
 
   getCoursePlanItem(coursePlanId, itemId) {
-    return apiClient.get("/courseapi/course-plan/" + coursePlanId + "/" + itemId);
+    return apiClient.get("/courseapi/course-plan/" + coursePlanId + "/items" + itemId);
   },
 
   postCoursePlanItem(coursePlanId, itemId, item) {
-    return apiClient.post("/courseapi/course-plan/" + coursePlanId + "/" + itemId, {
+    return apiClient.post("/courseapi/course-plan/" + coursePlanId + "/items" + itemId, {
       course_plan_item_grade: item.course_plan_item_grade,
       course_plan_item_status: item.course_plan_item_status,
       plan: item.plan,
@@ -292,7 +292,7 @@ export default {
   },
 
   putCoursePlanItem(coursePlanId, itemId, item) {
-    return apiClient.put("/courseapi/course-plan/" + coursePlanId + "/" + itemId, {
+    return apiClient.put("/courseapi/course-plan/" + coursePlanId + "/items" + itemId, {
       course_plan_item_grade: item.course_plan_item_grade,
       course_plan_item_status: item.course_plan_item_status,
       plan: item.plan,
@@ -302,6 +302,6 @@ export default {
   },
 
   deleteCoursePlanItem(coursePlanId, itemId) {
-    return apiClient.delete("/courseapi/course-plan/" + coursePlanId + "/" + itemId);
+    return apiClient.delete("/courseapi/course-plan/" + coursePlanId + "/items" + itemId);
   },
 };
