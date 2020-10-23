@@ -9,7 +9,7 @@ import ViewDegrees from "../views/ViewDegrees.vue";
 import EditCourse from "../views/EditCourse.vue";
 import Login from "../views/Login.vue";
 import TestEdit from "../views/TestEdit.vue";
-//import { getStore } from "@/config/util.js";
+import { getStore } from "@/config/util.js";
 
 Vue.use(VueRouter);
 
@@ -138,7 +138,7 @@ const router = new VueRouter({
   routes,
 });
 
-/*router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => {
   //if the route requires authorization, check the use's roles
   console.log(to);
   if (to.meta.requiresAuth === true) {
@@ -160,6 +160,6 @@ const router = new VueRouter({
     if (!isAuthenticated) next({ name: "Login" });
     else next();
   } else next();
-});*/
+});
 
 export default router;
