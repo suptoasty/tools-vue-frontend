@@ -7,6 +7,8 @@ import EditCourse from "../views/EditCourse.vue";
 import Login from "../views/Login.vue";
 import TestEdit from "../views/TestEdit.vue";
 import UserRegistration from "../views/UserRegistration.vue";
+import EditTerm from "@/views/EditTerm.vue";
+import ViewTerm from "@/views/ViewTerm.vue";
 import { getStore } from "@/config/util.js";
 
 Vue.use(VueRouter);
@@ -48,6 +50,16 @@ const routes = [
     },
   },
   {
+    path: "/viewterm/:index",
+    name: "ViewTerm",
+    component: ViewTerm,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["student", "advisor"],
+    },
+  },
+  {
     path: "/viewadvisors",
     name: "ViewAdvisors",
     component: ViewAdvisors,
@@ -71,6 +83,16 @@ const routes = [
     path: "/editcourse/:index/",
     name: "EditCourse",
     component: EditCourse,
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"],
+    },
+  },
+  {
+    path: "/editterm/:index/",
+    name: "EditTerm",
+    component: EditTerm,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,

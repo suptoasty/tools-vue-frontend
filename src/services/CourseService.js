@@ -214,4 +214,30 @@ export default {
   deleteStudent(id) {
     return apiClient.delete("/courseapi/students/" + id);
   },
+
+
+  //---------------------
+  // Term
+  //---------------------
+  getTerms() {
+    return apiClient.get("/courseapi/term/");
+  },
+  getTerm(id) {
+    return apiClient.get("/courseapi/term/" + id);
+  },
+  postTerm(term) {
+    return apiClient.post("/courseapi/term/", {
+      term_name: term.term_name,
+      term_abbr: term.term_abbr
+    })
+  },
+  putTerm(id, term) {
+    return apiClient.put("/courseapi/term/"+id, {
+      term_name: term.term_name,
+      term_abbr: term.term_abbr
+    });
+  },
+  deleteTerm(id) {
+    return apiClient.delete("/courseapi/term/"+id);
+  },
 };
