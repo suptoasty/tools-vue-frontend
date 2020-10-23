@@ -240,4 +240,68 @@ export default {
   deleteStudent(id) {
     return apiClient.delete("/courseapi/students/" + id);
   },
+
+  //---------------------
+  // Course Plan
+  //---------------------
+  getCoursePlans() {
+    return apiClient.get("/courseapi/course-plan");
+  },
+
+  getCoursePlan(id) {
+    return apiClient.get("/courseapi/course-plan/" + id);
+  },
+
+  postCoursePlan(coursePlan) {
+    return apiClient.post("/courseapi/course-plan", {
+      course_plan_last_updated: coursePlan.course_plan_last_updated,
+      student: coursePlan.student,
+    });
+  },
+
+  putCoursePlan(id, coursePlan) {
+    return apiClient.put("/courseapi/course-plan/" + id, {
+      course_plan_last_updated: coursePlan.course_plan_last_updated,
+      student: coursePlan.student,
+    });
+  },
+
+  deleteCoursePlan(id) {
+    return apiClient.delete("/courseapi/course-plan/" + id);
+  },
+
+  //---------------------
+  // Course Plan Items
+  //---------------------
+  getCoursePlanItems(coursePlanId) {
+    return apiClient.get("/courseapi/course-plan/" + coursePlanId);
+  },
+
+  getCoursePlanItem(coursePlanId, itemId) {
+    return apiClient.get("/courseapi/course-plan/" + coursePlanId + "/" + itemId);
+  },
+
+  postCoursePlanItem(coursePlanId, itemId, item) {
+    return apiClient.post("/courseapi/course-plan/" + coursePlanId + "/" + itemId, {
+      course_plan_item_grade: item.course_plan_item_grade,
+      course_plan_item_status: item.course_plan_item_status,
+      plan: item.plan,
+      semester: item.semester,
+      course: item.course,
+    });
+  },
+
+  putCoursePlanItem(coursePlanId, itemId, item) {
+    return apiClient.put("/courseapi/course-plan/" + coursePlanId + "/" + itemId, {
+      course_plan_item_grade: item.course_plan_item_grade,
+      course_plan_item_status: item.course_plan_item_status,
+      plan: item.plan,
+      semester: item.semester,
+      course: item.course,
+    });
+  },
+
+  deleteCoursePlanItem(coursePlanId, itemId) {
+    return apiClient.delete("/courseapi/course-plan/" + coursePlanId + "/" + itemId);
+  },
 };
