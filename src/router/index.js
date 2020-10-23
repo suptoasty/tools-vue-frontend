@@ -31,6 +31,13 @@ function userRegistrationProps(route) {
   };
 }
 
+function coursePlanProps(route) {
+  return {
+    returnTo: route.params.returnTo,
+    index: route.params.index,
+  };
+}
+
 const routes = [
   {
     path: "/login",
@@ -209,6 +216,16 @@ const routes = [
       requiresAuth: false,
       authorizedRoles: [],
     },
+  },
+  {
+    path: "/courseplan/:index/",
+    name: "CoursePlan",
+    component: CoursePlan,
+    props:coursePlanProps,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["student"],
+    }
   },
   {
     path: "/removeme",
