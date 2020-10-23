@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import ViewCourse from "../views/ViewCourse.vue";
 import ViewAdvisors from "../views/ViewAdvisors.vue";
 import EditCourse from "../views/EditCourse.vue";
+import CoursePlan from "../views/CoursePlan.vue";
 import Login from "../views/Login.vue";
 import TestEdit from "../views/TestEdit.vue";
 import UserRegistration from "../views/UserRegistration.vue";
