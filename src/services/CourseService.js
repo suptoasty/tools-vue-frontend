@@ -140,8 +140,33 @@ export default {
   },
 
   //---------------------
-  //TODO: semesters
+  //semesters
   //---------------------
+  getSemesters() {
+    return apiClient.get("/courseapi/semester/");
+  },
+  getSemester(id) {
+    return apiClient.get("/courseapi/semester/" + id);
+  },
+  postSemester(semester) {
+    return apiClient.post("/courseapi/semester", {
+      semester_name: semester.semester_name,
+      semester_start: semester.semester_start,
+      semester_end: semester.semester_end,
+      semester_term: semester.semester_term,
+    });
+  },
+  deleteSemester(id) {
+    return apiClient.delete("/courseapi/semester/" + id);
+  },
+  putSemester(id, semester) {
+    return apiClient.put("/courseapi/semester/" + id, {
+      semester_name: semester.semester_name,
+      semester_start: semester.semester_start,
+      semester_end: semester.semester_end,
+      semester_term: semester.semester_term,
+    });
+  },
 
   //---------------------
   // Users
