@@ -118,7 +118,7 @@
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
 import DeleteConfirmation from "@/components/DeleteConfirmation.vue";
-//import { getStore } from "@/config/util.js";
+import { getStore } from "@/config/util.js";
 
 export default {
   name: "ViewSemesters",
@@ -166,7 +166,7 @@ export default {
     },
   },
   mounted() {
-    //this.userRoles = getStore("user").roles;
+    this.userRoles = getStore("user").roles;
     CourseService.getSemesters()
       .then((response) => {
         this.semesters = response.data;
