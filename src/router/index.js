@@ -201,7 +201,7 @@ const routes = [
   {
     path: "/addadvisor/",
     name: "AddAdvisor",
-    component: UserRegistration, //need to change later
+    component: UserRegistration,
     props: userRegistrationProps,
     meta: {
       requiresAuth: true,
