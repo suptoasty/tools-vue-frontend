@@ -93,15 +93,9 @@ export default {
     index: {
       default: undefined,
     },
-    student: {
-      default () {
-        return {
-          student_fname: "Bob",
-        }
-      },
-    },
   },
   data: () => ({
+    student: { student_fname: "Bob" },
     coursePlan: {},
     totalHours: [],
     sortedCoursePlanItems: [],
@@ -220,7 +214,7 @@ export default {
   },
   mounted() {
     //get course plan for this student
-    CourseService.getCoursePlan(this.index).then( (response) => {
+    CourseService.getCoursePlanForStudent(this.index).then( (response) => {
       this.coursePlan = response.data[0];
       //get the course plan items
       CourseService.getCoursePlanItems(this.coursePlan.course_plan_id).then( (responseItems) => {

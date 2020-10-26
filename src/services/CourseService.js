@@ -273,6 +273,10 @@ export default {
   //---------------------
   // Course Plan Items
   //---------------------
+  getCoursePlanForStudent(studentId) {
+    return apiClient.get("/courseapi/course-plan/student/" + studentId);
+  },
+
   getCoursePlanItems(coursePlanId) {
     return apiClient.get("/courseapi/course-plan/" + coursePlanId + "/items");
   },
