@@ -7,6 +7,7 @@ import ViewSemesters from "../views/ViewSemesters.vue";
 import ViewStudents from "../views/ViewStudents.vue";
 import ViewDegrees from "../views/ViewDegrees.vue";
 import EditCourse from "../views/EditCourse.vue";
+import CoursePlan from "../views/CoursePlan.vue";
 import Login from "../views/Login.vue";
 import TestEdit from "../views/TestEdit.vue";
 import UserRegistration from "../views/UserRegistration.vue";
@@ -243,7 +244,7 @@ const routes = [
   {
     path: "/addadvisor/",
     name: "AddAdvisor",
-    component: UserRegistration, //need to change later
+    component: UserRegistration,
     props: userRegistrationProps,
     meta: {
       requiresAuth: true,
