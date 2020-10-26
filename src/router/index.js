@@ -11,6 +11,9 @@ import CoursePlan from "../views/CoursePlan.vue";
 import Login from "../views/Login.vue";
 import TestEdit from "../views/TestEdit.vue";
 import UserRegistration from "../views/UserRegistration.vue";
+import EditTerm from "@/views/EditTerm.vue";
+import ViewTerm from "@/views/ViewTerm.vue";
+import TermListing from "@/views/TermListing.vue";
 import { getStore } from "@/config/util.js";
 
 Vue.use(VueRouter);
@@ -52,6 +55,26 @@ const routes = [
     path: "/viewcourse/:index",
     name: "ViewCourse",
     component: ViewCourse,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["student", "advisor"],
+    },
+  },
+  {
+    path: "/viewterm/:index",
+    name: "ViewTerm",
+    component: ViewTerm,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["student", "advisor"],
+    },
+  },
+  {
+    path: "/termlisting",
+    name: "TermListing",
+    component: TermListing,
     props: true,
     meta: {
       requiresAuth: true,
@@ -112,6 +135,16 @@ const routes = [
     path: "/editcourse/:index/",
     name: "EditCourse",
     component: EditCourse,
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"],
+    },
+  },
+  {
+    path: "/editterm/:index/",
+    name: "EditTerm",
+    component: EditTerm,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
@@ -192,6 +225,16 @@ const routes = [
     path: "/addcourse/",
     name: "AddCourse",
     component: EditCourse,
+    props: dynamicPropsFn,
+    meta: {
+      requiresAuth: true,
+      authorizedRoles: ["advisor"],
+    },
+  },
+  {
+    path: "/addterm/",
+    name: "AddTerm",
+    component: EditTerm,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
