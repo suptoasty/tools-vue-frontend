@@ -303,6 +303,7 @@ export default {
 
   deleteCoursePlanItem(coursePlanId, itemId) {
     return apiClient.delete("/courseapi/course-plan/" + coursePlanId + "/items" + itemId);
+  },
 
   //---------------------
   // Term
