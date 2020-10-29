@@ -11,55 +11,24 @@
         <v-divider></v-divider>
         <v-row>
           <v-col>
-            <p>Course name:</p>
+            <p>Term name:</p>
           </v-col>
           <v-col>
-            <v-text-field v-model="courseObject.course_name"></v-text-field>
+            <v-text-field v-model="TermObject.term_name"></v-text-field>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
-            <p>Course Number:</p>
+            <p>Abbreviation:</p>
           </v-col>
           <v-col>
-            <v-text-field v-model="courseObject.course_num"></v-text-field>
+            <v-text-field v-model="TermObject.term_abbr"></v-text-field>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col>
-            <p>Description:</p>
-          </v-col>
-          <v-col>
-            <v-text-field v-model="courseObject.course_desc"></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <p>Course Hours:</p>
-          </v-col>
-          <v-col>
-            <v-text-field v-model="courseObject.course_hours"></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <p>Course Department:</p>
-          </v-col>
-          <v-col>
-            <v-text-field v-model="courseObject.course_dept"></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <p>Class Level:</p>
-          </v-col>
-          <v-col>
-            <v-text-field v-model="courseObject.course_level"></v-text-field>
-          </v-col>
-        </v-row>
+       
         <v-row v-if="isAdd">
           <v-col align="center">
-            <v-btn v-on:click.native="addClass" color="primary">Add</v-btn>
+            <v-btn v-on:click.native="addTerm" color="primary">Add</v-btn>
           </v-col>
           <v-col align="center">
             <v-btn
@@ -73,7 +42,7 @@
         </v-row>
         <v-row v-else>
           <v-col align="center">
-            <v-btn v-on:click.native="saveClass" color="primary">Save</v-btn>
+            <v-btn v-on:click.native="saveTerm" color="primary">Save</v-btn>
           </v-col>
           <v-col align="center">
             <v-btn
@@ -96,17 +65,12 @@ import router from "@/router/index.js";
 export default {
   name: "EditCourse",
   props: {
-    courseObject: {
+    TermObject: {
       type: Object,
       default() {
         return {
-          course_name: "",
-          course_number: "",
-          course_desc: "",
-          course_num: "",
-          course_hours: "",
-          course_dept: "",
-          course_level: "",
+          term_name: "",
+          term_abbr: "",
         };
       },
     },
@@ -120,11 +84,11 @@ export default {
     },
   },
   mounted() {
-    console.log(this.courseObject);
+    console.log(this.TermObject);
   },
   methods: {
-    saveClass() {
-      CourseService.putCourse(this.courseObject.course_id, this.courseObject)
+    saveTerm() {
+      CourseService.putTerm(this.TermObject.term_id, this.TermObject)
         .then(() => {
           router.push({
             name: this.returnTo,
@@ -134,8 +98,8 @@ export default {
           console.log("Save class error: " + error.response);
         });
     },
-    addClass() {
-      CourseService.postCourse(this.courseObject)
+    addTerm() {
+      CourseService.postTerm(this.TermObject)
         .then(() => {
           router.push({ name: this.returnTo });
         })

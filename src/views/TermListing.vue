@@ -3,7 +3,7 @@
     <v-row align="center" justify="center">
       <v-col cols="7">
         <v-row align="center" justify="center">
-          <h1 class="text-center h1">Course List</h1>
+          <h1 class="text-center h1">Term List</h1>
         </v-row>
         <v-row>
           <v-col cols="12">
@@ -23,7 +23,7 @@
             </v-card>
             <v-input>
               <v-text-field
-                label="Search Courses"
+                label="Search Terms"
                 v-model="search"
                 outlined
                 height="59"
@@ -34,10 +34,10 @@
                 class="mb-8 ml-3"
                 @click="
                   $router.push({
-                    name: 'AddCourse',
+                    name: 'AddTerm',
                     params: {
                       index: undefined,
-                      returnTo: 'Home',
+                      returnTo: 'TermListing',
                       isAdd: true,
                     },
                   })
@@ -46,7 +46,7 @@
                 height="40"
                 x-large
                 right
-                >Add Course</v-btn
+                >Add Term</v-btn
               >
             </v-input>
           </v-col>
@@ -54,7 +54,7 @@
         <v-row align="center" justify="center">
           <v-data-table
             :headers="headers"
-            :items="classes"
+            :items="terms"
             :items-per-page="10"
             :search="search"
             class="elevation-1"
@@ -72,8 +72,8 @@
                         v-on="on"
                         @click="
                           $router.push({
-                            name: 'ViewCourse',
-                            params: { index: item.course_id },
+                            name: 'ViewTerm',
+                            params: { index: item.term_id },
                           })
                         "
                       >
@@ -94,10 +94,10 @@
                         v-on="on"
                         @click="
                           $router.push({
-                            name: 'EditCourse',
+                            name: 'EditTerm',
                             params: {
-                              index: item.course_id,
-                              returnTo: 'Home',
+                              index: item.term_id,
+                              returnTo: 'TermListing',
                               isAdd: false,
                             },
                           })
@@ -143,7 +143,7 @@ import DeleteConfirmation from "@/components/DeleteConfirmation.vue";
 import { getStore } from "@/config/util.js";
 
 export default {
-  name: "Home",
+  name: "TermListing",
   components: {
     DeleteConfirmation,
   },
@@ -151,21 +151,17 @@ export default {
     search: "",
     searchOptions: [
       "Name",
-      "Department",
-      "Number",
-      "Level",
-      "Hours",
-      "Description",
+      "Abbr",
     ],
-    includeInSearch: [0, 1, 2, 3, 4, 5],
-    classes: [],
+    includeInSearch: [0, 1],
+    terms: [],
     page: 1,
     userRoles: [],
   }),
   methods: {
-    onDelete(course) {
-      console.log("Emiting Delete for: " + course.course_name);
-      this.$root.$emit("deleteCourse", course);
+    onDelete(term) {
+      console.log("Emiting Delete for: " + term.term_name);
+      this.$root.$emit("deleteCourse", term);
     },
   },
   computed: {
@@ -173,51 +169,32 @@ export default {
       return [
         {
           text: "Name",
-          value: "course_name",
+          value: "term_name",
           filterable: this.includeInSearch.includes(0),
         },
         {
-          text: "Department",
-          value: "course_dept",
+          text: "Abbreviation",
+          value: "term_abbr",
           filterable: this.includeInSearch.includes(1),
         },
-        {
-          text: "Number",
-          value: "course_num",
-          filterable: this.includeInSearch.includes(2),
-        },
-        {
-          text: "Level",
-          value: "course_level",
-          filterable: this.includeInSearch.includes(3),
-        },
-        {
-          text: "Hours",
-          value: "course_hours",
-          filterable: this.includeInSearch.includes(4),
-        },
-        {
-          text: "Description",
-          value: "course_desc",
-          filterable: this.includeInSearch.includes(5),
-        },
+    
         { text: "Actions", value: "actions" },
       ];
     },
   },
   mounted() {
     this.userRoles = getStore("user").roles;
-    CourseService.getCourses()
+    CourseService.getTerms()
       .then((response) => {
-        this.classes = response.data;
+        this.terms = response.data;
       })
       .catch((error) => {
         console.log("there was an error:" + error.response);
       });
     this.$root.$on("CourseDeleted", () => {
-      CourseService.getCourses()
+      CourseService.getTerms()
         .then((response) => {
-          this.classes = response.data;
+          this.terms = response.data;
         })
         .catch((error) => {
           console.log("there was an error:" + error.response);

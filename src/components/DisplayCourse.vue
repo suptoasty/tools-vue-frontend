@@ -48,7 +48,7 @@
           <v-col align = "center">
             <v-btn
               color="primary"
-              :to="{ name: 'EditCourse', params: { courseIndex: courseObject.course_id, returnTo: 'ViewCourse' }}"
+              :to="{ name: 'EditCourse', params: { index: courseObject.course_id, returnTo: 'ViewCourse' }}"
             >Edit</v-btn>
           </v-col>
           <v-col align = "center">

@@ -1,9 +1,9 @@
 <template>
-  <v-container class="fill-height" fluid>
+<v-container class="fill-height" fluid>
     <v-row align="center" justify="center">
       <v-col cols="7">
         <v-row align="center" justify="center">
-          <h1 class="text-center h1">Course List</h1>
+          <h1 class="text-center h1">Students List</h1>
         </v-row>
         <v-row>
           <v-col cols="12">
@@ -23,7 +23,7 @@
             </v-card>
             <v-input>
               <v-text-field
-                label="Search Courses"
+                label="Search Students"
                 v-model="search"
                 outlined
                 height="59"
@@ -34,10 +34,10 @@
                 class="mb-8 ml-3"
                 @click="
                   $router.push({
-                    name: 'AddCourse',
+                    name: 'AddStudent',
                     params: {
                       index: undefined,
-                      returnTo: 'Home',
+                      returnTo: 'ViewStudents',
                       isAdd: true,
                     },
                   })
@@ -46,7 +46,7 @@
                 height="40"
                 x-large
                 right
-                >Add Course</v-btn
+                >Add Student</v-btn
               >
             </v-input>
           </v-col>
@@ -54,14 +54,14 @@
         <v-row align="center" justify="center">
           <v-data-table
             :headers="headers"
-            :items="classes"
+            :items="students"
             :items-per-page="10"
             :search="search"
             class="elevation-1"
           >
             <template v-slot:item.actions="{ item }">
               <tr>
-                <td>
+                <td  v-if="userRoles.includes('advisor')">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
@@ -72,32 +72,10 @@
                         v-on="on"
                         @click="
                           $router.push({
-                            name: 'ViewCourse',
-                            params: { index: item.course_id },
-                          })
-                        "
-                      >
-                        <v-icon>mdi-book-open-variant</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>View</span>
-                  </v-tooltip>
-                </td>
-                <td v-if="userRoles.includes('advisor')">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        small
-                        text
-                        fab
-                        v-bind="attrs"
-                        v-on="on"
-                        @click="
-                          $router.push({
-                            name: 'EditCourse',
+                            name: 'EditStudent',
                             params: {
-                              index: item.course_id,
-                              returnTo: 'Home',
+                              index: item.student_id,
+                              returnTo: 'ViewStudents',
                               isAdd: false,
                             },
                           })
@@ -143,22 +121,21 @@ import DeleteConfirmation from "@/components/DeleteConfirmation.vue";
 import { getStore } from "@/config/util.js";
 
 export default {
-  name: "Home",
+  name: "ViewStudents",
   components: {
     DeleteConfirmation,
   },
   data: () => ({
     search: "",
     searchOptions: [
+      "ID",
       "Name",
-      "Department",
-      "Number",
-      "Level",
-      "Hours",
-      "Description",
+      "Major",
+      "GraduationDate",
+      "Advisor"
     ],
-    includeInSearch: [0, 1, 2, 3, 4, 5],
-    classes: [],
+    includeInSearch: [0, 1, 2, 3, 4],
+    students: [],
     page: 1,
     userRoles: [],
   }),
@@ -172,52 +149,48 @@ export default {
     headers() {
       return [
         {
-          text: "Name",
-          value: "course_name",
+          text: "ID",
+          value: "student_id",
           filterable: this.includeInSearch.includes(0),
         },
         {
-          text: "Department",
-          value: "course_dept",
+          text: "Name",
+          value: "student_fname",
           filterable: this.includeInSearch.includes(1),
         },
         {
-          text: "Number",
-          value: "course_num",
+          text: "Major",
+          value: "student_major",
           filterable: this.includeInSearch.includes(2),
         },
         {
-          text: "Level",
-          value: "course_level",
+          text: "GraduationDate",
+          value: "student_graduation_date",
           filterable: this.includeInSearch.includes(3),
         },
         {
-          text: "Hours",
-          value: "course_hours",
+          text: "Advisor",
+          value: "advisor",
           filterable: this.includeInSearch.includes(4),
         },
-        {
-          text: "Description",
-          value: "course_desc",
-          filterable: this.includeInSearch.includes(5),
-        },
+        
         { text: "Actions", value: "actions" },
       ];
     },
   },
   mounted() {
     this.userRoles = getStore("user").roles;
-    CourseService.getCourses()
+    CourseService.getStudents()
       .then((response) => {
-        this.classes = response.data;
+        this.students = response.data;
       })
       .catch((error) => {
         console.log("there was an error:" + error.response);
       });
-    this.$root.$on("CourseDeleted", () => {
+    this.$root.$on("StudentDeleted", () => {
       CourseService.getCourses()
         .then((response) => {
-          this.classes = response.data;
+          this.students = response.data;
         })
         .catch((error) => {
           console.log("there was an error:" + error.response);

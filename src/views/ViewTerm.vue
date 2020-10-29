@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DisplayCourse :courseObject="course" />
+    <DisplayTerm :termObject="term" />
     <DeleteConfirmation />
   </div>
 </template>
@@ -8,30 +8,30 @@
 <script>
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
-import DisplayCourse from "@/components/DisplayCourse.vue";
+import DisplayTerm from "@/components/DisplayTerm.vue";
 import DeleteConfirmation from "@/components/DeleteConfirmation.vue";
 
 export default {
   components: {
-    DisplayCourse,
+    DisplayTerm,
     DeleteConfirmation
   },
   props: ["index"],
   data() {
     return {
-      course: Object
+      term: Object
     };
   },
   mounted() {
-    console.log("View course created");
-    this.getCourse();
+    console.log("View term created");
+    this.getTerm();
   },
   methods: {
-    getCourse () {
-      CourseService.getCourse(this.index)
+    getTerm () {
+      CourseService.getTerm(this.index)
       .then(response => {
-        this.course = response.data[0];
-        console.log(this.course);
+        this.term = response.data[0];
+        console.log(this.term);
       })
       .catch(error => {
         console.log("created error: " + error.response)
