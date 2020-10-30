@@ -48,8 +48,9 @@ export default {
       this.$gAuth
         .signIn()
         .then((GoogleUser) => {
+          console.log(GoogleUser);
           let user = {
-            email: GoogleUser.nt.Wt,
+            email: GoogleUser.tt.$t,
             token: GoogleUser.wc.id_token,
             roles: [],
           };
