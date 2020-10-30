@@ -80,6 +80,9 @@
                 flat
                 color="white"
               >
+                <v-icon>
+                  {{semesterShow[index] ? "mdi-chevron-down" : "mdi-chevron-right"}}
+                </v-icon>
                 <v-toolbar-title>
                   {{usedSemesters[index].semester_name}}
                 </v-toolbar-title>
@@ -89,9 +92,6 @@
                 <v-toolbar-title>
                   {{"Total Hours: " + totalHours[index]}}
                 </v-toolbar-title>
-                <v-icon>
-                  {{semesterShow[index] ? "mdi-arrow-up-drop-circle" : "mdi-arrow-down-drop-circle"}}
-                </v-icon>
               </v-app-bar>
             </v-card>
           </v-col>
@@ -267,7 +267,7 @@ export default {
             this.usedSemesters.splice(insertionIdx, 0, this.itemToAdd.semesterData);
             this.sortedCoursePlanItems.splice(insertionIdx, 0, []);
             this.totalHours.splice(insertionIdx, 0, 0);
-            this.semesterShow.splice(insertionIdx, 0, false);
+            this.semesterShow.splice(insertionIdx, 0, true);
           }
         }
         //if we can't insert before any usedSemesters, insert at the end of the array
@@ -275,7 +275,7 @@ export default {
           this.usedSemesters.push(this.itemToAdd.semesterData);
           this.sortedCoursePlanItems.push([]);
           this.totalHours.push(0);
-          this.semesterShow.push(false);
+          this.semesterShow.push(true);
         }
         //update foundSemester
         foundSemester = this.itemToAdd.semesterData;
@@ -285,6 +285,7 @@ export default {
       this.itemToAdd.innerIndex = this.sortedCoursePlanItems[semesterAddIdx].length;
       this.sortedCoursePlanItems[semesterAddIdx].push(this.itemToAdd);
       this.totalHours[semesterAddIdx] += Number(this.itemToAdd.courseData.course_hours);
+      this.semesterShow[semesterAddIdx] = true;
     },
     removeCoursePlanItem(usedSemestersIndex, item) {
       //update deletedCoursePlanItemIDs, sortedCoursePlanItems, usedSemesters, totalHours, and semesterShow
@@ -393,6 +394,9 @@ export default {
     },
   },
   mounted() {
+    CourseService.getStudent(this.index).then( (response) => {
+      this.student = response.data[0];
+    });
     //get course plan for this student
     CourseService.getCoursePlanForStudent(this.index).then( (response) => {
       this.coursePlan = response.data[0];
