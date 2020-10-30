@@ -248,14 +248,16 @@ export default {
             inserted = true;
             this.usedSemesters.splice(insertionIdx, 0, this.itemToAdd.semesterData);
             this.sortedCoursePlanItems.splice(insertionIdx, 0, []);
-            this.totalHours.splice(insertionIdx, 0, Number(this.itemToAdd.courseData.course_hours));
+            this.totalHours.splice(insertionIdx, 0, 0);
+            this.semesterShow.splice(insertionIdx, 0, false);
           }
         }
         //if we can't insert before any usedSemesters, insert at the end of the array
         if (!inserted) {
           this.usedSemesters.push(this.itemToAdd.semesterData);
           this.sortedCoursePlanItems.push([]);
-          this.totalHours.push(Number(this.itemToAdd.courseData.course_hours));
+          this.totalHours.push(0);
+          this.semesterShow.push(false);
         }
         //update foundSemester
         foundSemester = this.itemToAdd.semesterData;
@@ -264,12 +266,25 @@ export default {
       let semesterAddIdx = this.usedSemesters.indexOf(foundSemester);
       this.itemToAdd.innerIndex = this.sortedCoursePlanItems[semesterAddIdx].length;
       this.sortedCoursePlanItems[semesterAddIdx].push(this.itemToAdd);
+      this.totalHours[semesterAddIdx] += Number(this.itemToAdd.courseData.course_hours);
     },
     removeCoursePlanItem(usedSemestersIndex, item) {
-      //update sortedCoursePlanItems
-      let usedItemsIndex = item.innerIndex;
-      console.log(usedItemsIndex);
-      console.log(item.course_plan_item_status);
+      //update sortedCoursePlanItems, usedSemesters, totalHours, and semesterShow
+
+      //remove the item
+      this.sortedCoursePlanItems[usedSemestersIndex].splice(item.innerIndex, 1);
+      this.totalHours[usedSemestersIndex] -= Number(item.courseData.course_hours);
+      //update inner indexes
+      for (let i = item.innerIndex; i < this.sortedCoursePlanItems[usedSemestersIndex].length; i++) {
+        this.sortedCoursePlanItems[usedSemestersIndex][i].innerIndex--;
+      }
+      //get rid of the usedSemester if there are no more items in that semester
+      if (this.sortedCoursePlanItems[usedSemestersIndex].length < 1) {
+        this.sortedCoursePlanItems.splice(usedSemestersIndex, 1);
+        this.usedSemesters.splice(usedSemestersIndex, 1);
+        this.totalHours.splice(usedSemestersIndex, 1);
+        this.semesterShow.splice(usedSemestersIndex, 1);
+      }
     },
     //call this to sort allCoursePlanItems into an array of arrays for each usedSemester
     buildSemesterCoursePlanItems(allCoursePlanItems) {
