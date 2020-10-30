@@ -72,6 +72,31 @@
                         v-on="on"
                         @click="
                           $router.push({
+                            name: 'CoursePlan',
+                            params: {
+                              index: item.student_id,
+                              returnTo: 'ViewStudents',
+                            },
+                          })
+                        "
+                      >
+                        <v-icon>mdi-clipboard-text-search</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Course Plan</span>
+                  </v-tooltip>
+                </td>
+                <td  v-if="userRoles.includes('advisor')">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        small
+                        text
+                        fab
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="
+                          $router.push({
                             name: 'EditStudent',
                             params: {
                               index: item.student_id,

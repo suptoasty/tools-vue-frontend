@@ -268,8 +268,8 @@ const routes = [
     props: coursePlanProps,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["student"],
-    },
+      authorizedRoles: ["student", "advisor"],
+    }
   },
   {
     path: "/removeme",
