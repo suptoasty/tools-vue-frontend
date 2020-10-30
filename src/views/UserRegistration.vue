@@ -42,10 +42,47 @@
       </v-row>
       <v-row v-else>
         <v-col>
-          <v-date-picker
-            v-model="gradDate"
+          <v-menu
+            ref="menu"
+            v-model="datePickerVisible"
+            :close-on-content-click="false"
+            :return-value.sync="student.student_graduation_date"
+            transition="scale-transition"
+            offset-y
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="student.student_graduation_date"
                 label="Graduation Date"
-          ></v-date-picker>
+                prepend-icon="mdi-calendar"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="student.student_graduation_date"
+              no-title
+              scrollable
+            >
+              <v-spacer></v-spacer>
+              <v-btn
+                text
+                color="primary"
+                @click="datePickerVisible = false"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                text
+                color="primary"
+                @click="$refs.menu.save(student.student_graduation_date)"
+              >
+                OK
+              </v-btn>
+            </v-date-picker>
+          </v-menu>
         </v-col>
         <v-col>
           <v-select
