@@ -49,9 +49,10 @@ export default {
         .signIn()
         .then((GoogleUser) => {
           let user = {
-            email: GoogleUser.nt.Wt,
+            email: GoogleUser.tt.$t,
             token: GoogleUser.wc.id_token,
             roles: [],
+            studentID: "",
           };
           CourseService.login(user)
             .then((response) => {
@@ -63,7 +64,9 @@ export default {
               }
               if (returnedObject.student !== null) {
                 user.roles.push("student");
+                user.studentID = returnedObject.student;
               }
+
               //store the use role in local storage
               setStore("user", user);
               router.push({ name: "Home" });

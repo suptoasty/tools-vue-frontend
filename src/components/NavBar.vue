@@ -11,6 +11,7 @@
       </div>
       <div v-else-if="showNav === 'Student'">
         <v-btn text to="/" color="white">Home</v-btn>
+        <v-btn text @click="goToCoursePlan()" color="white">Course Plan</v-btn>
       </div>
       <div v-else>
         <v-btn text to="/login" color="white">Login</v-btn>
@@ -22,6 +23,7 @@
 
 <script>
 import { getStore } from "@/config/util";
+import router from "@/router/index";
 
 export default {
   name: "NavBar",
@@ -39,6 +41,16 @@ export default {
 
         return "None";
       }
+    }
+  },
+  methods: {
+    goToCoursePlan() {
+      let user = getStore("user");
+      let id = user.studentID;
+
+      console.log("THINGS: "+JSON.stringify(user));
+
+      router.push("courseplan/"+id);
     }
   }
 };
