@@ -180,6 +180,7 @@ export default {
     coursePlan: {},
     totalHours: [],
     sortedCoursePlanItems: [],
+    deletedCoursePlanItemIDs: [],
     usedSemesters: [],
     allSemesters: [],
     allCourses: [],
@@ -207,7 +208,21 @@ export default {
       this.semesterShow[index] = !this.semesterShow[index];
     },
     saveCoursePlan () {
-      console.log("save course plan");
+      let i = 0;
+      let k = 0;
+      for (i = 0; i < this.deletedCoursePlanItemIDs.length; i++) {
+        CourseService.deleteCoursePlanItem(this.coursePlan.course_plan_id, this.deletedCoursePlanItemIDs[i]);
+      }
+      for (i = 0; i < this.sortedCoursePlanItems.length; i++) {
+        for (k = 0; k < this.sortedCoursePlanItems[i].length; k++) {
+          if (this.sortedCoursePlanItems[i][k].isNewItem === true) {
+            this.sortedCoursePlanItems[i][k].isNewItem = false;
+            CourseService.postCoursePlanItem(this.coursePlan.course_plan_id, this.sortedCoursePlanItems[i][k]);
+          } else {
+            CourseService.putCoursePlanItem(this.coursePlan.course_plan_id, this.sortedCoursePlanItems[i][k].course_plan_item_id, this.sortedCoursePlanItems[i][k]);
+          }
+        }
+      }
       router.push({
         name: this.returnTo,
       });
@@ -222,11 +237,14 @@ export default {
         semesterData: this.allSemesters[0].semester_name,
         course: this.allCourses[0].course_id,
         courseData: this.allCourses[0].course_name,
+        isNewItem: true,
       };
       //show the dialog
       this.addItemDialog = true;
     },
     addCoursePlanItem() {
+      //update sortedCoursePlanItems, usedSemesters, totalHours, and semesterShow
+
       //complete the data in itemToAdd
       this.itemToAdd.semesterData = this.allSemesters.find(element => element.semester_name === this.itemToAdd.semesterData);
       this.itemToAdd.courseData = this.allCourses.find(element => element.course_name === this.itemToAdd.courseData);
@@ -269,9 +287,14 @@ export default {
       this.totalHours[semesterAddIdx] += Number(this.itemToAdd.courseData.course_hours);
     },
     removeCoursePlanItem(usedSemestersIndex, item) {
-      //update sortedCoursePlanItems, usedSemesters, totalHours, and semesterShow
+      //update deletedCoursePlanItemIDs, sortedCoursePlanItems, usedSemesters, totalHours, and semesterShow
 
       //remove the item
+      if (item.course_plan_item_id !== undefined && item.course_plan_item_id !== null) {
+        if (!this.deletedCoursePlanItemIDs.includes(item.course_plan_item_id)) {
+          this.deletedCoursePlanItemIDs.push(item.course_plan_item_id);
+        }
+      }
       this.sortedCoursePlanItems[usedSemestersIndex].splice(item.innerIndex, 1);
       this.totalHours[usedSemestersIndex] -= Number(item.courseData.course_hours);
       //update inner indexes

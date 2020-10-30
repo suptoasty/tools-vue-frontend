@@ -285,8 +285,8 @@ export default {
     return apiClient.get("/courseapi/course-plan/" + coursePlanId + "/items/" + itemId);
   },
 
-  postCoursePlanItem(coursePlanId, itemId, item) {
-    return apiClient.post("/courseapi/course-plan/" + coursePlanId + "/items/" + itemId, {
+  postCoursePlanItem(coursePlanId, item) {
+    return apiClient.post("/courseapi/course-plan/" + coursePlanId + "/items", {
       course_plan_item_grade: item.course_plan_item_grade,
       course_plan_item_status: item.course_plan_item_status,
       plan: item.plan,
