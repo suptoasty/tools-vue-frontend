@@ -88,8 +88,8 @@ const routes = [
     props: true,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["advisor"]
-    }
+      authorizedRoles: ["advisor"],
+    },
   },
   {
     path: "/viewadvisors",
@@ -108,8 +108,8 @@ const routes = [
     props: true,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["advisor"]
-    }
+      authorizedRoles: ["advisor"],
+    },
   },
   {
     path: "/viewdegrees",
@@ -118,8 +118,8 @@ const routes = [
     props: true,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["advisor"]
-    }
+      authorizedRoles: ["advisor"],
+    },
   },
   {
     path: "/home",
@@ -265,7 +265,7 @@ const routes = [
     path: "/courseplan/:index/",
     name: "CoursePlan",
     component: CoursePlan,
-    props:coursePlanProps,
+    props: coursePlanProps,
     meta: {
       requiresAuth: true,
       authorizedRoles: ["student", "advisor"],
@@ -279,8 +279,8 @@ const routes = [
     meta: {
       requiresAuth: false,
       authorizedRoles: [],
-    }
-  }
+    },
+  },
 ];
 
 const router = new VueRouter({
