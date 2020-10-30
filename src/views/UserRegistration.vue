@@ -5,7 +5,7 @@
       <v-row>
         <v-col cols="12" md="4">
           <v-text-field
-            v-model="firstName"
+            v-model="both.fname"
             :rules="nameRules"
             label="First Name"
             required
@@ -14,7 +14,7 @@
 
         <v-col cols="12" md="4">
           <v-text-field
-            v-model="lastName"
+            v-model="both.lname"
             :rules="nameRules"
             label="Last Name"
             required
@@ -23,7 +23,7 @@
 
         <v-col cols="12" md="4">
           <v-text-field
-            v-model="email"
+            v-model="user.user_email"
             :rules="emailRules"
             label="Email"
             required
@@ -34,7 +34,7 @@
       <v-row v-if="isAdvisorData">
         <v-col cols="12" md="4">
           <v-text-field
-            v-model="department"
+            v-model="advisor.advisor_department"
             label="Department"
             required
           ></v-text-field>
@@ -44,12 +44,12 @@
         <v-col>
           <v-date-picker
             v-model="gradDate"
-            label="Graduation Date"
+                label="Graduation Date"
           ></v-date-picker>
         </v-col>
         <v-col>
           <v-select
-            v-model="degree"
+            v-model="student.student_degree"
             label="Degree"
             :items="degreeList"
             item-text="degree_name"
@@ -58,7 +58,7 @@
         </v-col>
         <v-col>
           <v-select
-            v-model="advisor"
+            v-model="student.student_advisor"
             label="Advisor"
             :items="advisorList"
             item-text="advisor_lname"
@@ -66,16 +66,11 @@
           ></v-select>
         </v-col>
       </v-row>
-      <v-row v-if="isAdd">
-        <v-col align="center">
-          <v-btn @click="createUser()">Register</v-btn>
+      <v-row>
+        <v-col align="center" v-if="isAdd">
+          <v-btn @click="saveUser()">Register</v-btn>
         </v-col>
-        <v-col align="center">
-          <v-btn @click="cancel()">Cancel</v-btn>
-        </v-col>
-      </v-row>
-      <v-row v-else>
-        <v-col align="center">
+        <v-col align="center" v-else>
           <v-btn @click="saveUser()">Save</v-btn>
         </v-col>
         <v-col align="center">
@@ -110,25 +105,32 @@ export default {
     },
   },
   data: () => ({
-    //data
-    userId: undefined,
-    userStudent: undefined,
-    userAdvisor: undefined,
-    firstName: "",
-    lastName: "",
-    middleInitial: "",
-    email: "",
-    department: "", //advisor only
-    gradDate: "", //student only
-    degree: "", //student only
-    advisor: "", //student only
-    //
+    datePickerVisible: false,
+    user: {
+      user_id: undefined,
+      user_email: "",
+      user_student: undefined,
+      user_advisor: undefined,
+    },
+    student: {
+      student_graduation_date: "",
+      student_degree: null,
+      student_advisor: null,
+    },
+    advisor: {
+      advisor_department: "",
+    },
+    both: {
+      fname: "",
+      lname: "",
+      initial: "",
+    },
     // checks
     valid: false,
     isAdvisorData: false,
     nameRules: [
       v => !!v || "Name is required",
-      v => v.length <= 30 || "Name must be less than 10 characters"
+      v => v.length <= 255 || "Name must be less than 256 characters"
     ],
     emailRules: [
       v => !!v || "E-mail is required",
@@ -152,33 +154,33 @@ export default {
     if (!this.isAdd) {
       if (this.isAdvisor) {
         CourseService.getAdvisor(this.index).then(response => {
-          console.log(response);
-          this.userId = response.data[0].user_id;
-          this.userStudent = response.data[0].student;
-          this.userAdvisor = response.data[0].advisor;
-          this.email = response.data[0].user_email;
+          let r = response.data[0];
+          this.user.user_id = r.user_id;
+          this.user.user_email = r.user_email;
+          this.user.user_student = r.user_student;
+          this.user.user_advisor = r.user_advisor;
 
-          this.firstName = response.data[0].advisor_fname;
-          this.lastName = response.data[0].advisor_lname;
-          this.middleInitial = response.data[0].advisor_initial;
-          this.department = response.data[0].advisor_department;
+          this.both.fname = r.advisor_fname;
+          this.both.lname = r.advisor_lname;
+          this.both.initial = r.advisor_initial;
+
+          this.advisor.advisor_department = r.advisor_department;
         });
       } else {
         CourseService.getStudent(this.index).then(response => {
-          this.userId = response.data[0].user_id;
-          this.userStudent = response.data[0].student;
-          //this needs to be fixed in the backend
-          CourseService.getUser(this.userId).then(userResponse => {
-            this.userAdvisor = userResponse.data[0].advisor;
-          });
-          this.email = response.data[0].user_email;
+          let r = response.data[0];
+          this.user.user_id = r.user_id;
+          this.user.user_email = r.user_email;
+          this.user.user_student = r.user_student;
+          this.user.user_advisor = r.user_advisor;
 
-          this.firstName = response.data[0].student_fname;
-          this.lastName = response.data[0].student_lname;
-          this.middleInitial = response.data[0].student_initial;
-          this.gradDate = response.data[0].student_graduation_date;
-          this.degree = response.data[0].degree;
-          this.advisor = response.data[0].advisor;
+          this.both.fname = r.student_fname;
+          this.both.lname = r.student_lname;
+          this.both.initial = r.student_initial;
+
+          this.student.student_graduation_date = r.student_graduation_date;
+          this.student.student_degree = r.student_degree;
+          this.student.student_advisor = r.student_advisor;
         });
       }
     }
@@ -194,76 +196,21 @@ export default {
       }
     },
     saveUser() {
-      let user = {
-        user_name: "remove",
-        user_password: "remove",
-        user_email: this.email,
-        student: this.userStudent,
-        advisor: this.userAdvisor
-      };
-
       if (this.isAdvisorData) {
-        this.editAdvisor(user);
+        this.saveAdvisor();
       } else {
-        this.editStudent(user);
+        this.saveStudent();
       }
     },
-    editAdvisor(user) {
-      let advisor = {
-        advisor_fname: this.firstName,
-        advisor_initial: this.middleInitial,
-        advisor_lname: this.lastName,
-        advisor_department: this.department
-      };
+    saveAdvisor() {
+      this.advisor.advisor_fname = this.both.fname;
+      this.advisor.advisor_lname = this.both.lname;
+      this.advisor.advisor_initial = this.both.initial;
 
-      CourseService.putAdvisor(this.userAdvisor, advisor).then(() => {
-        CourseService.putUser(this.userId, user).then(() => {
-          router.push({ name: this.returnTo });
-        });
-      });
-    },
-    editStudent(user) {
-      let student = {
-        student_fname: this.firstName,
-        student_initial: this.middleInitial,
-        student_lname: this.lastName,
-        student_graduation_date: this.gradDate,
-        degree: this.degree,
-        advisor: this.advisor
-      };
-
-      CourseService.putStudent(this.userStudent, student).then(() => {
-        CourseService.postUser(this.userId, user).then(() => {
-          router.push({ name: this.returnTo });
-        });
-      });
-    },
-    createUser() {
-      let user = {
-        user_name: "remove",
-        user_password: "remove",
-        user_email: this.email,
-        student: null,
-        advisor: null
-      };
-
-      if (this.isAdvisorData) {
-        this.createAdvisor(user);
-      } else {
-        this.createStudent(user);
-      }
-    },
-    createAdvisor(user) {
-      let advisor = {
-        advisor_fname: this.firstName,
-        advisor_initial: this.middleInitial,
-        advisor_lname: this.lastName,
-        advisor_department: this.department
-      };
-
-      CourseService.postAdvisor(advisor).then(response => {
-        user.advisor = response.data.id;
-        CourseService.postUser(user).then(() => {
+      if (this.isAdd) {
+        CourseService.postAdvisor(this.advisor).then(response => {
+        this.user.user_advisor = response.data.id;
+        CourseService.postUser(this.user).then(() => {
           if (this.returnTo !== undefined && this.returnTo !== null) {
             router.push({ name: this.returnTo });
           } else {
@@ -271,28 +218,38 @@ export default {
           }
         });
       });
-    },
-    createStudent(user) {
-      let student = {
-        student_fname: this.firstName,
-        student_initial: this.middleInitial,
-        student_lname: this.lastName,
-        student_graduation_date: this.gradDate,
-        degree: this.degree,
-        advisor: this.advisor
-      };
-
-      CourseService.postStudent(student).then(async response => {
-        user.student = response.data.id;
-        CourseService.postUser(user).then(() => {
-          if (this.returnTo !== undefined && this.returnTo !== null)
-          {
+      } else {
+        CourseService.putAdvisor(this.userAdvisor, this.advisor).then(() => {
+          CourseService.putUser(this.userId, this.user).then(() => {
             router.push({ name: this.returnTo });
-          }
-          else
-          {
-            router.push({ name: "Login" });
-          }
+          });
+        });
+      }
+    },
+    saveStudent() {
+      this.student.student_fname = this.both.fname;
+      this.student.student_lname = this.both.lname;
+      this.student.student_initial = this.both.initial;
+      
+      if (this.isAdd) {
+        CourseService.postStudent(this.student).then(async response => {
+          this.user.user_student = response.data.id;
+          console.log("Posting:", this.user);
+          CourseService.postUser(this.user).then(() => {
+            if (this.returnTo !== undefined && this.returnTo !== null)
+            {
+              router.push({ name: this.returnTo });
+            }
+            else
+            {
+              router.push({ name: "Login" });
+            }
+          });
+        });
+      }
+      CourseService.putStudent(this.user.user_student, this.student).then(() => {
+        CourseService.postUser(this.user.user_id, this.user).then(() => {
+          router.push({ name: this.returnTo });
         });
       });
     }
