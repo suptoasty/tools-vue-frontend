@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="valid">
     <v-container>
-      <v-checkbox v-if="isAdd" label="Advisor" v-model="isAdvisorData">Is Advisor</v-checkbox>
+      <v-checkbox v-if="isAdd" label="Advisor" v-model="isAdvisorData">Is Advisor</v-checkbox> <!-- replace with dropdown -->
       <v-row>
         <v-col cols="12" md="4">
           <v-text-field
@@ -98,7 +98,7 @@
             v-model="student.student_advisor"
             label="Advisor"
             :items="advisorList"
-            item-text="advisor_lname"
+            item-text="fullName"
             item-value="advisor_id"
           ></v-select>
         </v-col>
@@ -184,6 +184,12 @@ export default {
 
     CourseService.getAdvisors().then(response => {
       this.advisorList = response.data;
+      this.advisorList.forEach(e => {
+        e.fullName = e.advisor_lname + ", " + e.advisor_fname;
+        if (e.advisor_initial != null) {
+          e.fullName += " " + e.advisor_initial;
+        }
+      });
     });
 
     //if we are in an edit, then the user will no longer be able to switch between advisor and student
