@@ -165,6 +165,8 @@ export default {
     // checks
     valid: false,
     isAdvisorData: false,
+    possibleRoles: ["Student", "Advisor"],
+    userRoles: [],
     nameRules: [
       v => !!v || "Name is required",
       v => v.length <= 255 || "Name must be less than 256 characters"
@@ -178,6 +180,9 @@ export default {
     //
   }),
   mounted() {
+    //store the isAdvisor prop into the isAdvisorData since it is bad to change prop data
+    this.isAdvisorData = this.isAdvisor;
+
     CourseService.getDegrees().then(response => {
       this.degreeList = response.data;
     });
@@ -195,7 +200,7 @@ export default {
     //if we are in an edit, then the user will no longer be able to switch between advisor and student
     //so the respective fields will be fetched either as a student or as an advisor
     if (!this.isAdd) {
-      if (this.isAdvisor) {
+      if (this.isAdvisorData) {
         CourseService.getAdvisor(this.index).then(response => {
           let r = response.data[0];
           this.user.user_id = r.user_id;
@@ -227,8 +232,7 @@ export default {
         });
       }
     }
-    //store the isAdvisor prop into the isAdvisorData since it is bad to change prop data
-    this.isAdvisorData = this.isAdvisor;
+    
   },
   methods: {
     cancel() {
