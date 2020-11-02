@@ -109,7 +109,7 @@
           </v-data-table>
         </v-row>
       </v-col>
-      <DeleteConfirmation />
+      <StudentDeleteConfirmation />
     </v-row>
   </v-container>
 </template>
@@ -117,13 +117,13 @@
 <script>
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
-import DeleteConfirmation from "@/components/DeleteConfirmation.vue";
+import StudentDeleteConfirmation from "@/components/StudentDeleteConfirmation.vue";
 import { getStore } from "@/config/util.js";
 
 export default {
   name: "ViewStudents",
   components: {
-    DeleteConfirmation,
+    StudentDeleteConfirmation,
   },
   data: () => ({
     search: "",
@@ -140,9 +140,9 @@ export default {
     userRoles: [],
   }),
   methods: {
-    onDelete(course) {
-      console.log("Emiting Delete for: " + course.course_name);
-      this.$root.$emit("deleteCourse", course);
+    onDelete(student) {
+      console.log("Emiting Delete for: " + student.student_fname);
+      this.$root.$emit("deleteStudent", student);
     },
   },
   computed: {
