@@ -5,7 +5,7 @@
       <v-card-text>All Contents Will Be Deleted! <br/> This Cannot Be Undone!</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="red darken-1" text @click="onDelete(courseID)">Delete</v-btn>
+        <v-btn color="red darken-1" text @click="onDelete(degreeID)">Delete</v-btn>
         <v-btn color="primary" text @click="onCancel()">Cancel</v-btn>
       </v-card-actions>
     </v-card>
@@ -14,7 +14,6 @@
 
 <script>
 import CourseService from "@/services/CourseService.js";
-import router from "@/router/index.js";
 
 export default {
   name: "DegreeDeleteConfirmation",
@@ -34,7 +33,6 @@ export default {
       this.dialog = false;
       await CourseService.deleteDegree(id);
       await this.$root.$emit('DegreeDeleted');
-      router.push({ name: "ViewDegrees" });
     },
     onCancel() {
       this.dialog = false;

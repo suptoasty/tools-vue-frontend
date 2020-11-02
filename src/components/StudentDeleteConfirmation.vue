@@ -5,7 +5,7 @@
       <v-card-text>All Contents Will Be Deleted! <br/> This Cannot Be Undone!</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="red darken-1" text @click="onDelete(courseID)">Delete</v-btn>
+        <v-btn color="red darken-1" text @click="onDelete(studentID)">Delete</v-btn>
         <v-btn color="primary" text @click="onCancel()">Cancel</v-btn>
       </v-card-actions>
     </v-card>
@@ -16,32 +16,32 @@
 import CourseService from "@/services/CourseService.js";
 
 export default {
-  name: "DeleteConfirmation",
+  name: "StudentDeleteConfirmation",
   data: () => ({
     dialog: false,
-    courseID: null,
+    studentID: null,
     modalTitle: ""
   }),
   methods: {
-    onShowModal(course) {
-      this.modalTitle = course.course_name + ": " + course.course_id;
-      this.courseID = course.course_id;
+    onShowModal(student) {
+      this.modalTitle = student.student_fname + ": " + student.student_id;
+      this.studentID = student.student_id;
       this.dialog = true;
     },
     async onDelete(id) {
-      console.log("DELETING: " + id);
+      console.log("DELETING STUDENT: " + id);
       this.dialog = false;
-      await CourseService.deleteCourse(id);
-      await this.$root.$emit('CourseDeleted');
+      await CourseService.deleteStudent(id);
+      await this.$root.$emit('StudentDeleted');
     },
     onCancel() {
       this.dialog = false;
-      this.courseID = null;
+      this.studentID = null;
     }
   },
   mounted() {
-    this.$root.$on("deleteCourse", course => {
-      this.onShowModal(course);
+    this.$root.$on("deleteStudent", student => {
+      this.onShowModal(student);
     });
   }
 };
