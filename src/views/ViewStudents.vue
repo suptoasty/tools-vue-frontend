@@ -188,7 +188,7 @@ export default {
         console.log("there was an error:" + error.response);
       });
     this.$root.$on("StudentDeleted", () => {
-      CourseService.getCourses()
+      CourseService.getStudents()
         .then((response) => {
           this.students = response.data;
         })

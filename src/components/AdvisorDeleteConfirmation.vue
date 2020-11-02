@@ -14,7 +14,6 @@
 
 <script>
 import CourseService from "@/services/CourseService.js";
-import router from "@/router/index.js";
 
 export default {
   name: "AdvisorDeleteConfirmation",
@@ -26,15 +25,14 @@ export default {
   methods: {
     onShowModal(advisor) {
       this.modalTitle = advisor.advisor_fname + ": " + advisor.advisor_id;
-      this.advisorID = advisor.advisor_ID;
+      this.advisorID = advisor.advisor_id;
       this.dialog = true;
     },
     async onDelete(id) {
       console.log("DELETING ADVISOR: " + id);
       this.dialog = false;
-      await CourseService.deleteSemester(id);
+      await CourseService.deleteAdvisor(id);
       await this.$root.$emit('AdvisorDeleted');
-      router.push({ name: "ViewSemesters" });
     },
     onCancel() {
       this.dialog = false;

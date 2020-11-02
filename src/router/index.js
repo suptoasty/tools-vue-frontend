@@ -72,7 +72,7 @@ const routes = [
     },
   },
   {
-    path: "/termlisting",
+    path: "/viewterms",
     name: "TermListing",
     component: TermListing,
     props: true,

@@ -14,7 +14,6 @@
 
 <script>
 import CourseService from "@/services/CourseService.js";
-import router from "@/router/index.js";
 
 export default {
   name: "StudentDeleteConfirmation",
@@ -34,7 +33,6 @@ export default {
       this.dialog = false;
       await CourseService.deleteStudent(id);
       await this.$root.$emit('StudentDeleted');
-      router.push({ name: "ViewStudents" });
     },
     onCancel() {
       this.dialog = false;
