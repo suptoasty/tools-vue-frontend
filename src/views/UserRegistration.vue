@@ -1,18 +1,17 @@
 <template>
   <v-form v-model="valid">
     <v-container>
-      <v-row>
+      <v-row v-if="isAdd">
         <v-col cols="12" md="6">
-          <v-combobox
-            v-model="userRoles"
+          <v-select
+            v-model="userRole"
             :items="possibleRoles"
-            label="User Roles"
-            multiple
+            label="User Role"
             :rules="roleRules"
-          ></v-combobox>
+          ></v-select>
         </v-col>
       </v-row>
-      <v-checkbox v-if="isAdd" label="Advisor" v-model="isAdvisorData">Is Advisor</v-checkbox> <!-- replace with dropdown -->
+
       <v-row>
         <v-col cols="12" md="6">
           <v-text-field
@@ -22,7 +21,6 @@
             required
           ></v-text-field>
         </v-col>
-
         <v-col cols="12" md="6">
           <v-text-field
             v-model="both.lname"
@@ -44,15 +42,17 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="isAdvisorData">
-        <v-col cols="12" md="12">
-          <v-text-field
-            v-model="advisor.advisor_department"
-            label="Department"
-            required
-          ></v-text-field>
-        </v-col>
-      </v-row>
+      <div v-if="userRole == possibleRoles[1]">
+        <v-row>
+          <v-col cols="12" md="12">
+            <v-text-field
+              v-model="advisor.advisor_department"
+              label="Department"
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </div>
       <div v-else>
         <v-row>
           <v-col md="14">
@@ -122,6 +122,7 @@
           </v-col>
         </v-row>
       </div>
+      
       <v-row>
         <v-col align="center" v-if="isAdd">
           <v-btn @click="saveUser()">Register</v-btn>
@@ -182,12 +183,12 @@ export default {
       initial: "",
     },
     possibleRoles: ["Student", "Advisor"],
-    userRoles: [],
+    userRole: "Student",
     // checks
     valid: false,
     isAdvisorData: false,
     roleRules: [
-      v => v.length != 0 || "User must have one or more roles"
+      v => v.length != 0 || "User must have a role"
     ],
     nameRules: [
       v => !!v || "Name is required",
@@ -221,7 +222,7 @@ export default {
     //if we are in an edit, then the user will no longer be able to switch between advisor and student
     //so the respective fields will be fetched either as a student or as an advisor
     if (!this.isAdd) {
-      if (this.isAdvisorData) {
+      if (this.userRole == this.possibleRoles[1]) {
         CourseService.getAdvisor(this.index).then(response => {
           let r = response.data[0];
           this.user.user_id = r.user_id;
@@ -234,6 +235,8 @@ export default {
           this.both.initial = r.advisor_initial;
 
           this.advisor.advisor_department = r.advisor_department;
+
+          this.userRole = this.possibleRoles[1];
         });
       } else {
         CourseService.getStudent(this.index).then(response => {
@@ -250,6 +253,8 @@ export default {
           this.student.student_graduation_date = r.student_graduation_date;
           this.student.student_degree = r.student_degree;
           this.student.student_advisor = r.student_advisor;
+
+          this.userRole = this.possibleRoles[0];
         });
       }
     }
@@ -264,7 +269,7 @@ export default {
       }
     },
     saveUser() {
-      if (this.isAdvisorData) {
+      if (this.userRole == this.possibleRoles[1]) {
         this.saveAdvisor();
       } else {
         this.saveStudent();
