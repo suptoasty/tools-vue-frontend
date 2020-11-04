@@ -1,6 +1,17 @@
 <template>
   <v-form v-model="valid">
     <v-container>
+      <v-row>
+        <v-col cols="12" md="6">
+          <v-combobox
+            v-model="userRoles"
+            :items="possibleRoles"
+            label="User Roles"
+            multiple
+            :rules="roleRules"
+          ></v-combobox>
+        </v-col>
+      </v-row>
       <v-checkbox v-if="isAdd" label="Advisor" v-model="isAdvisorData">Is Advisor</v-checkbox> <!-- replace with dropdown -->
       <v-row>
         <v-col cols="12" md="6">
@@ -170,11 +181,14 @@ export default {
       lname: "",
       initial: "",
     },
+    possibleRoles: ["Student", "Advisor"],
+    userRoles: [],
     // checks
     valid: false,
     isAdvisorData: false,
-    possibleRoles: ["Student", "Advisor"],
-    userRoles: [],
+    roleRules: [
+      v => v.length != 0 || "User must have one or more roles"
+    ],
     nameRules: [
       v => !!v || "Name is required",
       v => v.length <= 255 || "Name must be less than 256 characters"
@@ -185,7 +199,6 @@ export default {
     ],
     degreeList: [],
     advisorList: []
-    //
   }),
   mounted() {
     //store the isAdvisor prop into the isAdvisorData since it is bad to change prop data
