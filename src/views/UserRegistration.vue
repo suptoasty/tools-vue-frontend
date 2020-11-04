@@ -3,7 +3,7 @@
     <v-container>
       <v-checkbox v-if="isAdd" label="Advisor" v-model="isAdvisorData">Is Advisor</v-checkbox> <!-- replace with dropdown -->
       <v-row>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="6">
           <v-text-field
             v-model="both.fname"
             :rules="nameRules"
@@ -12,7 +12,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="6">
           <v-text-field
             v-model="both.lname"
             :rules="nameRules"
@@ -20,8 +20,10 @@
             required
           ></v-text-field>
         </v-col>
+      </v-row>
 
-        <v-col cols="12" md="4">
+      <v-row>
+        <v-col cols="12" md="12">
           <v-text-field
             v-model="user.user_email"
             :rules="emailRules"
@@ -32,7 +34,7 @@
       </v-row>
 
       <v-row v-if="isAdvisorData">
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="12">
           <v-text-field
             v-model="advisor.advisor_department"
             label="Department"
@@ -40,69 +42,75 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <v-row v-else>
-        <v-col>
-          <v-menu
-            ref="menu"
-            v-model="datePickerVisible"
-            :close-on-content-click="false"
-            :return-value.sync="student.student_graduation_date"
-            transition="scale-transition"
-            offset-y
-            min-width="290px"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="student.student_graduation_date"
-                label="Graduation Date"
-                prepend-icon="mdi-calendar"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-model="student.student_graduation_date"
-              no-title
-              scrollable
+      <div v-else>
+        <v-row>
+          <v-col md="14">
+            <v-menu
+              ref="menu"
+              v-model="datePickerVisible"
+              :close-on-content-click="false"
+              :return-value.sync="student.student_graduation_date"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
             >
-              <v-spacer></v-spacer>
-              <v-btn
-                text
-                color="primary"
-                @click="datePickerVisible = false"
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="student.student_graduation_date"
+                  label="Graduation Date"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="student.student_graduation_date"
+                no-title
+                scrollable
               >
-                Cancel
-              </v-btn>
-              <v-btn
-                text
-                color="primary"
-                @click="$refs.menu.save(student.student_graduation_date)"
-              >
-                OK
-              </v-btn>
-            </v-date-picker>
-          </v-menu>
-        </v-col>
-        <v-col>
-          <v-select
-            v-model="student.student_degree"
-            label="Degree"
-            :items="degreeList"
-            item-text="degree_name"
-            item-value="degree_id"
-          ></v-select>
-        </v-col>
-        <v-col>
-          <v-select
-            v-model="student.student_advisor"
-            label="Advisor"
-            :items="advisorList"
-            item-text="fullName"
-            item-value="advisor_id"
-          ></v-select>
-        </v-col>
-      </v-row>
+                <v-spacer></v-spacer>
+                <v-btn
+                  text
+                  color="primary"
+                  @click="datePickerVisible = false"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn
+                  text
+                  color="primary"
+                  @click="$refs.menu.save(student.student_graduation_date)"
+                >
+                  OK
+                </v-btn>
+              </v-date-picker>
+            </v-menu>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-select
+              v-model="student.student_degree"
+              label="Degree"
+              :items="degreeList"
+              item-text="degree_name"
+              item-value="degree_id"
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-select
+              v-model="student.student_advisor"
+              label="Advisor"
+              :items="advisorList"
+              item-text="fullName"
+              item-value="advisor_id"
+            ></v-select>
+          </v-col>
+        </v-row>
+      </div>
       <v-row>
         <v-col align="center" v-if="isAdd">
           <v-btn @click="saveUser()">Register</v-btn>
