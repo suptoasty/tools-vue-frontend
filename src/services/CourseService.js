@@ -289,9 +289,9 @@ export default {
     return apiClient.post("/courseapi/course-plan/" + coursePlanId + "/items", {
       course_plan_item_grade: item.course_plan_item_grade,
       course_plan_item_status: item.course_plan_item_status,
-      plan: item.plan,
-      semester: item.semester,
-      course: item.course,
+      course_plan_item_plan: item.course_plan_item_plan,
+      course_plan_item_semester: item.course_plan_item_semester,
+      course_plan_item_course: item.course_plan_item_course,
     });
   },
 
@@ -299,9 +299,9 @@ export default {
     return apiClient.put("/courseapi/course-plan/" + coursePlanId + "/items/" + itemId, {
       course_plan_item_grade: item.course_plan_item_grade,
       course_plan_item_status: item.course_plan_item_status,
-      plan: item.plan,
-      semester: item.semester,
-      course: item.course,
+      course_plan_item_plan: item.course_plan_item_plan,
+      course_plan_item_semester: item.course_plan_item_semester,
+      course_plan_item_course: item.course_plan_item_course,
     });
   },
 

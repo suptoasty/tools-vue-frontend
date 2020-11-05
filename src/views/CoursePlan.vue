@@ -110,6 +110,7 @@
               :headers="headers"
               :items="semesterItems"
               item-key="course_plan_item_id"
+              :options= "{ itemsPerPage: 100 }"
             >
               <template v-slot:item.course_plan_item_grade="{ item }">
                 <v-text-field
@@ -210,30 +211,48 @@ export default {
         unit: "in",
         format: "letter"
       });
+      const sideMargin = 0.5;
+      const topMargin = 1;
+      let finalY = topMargin;
+
       // text is placed using x, y coordinates
-      doc.setFontSize(16).text(`${this.student.student_fname}'s Course Plan`, 0.5, 1.0);
+      doc.setFontSize(16).text(`${this.student.student_fname}'s Course Plan`, sideMargin, finalY);
+      finalY += 0.1;
+
       // create a line under heading 
-      doc.setLineWidth(0.01).line(0.5, 1.1, 8.0, 1.1);
-      let i = 0;
-      let k = 0;
-      let finalY = 1.2;
+      doc.setLineWidth(0.01).line(sideMargin, 1.1, doc.internal.pageSize.getWidth() - sideMargin, finalY);
+      finalY += 0.1;
+      
+      // create each semester
       let pdfCoursePlanItems = this.sortedCoursePlanItems;
+      let i = 0, k = 0;
       for (i = 0; i < pdfCoursePlanItems.length; i++) {
         for (k = 0; k < pdfCoursePlanItems[i].length; k++) {
           pdfCoursePlanItems[i][k].courseName = pdfCoursePlanItems[i][k].courseData.course_name;
           pdfCoursePlanItems[i][k].courseNumber = pdfCoursePlanItems[i][k].courseData.course_num;
           pdfCoursePlanItems[i][k].courseHours = pdfCoursePlanItems[i][k].courseData.course_hours;
         }
+        // Semester title
         finalY += 0.5
-        doc.setFontSize(12).text(`${this.usedSemesters[i].semester_name}`, 0.5, finalY);
+        doc.setFontSize(12).text(`${this.usedSemesters[i].semester_name}`, sideMargin, finalY);
+        
+        // Semester hours
+        let hoursText = `Total Hours: ${this.totalHours[i]}`
+        let finalX = doc.internal.pageSize.getWidth() - doc.getTextWidth(hoursText) - sideMargin - 0.02;
+        doc.setFontSize(12).text(hoursText, finalX, finalY);
         finalY += 0.2;
+
         // Using autoTable plugin
         doc.autoTable({
           columns,
           startY: finalY,
           body: pdfCoursePlanItems[i],
-          margin: { left: 0.5, top: 1.25 }
+          styles: { // doesn't even do anything???
+            overflow: 'hidden'
+          },
+          margin: { left: sideMargin, top: 1.25, right: sideMargin }
         });
+
         finalY = doc.lastAutoTable.finalY;
         console.log(doc.lastAutoTable.finalY);
       }
@@ -286,10 +305,10 @@ export default {
       this.itemToAdd = {
         course_plan_item_grade: "100",
         course_plan_item_status: "planned",
-        plan: this.coursePlan.course_plan_id,
-        semester: this.allSemesters[0].semester_id,
+        course_plan_item_plan: this.coursePlan.course_plan_id,
+        course_plan_item_semester: this.allSemesters[0].semester_id,
         semesterData: this.allSemesters[0].semester_name,
-        course: this.allCourses[0].course_id,
+        course_plan_item_course: this.allCourses[0].course_id,
         courseData: this.allCourses[0].course_name,
         isNewItem: true,
       };
@@ -302,8 +321,8 @@ export default {
       //complete the data in itemToAdd
       this.itemToAdd.semesterData = this.allSemesters.find(element => element.semester_name === this.itemToAdd.semesterData);
       this.itemToAdd.courseData = this.allCourses.find(element => element.course_name === this.itemToAdd.courseData);
-      this.itemToAdd.semester = this.itemToAdd.semesterData.semester_id;
-      this.itemToAdd.course = this.itemToAdd.courseData.course_id;
+      this.itemToAdd.course_plan_item_semester = this.itemToAdd.semesterData.semester_id;
+      this.itemToAdd.course_plan_item_course = this.itemToAdd.courseData.course_id;
       //hide the dialog
       this.addItemDialog = false;
       //find the semester that we are adding the course plan item to
@@ -371,7 +390,7 @@ export default {
       tempSemesters = tempSemesters.filter((value) => {
         let found = false;
         allCoursePlanItems.forEach((cpItem) => {
-          if (value.semester_id == cpItem.semester)
+          if (value.semester_id == cpItem.course_plan_item_semester)
             found = true;
         });
         return found;
@@ -388,7 +407,7 @@ export default {
         let foundMatch = false;
         let innerIndex = 0;
         allCoursePlanItems.forEach((coursePlanItem) => {
-          if (coursePlanItem.semester == semester.semester_id)
+          if (coursePlanItem.course_plan_item_semester == semester.semester_id)
           {
             //make an array of arrays in sortedCoursePlanItems. The index of each array matches the index of the semester
             if (!foundMatch) {
@@ -399,7 +418,7 @@ export default {
               foundMatch = true;
             }
             //set the course
-            coursePlanItem.courseData = this.allCourses.filter( (value) => coursePlanItem.course == value.course_id)[0];
+            coursePlanItem.courseData = this.allCourses.filter( (value) => coursePlanItem.course_plan_item_course == value.course_id)[0];
             //set the inner index
             coursePlanItem.innerIndex = innerIndex;
             innerIndex++;
