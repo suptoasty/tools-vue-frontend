@@ -2,20 +2,20 @@
   <div id="nav">
     <v-app-bar app color="primary">
       <div v-if="showNav === 'Advisor'">
-        <v-btn text to="/" color="white">Home</v-btn>
-        <v-btn text to="/termlisting" color="white">Terms</v-btn>
-        <v-btn text to="/viewsemesters" color="white">Semesters</v-btn>
-        <v-btn text to="/viewadvisors" color="white">Advisors</v-btn>
-        <v-btn text to="/viewstudents" color="white">Students</v-btn>
-        <v-btn text to="/viewdegrees" color="white">Degrees</v-btn>
+        <v-btn text :to="{ name: 'Home' }" color="white">Home</v-btn>
+        <v-btn text :to="{ name: 'ViewTerms' }" color="white">Terms</v-btn>
+        <v-btn text :to="{ name: 'ViewSemesters' }" color="white">Semesters</v-btn>
+        <v-btn text :to="{ name: 'ViewAdvisors' }" color="white">Advisors</v-btn>
+        <v-btn text :to="{ name: 'ViewStudents' }" color="white">Students</v-btn>
+        <v-btn text :to="{ name: 'ViewDegrees' }" color="white">Degrees</v-btn>
       </div>
       <div v-else-if="showNav === 'Student'">
         <v-btn text to="/" color="white">Home</v-btn>
         <v-btn text @click="goToCoursePlan()" color="white">Course Plan</v-btn>
       </div>
       <div v-else>
-        <v-btn text to="/login" color="white">Login</v-btn>
-        <v-btn text to="/register" color="white">register</v-btn>
+        <v-btn text :to="{ name: 'Login' }" color="white">Login</v-btn>
+        <v-btn text :to="{ name: 'UserRegistration' }" color="white">register</v-btn>
       </div>
     </v-app-bar>
   </div>
