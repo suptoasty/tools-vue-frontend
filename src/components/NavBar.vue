@@ -8,10 +8,12 @@
         <v-btn text :to="{ name: 'ViewAdvisors' }" color="white">Advisors</v-btn>
         <v-btn text :to="{ name: 'ViewStudents' }" color="white">Students</v-btn>
         <v-btn text :to="{ name: 'ViewDegrees' }" color="white">Degrees</v-btn>
+        <v-btn text @click="logout()" color="white">Logout</v-btn>
       </div>
       <div v-else-if="showNav === 'Student'">
         <v-btn text to="/" color="white">Home</v-btn>
         <v-btn text @click="goToCoursePlan()" color="white">Course Plan</v-btn>
+        <v-btn text @click="logout()" color="white">Logout</v-btn>
       </div>
       <div v-else>
         <v-btn text :to="{ name: 'Login' }" color="white">Login</v-btn>
@@ -23,6 +25,7 @@
 
 <script>
 import { getStore } from "@/config/util";
+import { removeItem } from "@/config/util";
 import router from "@/router/index";
 
 export default {
@@ -51,6 +54,10 @@ export default {
       console.log("THINGS: "+JSON.stringify(user));
 
       router.push("courseplan/"+id);
+    },
+    logout() {
+      removeItem("user");
+      router.push({ name: "Login" });
     }
   }
 };
