@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import ViewCourse from "../views/ViewCourse.vue";
 import ViewAdvisors from "../views/ViewAdvisors.vue";
 import ViewSemesters from "../views/ViewSemesters.vue";
+import EditSemester from "../views/EditSemester.vue";
 import ViewStudents from "../views/ViewStudents.vue";
 import ViewDegrees from "../views/ViewDegrees.vue";
 import EditCourse from "../views/EditCourse.vue";
@@ -184,7 +185,7 @@ const routes = [
   {
     path: "/editsemester/:index/",
     name: "EditSemester",
-    component: TestEdit, //need to change later
+    component: EditSemester, //need to change later
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
