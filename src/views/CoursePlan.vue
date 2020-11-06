@@ -184,7 +184,7 @@ export default {
     addItemDialog: false,
     itemToAdd: {},
     statusItems: [
-      "complete", "enrolled", "planned",
+      "Complete", "Enrolled", "Planned",
     ],
     student: { student_fname: "Bob" },
     coursePlan: {},
@@ -304,7 +304,7 @@ export default {
       //reset itemToAdd
       this.itemToAdd = {
         course_plan_item_grade: "100",
-        course_plan_item_status: "planned",
+        course_plan_item_status: this.statusItems[2],
         course_plan_item_plan: this.coursePlan.course_plan_id,
         course_plan_item_semester: this.allSemesters[0].semester_id,
         semesterData: this.allSemesters[0].semester_name,
@@ -402,7 +402,7 @@ export default {
       this.usedSemesters = tempSemesters;
       //split the course plan items by each semester
       this.sortedCoursePlanItems = [];
-      let outterIndex = -1;
+      let outerIndex = -1;
       tempSemesters.forEach((semester) => {
         let foundMatch = false;
         let innerIndex = 0;
@@ -411,7 +411,7 @@ export default {
           {
             //make an array of arrays in sortedCoursePlanItems. The index of each array matches the index of the semester
             if (!foundMatch) {
-              outterIndex++;
+              outerIndex++;
               this.semesterShow.push(false);
               this.totalHours.push(0);
               this.sortedCoursePlanItems.push([]);
@@ -423,11 +423,13 @@ export default {
             coursePlanItem.innerIndex = innerIndex;
             innerIndex++;
             //add to total hours at outter index
-            this.totalHours[outterIndex] += Number(coursePlanItem.courseData.course_hours);
-            //make the status lowercase
-            coursePlanItem.course_plan_item_status = coursePlanItem.course_plan_item_status.toLowerCase();
+            this.totalHours[outerIndex] += Number(coursePlanItem.courseData.course_hours);
+            //make the status title case
+            let temp = coursePlanItem.course_plan_item_status.toLowerCase();
+            temp = temp.charAt(0).toUpperCase() + temp.slice(1);
+            coursePlanItem.course_plan_item_status = temp;
             //push the item
-            this.sortedCoursePlanItems[outterIndex].push(coursePlanItem);
+            this.sortedCoursePlanItems[outerIndex].push(coursePlanItem);
           }
         });
       });

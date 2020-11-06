@@ -125,8 +125,8 @@ export default {
   },
   postDegreePlan(degreePlan) {
     return apiClient.post("/courseapi/degree-plans", {
-      degree: degreePlan.degree,
-      course: degreePlan.course,
+      degree_plan_degree: degreePlan.degree_plan_degree,
+      degree_plan_course: degreePlan.degree_plan_course,
     });
   },
   deleteDegreePlan(id) {
@@ -134,8 +134,8 @@ export default {
   },
   putDegreePlan(id, degreePlan) {
     return apiClient.put("/courseapi/degree-plans/" + id, {
-      degree: degreePlan.degree,
-      course: degreePlan.course,
+      degree_plan_degree: degreePlan.degree_plan_degree,
+      degree_plan_course: degreePlan.degree_plan_course,
     });
   },
 
@@ -185,8 +185,8 @@ export default {
       user_name: user.user_name,
       user_password: user.user_password,
       user_email: user.user_email,
-      student: user.student,
-      advisor: user.advisor,
+      user_student: user.user_student,
+      user_advisor: user.user_advisor,
     });
   },
 
@@ -195,8 +195,8 @@ export default {
       user_name: user.user_name,
       user_password: user.user_password,
       user_email: user.user_email,
-      student: user.student,
-      advisor: user.advisor,
+      user_student: user.user_student,
+      user_advisor: user.user_advisor,
     });
   },
 
@@ -221,8 +221,8 @@ export default {
       student_lname: student.student_lname,
       student_initial: student.student_initial,
       student_graduation_date: student.student_graduation_date,
-      degree: student.degree,
-      advisor: student.advisor,
+      student_degree: student.student_degree,
+      student_advisor: student.student_advisor,
     });
   },
 
@@ -232,8 +232,8 @@ export default {
       student_lname: student.student_lname,
       student_initial: student.student_initial,
       student_graduation_date: student.student_graduation_date,
-      degree: student.degree,
-      advisor: student.advisor,
+      student_degree: student.student_degree,
+      student_advisor: student.student_advisor,
     });
   },
 
@@ -255,14 +255,14 @@ export default {
   postCoursePlan(coursePlan) {
     return apiClient.post("/courseapi/course-plan", {
       course_plan_last_updated: coursePlan.course_plan_last_updated,
-      student: coursePlan.student,
+      course_plan_student: coursePlan.course_plan_student,
     });
   },
 
   putCoursePlan(id, coursePlan) {
     return apiClient.put("/courseapi/course-plan/" + id, {
       course_plan_last_updated: coursePlan.course_plan_last_updated,
-      student: coursePlan.student,
+      course_plan_student: coursePlan.course_plan_student,
     });
   },
 

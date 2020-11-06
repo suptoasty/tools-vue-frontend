@@ -60,10 +60,10 @@ export default {
               //get the user role from the response
               console.log(response.data[0]);
               let returnedObject = response.data[0];
-              if (returnedObject.advisor !== null) {
+              if (returnedObject.user_advisor !== null) {
                 user.roles.push("advisor");
               }
-              if (returnedObject.student !== null) {
+              if (returnedObject.user_student !== null) {
                 user.roles.push("student");
                 user.studentID = returnedObject.student;
               }

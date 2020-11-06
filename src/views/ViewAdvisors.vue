@@ -111,7 +111,7 @@
           </v-data-table>
         </v-row>
       </v-col>
-      <DeleteConfirmation />
+      <AdvisorDeleteConfirmation />
     </v-row>
   </v-container>
 </template>
@@ -119,13 +119,13 @@
 <script>
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
-import DeleteConfirmation from "@/components/DeleteConfirmation.vue";
+import AdvisorDeleteConfirmation from "@/components/AdvisorDeleteConfirmation.vue";
 import { getStore } from "@/config/util.js";
 
 export default {
   name: "ViewAdvisors",
   components: {
-    DeleteConfirmation,
+    AdvisorDeleteConfirmation,
   },
   data: () => ({
     search: "",
@@ -139,9 +139,9 @@ export default {
     userRoles: [],
   }),
   methods: {
-    onDelete(course) {
-      console.log("Emiting Delete for: " + course.course_name);
-      this.$root.$emit("deleteCourse", course);
+    onDelete(advisor) {
+      console.log("Emiting Delete for: " + advisor.advisor_fname);
+      this.$root.$emit("deleteAdvisor", advisor);
     },
   },
   computed: {
@@ -170,7 +170,7 @@ export default {
       .catch((error) => {
         console.log("there was an error:" + error.response);
       });
-    this.$root.$on("CourseDeleted", () => {
+    this.$root.$on("AdvisorDeleted", () => {
       CourseService.getCourses()
         .then((response) => {
           this.advisors = response.data;
