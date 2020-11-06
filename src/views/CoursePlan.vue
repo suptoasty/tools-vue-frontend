@@ -70,6 +70,13 @@
           }"
           >Cancel</v-btn
         >
+        <v-spacer></v-spacer>
+        <v-btn
+          class="ml-4"
+          Normal
+          @click="generatePDF()"
+          >Download PDF</v-btn
+        >
     </v-row>
     <v-row v-for="(semesterItems, index) in sortedCoursePlanItems" :key="index" align="start">
       <v-col cols="12">
@@ -103,6 +110,7 @@
               :headers="headers"
               :items="semesterItems"
               item-key="course_plan_item_id"
+              :options= "{ itemsPerPage: 100 }"
             >
               <template v-slot:item.course_plan_item_grade="{ item }">
                 <v-text-field
@@ -159,7 +167,9 @@
 
 <script>
 import CourseService from "@/services/CourseService.js";
-import router from "@/router/index.js"
+import router from "@/router/index.js";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 export default {
   name: "Home",
   props: {
@@ -187,6 +197,69 @@ export default {
     semesterShow: [],
   }),
   methods: {
+    generatePDF() {
+      const columns = [
+        { title: "Id", dataKey: "course_plan_item_id" },
+        { title: "Course Name", dataKey: "courseName" },
+        { title: "Course Number", dataKey: "courseNumber" },
+        { title: "Credit Hours", dataKey: "courseHours" },
+        { title: "Grade", dataKey: "course_plan_item_grade" },
+        { title: "Status", dataKey: "course_plan_item_status" },
+      ];
+      const doc = new jsPDF({
+        orientation: "portrait",
+        unit: "in",
+        format: "letter"
+      });
+      const sideMargin = 0.5;
+      const topMargin = 1;
+      let finalY = topMargin;
+
+      // text is placed using x, y coordinates
+      doc.setFontSize(16).text(`${this.student.student_fname}'s Course Plan`, sideMargin, finalY);
+      finalY += 0.1;
+
+      // create a line under heading 
+      doc.setLineWidth(0.01).line(sideMargin, 1.1, doc.internal.pageSize.getWidth() - sideMargin, finalY);
+      finalY += 0.1;
+      
+      // create each semester
+      let pdfCoursePlanItems = this.sortedCoursePlanItems;
+      let i = 0, k = 0;
+      for (i = 0; i < pdfCoursePlanItems.length; i++) {
+        for (k = 0; k < pdfCoursePlanItems[i].length; k++) {
+          pdfCoursePlanItems[i][k].courseName = pdfCoursePlanItems[i][k].courseData.course_name;
+          pdfCoursePlanItems[i][k].courseNumber = pdfCoursePlanItems[i][k].courseData.course_num;
+          pdfCoursePlanItems[i][k].courseHours = pdfCoursePlanItems[i][k].courseData.course_hours;
+        }
+        // Semester title
+        finalY += 0.5
+        doc.setFontSize(12).text(`${this.usedSemesters[i].semester_name}`, sideMargin, finalY);
+        
+        // Semester hours
+        let hoursText = `Total Hours: ${this.totalHours[i]}`
+        let finalX = doc.internal.pageSize.getWidth() - doc.getTextWidth(hoursText) - sideMargin - 0.02;
+        doc.setFontSize(12).text(hoursText, finalX, finalY);
+        finalY += 0.2;
+
+        // Using autoTable plugin
+        doc.autoTable({
+          columns,
+          startY: finalY,
+          body: pdfCoursePlanItems[i],
+          styles: { // doesn't even do anything???
+            overflow: 'hidden'
+          },
+          margin: { left: sideMargin, top: 1.25, right: sideMargin }
+        });
+
+        finalY = doc.lastAutoTable.finalY;
+        console.log(doc.lastAutoTable.finalY);
+      }
+        
+      // Creating footer and saving file
+      doc.save(`${this.student.student_fname}CoursePlan.pdf`);
+    },
     sqlDateTimeToJsDate(dateTime) {
       let dateTimeParts = dateTime.split(/[- :]/); // regular expression split that creates array with: year, month, day, hour, minutes, seconds values
       dateTimeParts[1]--; // monthIndex begins with 0 for January and ends with 11 for December so we need to decrement by one

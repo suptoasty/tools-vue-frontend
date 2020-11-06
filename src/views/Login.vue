@@ -60,12 +60,13 @@ export default {
               //get the user role from the response
               console.log(response.data[0]);
               let returnedObject = response.data[0];
+              console.log(returnedObject);
               if (returnedObject.user_advisor !== null) {
                 user.roles.push("advisor");
               }
               if (returnedObject.user_student !== null) {
                 user.roles.push("student");
-                user.studentID = returnedObject.student;
+                user.studentID = returnedObject.user_student;
               }
 
               //store the use role in local storage
