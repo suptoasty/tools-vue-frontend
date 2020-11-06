@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import { getStore } from "@/config/util.js";
 export default {
   name: "ViewCourse",
   props: ["courseObject"],
