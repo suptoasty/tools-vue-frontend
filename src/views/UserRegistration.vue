@@ -190,7 +190,7 @@ export default {
       initial: "",
     },
     possibleRoles: ["Student", "Advisor"],
-    userRole: possibleRoles[0],
+    userRole: "",
     // checks
     valid: false,
     roleRules: [(v) => v.length != 0 || "User must have a role"],
