@@ -1,6 +1,7 @@
 <template>
   <v-form v-model="valid">
     <v-container>
+      <!-- User Role -->
       <v-row v-if="isAdd">
         <v-col cols="12" md="6">
           <v-select
@@ -12,6 +13,7 @@
         </v-col>
       </v-row>
 
+      <!-- First Name, Last Name -->
       <v-row>
         <v-col cols="12" md="6">
           <v-text-field
@@ -31,6 +33,7 @@
         </v-col>
       </v-row>
 
+      <!-- Email -->
       <v-row>
         <v-col cols="12" md="12">
           <v-text-field
@@ -42,6 +45,7 @@
         </v-col>
       </v-row>
 
+      <!-- Advisor Department -->
       <div v-if="userRole == possibleRoles[1]">
         <v-row>
           <v-col cols="12" md="12">
@@ -53,7 +57,10 @@
           </v-col>
         </v-row>
       </div>
+
+      <!-- Student -->
       <div v-else>
+        <!-- Graduation Date -->
         <v-row>
           <v-col md="14">
             <v-menu
@@ -81,11 +88,7 @@
                 scrollable
               >
                 <v-spacer></v-spacer>
-                <v-btn
-                  text
-                  color="primary"
-                  @click="datePickerVisible = false"
-                >
+                <v-btn text color="primary" @click="datePickerVisible = false">
                   Cancel
                 </v-btn>
                 <v-btn
@@ -99,6 +102,8 @@
             </v-menu>
           </v-col>
         </v-row>
+
+        <!-- Degree -->
         <v-row>
           <v-col>
             <v-select
@@ -110,6 +115,8 @@
             ></v-select>
           </v-col>
         </v-row>
+
+        <!-- Student Advisor -->
         <v-row>
           <v-col>
             <v-select
@@ -122,7 +129,7 @@
           </v-col>
         </v-row>
       </div>
-      
+
       <v-row>
         <v-col align="center" v-if="isAdd">
           <v-btn @click="saveUser()">Register</v-btn>
@@ -183,35 +190,29 @@ export default {
       initial: "",
     },
     possibleRoles: ["Student", "Advisor"],
-    userRole: "Student",
+    userRole: possibleRoles[0],
     // checks
     valid: false,
-    isAdvisorData: false,
-    roleRules: [
-      v => v.length != 0 || "User must have a role"
-    ],
+    roleRules: [(v) => v.length != 0 || "User must have a role"],
     nameRules: [
-      v => !!v || "Name is required",
-      v => v.length <= 255 || "Name must be less than 256 characters"
+      (v) => !!v || "Name is required",
+      (v) => v.length <= 255 || "Name must be less than 256 characters",
     ],
     emailRules: [
-      v => !!v || "E-mail is required",
-      v => /.+@.+/.test(v) || "E-mail must be valid"
+      (v) => !!v || "E-mail is required",
+      (v) => /.+@.+/.test(v) || "E-mail must be valid",
     ],
     degreeList: [],
-    advisorList: []
+    advisorList: [],
   }),
   mounted() {
-    //store the isAdvisor prop into the isAdvisorData since it is bad to change prop data
-    this.isAdvisorData = this.isAdvisor;
-
-    CourseService.getDegrees().then(response => {
+    CourseService.getDegrees().then((response) => {
       this.degreeList = response.data;
     });
 
-    CourseService.getAdvisors().then(response => {
+    CourseService.getAdvisors().then((response) => {
       this.advisorList = response.data;
-      this.advisorList.forEach(e => {
+      this.advisorList.forEach((e) => {
         e.fullName = e.advisor_lname + ", " + e.advisor_fname;
         if (e.advisor_initial != null) {
           e.fullName += " " + e.advisor_initial;
@@ -219,11 +220,17 @@ export default {
       });
     });
 
+    if (this.isAdvisor) {
+      this.userRole = this.possibleRoles[1];
+    } else {
+      this.userRole = this.possibleRoles[0];
+    }
+
     //if we are in an edit, then the user will no longer be able to switch between advisor and student
     //so the respective fields will be fetched either as a student or as an advisor
     if (!this.isAdd) {
-      if (this.userRole == this.possibleRoles[1]) {
-        CourseService.getAdvisor(this.index).then(response => {
+      if (this.isAdvisor) {
+        CourseService.getAdvisor(this.index).then((response) => {
           let r = response.data[0];
           this.user.user_id = r.user_id;
           this.user.user_email = r.user_email;
@@ -235,11 +242,9 @@ export default {
           this.both.initial = r.advisor_initial;
 
           this.advisor.advisor_department = r.advisor_department;
-
-          this.userRole = this.possibleRoles[1];
         });
       } else {
-        CourseService.getStudent(this.index).then(response => {
+        CourseService.getStudent(this.index).then((response) => {
           let r = response.data[0];
           this.user.user_id = r.user_id;
           this.user.user_email = r.user_email;
@@ -253,12 +258,9 @@ export default {
           this.student.student_graduation_date = r.student_graduation_date;
           this.student.student_degree = r.student_degree;
           this.student.student_advisor = r.student_advisor;
-
-          this.userRole = this.possibleRoles[0];
         });
       }
     }
-    
   },
   methods: {
     cancel() {
@@ -281,16 +283,16 @@ export default {
       this.advisor.advisor_initial = this.both.initial;
 
       if (this.isAdd) {
-        CourseService.postAdvisor(this.advisor).then(response => {
-        this.user.user_advisor = response.data.id;
-        CourseService.postUser(this.user).then(() => {
-          if (this.returnTo !== undefined && this.returnTo !== null) {
-            router.push({ name: this.returnTo });
-          } else {
-            router.push({ name: "Login" });
-          }
+        CourseService.postAdvisor(this.advisor).then((response) => {
+          this.user.user_advisor = response.data.id;
+          CourseService.postUser(this.user).then(() => {
+            if (this.returnTo !== undefined && this.returnTo !== null) {
+              router.push({ name: this.returnTo });
+            } else {
+              router.push({ name: "Login" });
+            }
+          });
         });
-      });
       } else {
         CourseService.putAdvisor(this.userAdvisor, this.advisor).then(() => {
           CourseService.putUser(this.userId, this.user).then(() => {
@@ -303,32 +305,30 @@ export default {
       this.student.student_fname = this.both.fname;
       this.student.student_lname = this.both.lname;
       this.student.student_initial = this.both.initial;
-      
+
       if (this.isAdd) {
-        CourseService.postStudent(this.student).then(async response => {
+        CourseService.postStudent(this.student).then(async (response) => {
           this.user.user_student = response.data.id;
           console.log("Posting:", this.user);
           CourseService.postUser(this.user).then(() => {
-            if (this.returnTo !== undefined && this.returnTo !== null)
-            {
+            if (this.returnTo !== undefined && this.returnTo !== null) {
               router.push({ name: this.returnTo });
-            }
-            else
-            {
+            } else {
               router.push({ name: "Login" });
             }
           });
         });
       }
-      CourseService.putStudent(this.user.user_student, this.student).then(() => {
-        CourseService.postUser(this.user.user_id, this.user).then(() => {
-          router.push({ name: this.returnTo });
-        });
-      });
-    }
-  }
+      CourseService.putStudent(this.user.user_student, this.student).then(
+        () => {
+          CourseService.postUser(this.user.user_id, this.user).then(() => {
+            router.push({ name: this.returnTo });
+          });
+        }
+      );
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>
