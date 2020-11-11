@@ -4,31 +4,39 @@
       <v-col cols="7">
         <v-row>
           <v-col>
-            <h1 v-if="isAdd">Add Term</h1>
-            <h1 v-else>Edit Term</h1>
+            <h1 v-if="isAdd">Add Degree</h1>
+            <h1 v-else>Edit Degree</h1>
           </v-col>
         </v-row>
         <v-divider></v-divider>
         <v-row>
           <v-col>
-            <p>Term name:</p>
+            <p>Degree name:</p>
           </v-col>
           <v-col>
-            <v-text-field v-model="TermObject.term_name"></v-text-field>
+            <v-text-field v-model="DegreeObject.degree_name"></v-text-field>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
-            <p>Abbreviation:</p>
+            <p>Degree department:</p>
           </v-col>
           <v-col>
-            <v-text-field v-model="TermObject.term_abbr"></v-text-field>
+            <v-text-field v-model="DegreeObject.degree_dept"></v-text-field>
+          </v-col>
+        </v-row>
+       <v-row>
+          <v-col>
+            <p>Degree hours:</p>
+          </v-col>
+          <v-col>
+            <v-text-field v-model="DegreeObject.degree_hours"></v-text-field>
           </v-col>
         </v-row>
        
         <v-row v-if="isAdd">
           <v-col align="center">
-            <v-btn v-on:click.native="addTerm" color="primary">Add</v-btn>
+            <v-btn v-on:click.native="addDegree" color="primary">Add</v-btn>
           </v-col>
           <v-col align="center">
             <v-btn
@@ -42,7 +50,7 @@
         </v-row>
         <v-row v-else>
           <v-col align="center">
-            <v-btn v-on:click.native="saveTerm" color="primary">Save</v-btn>
+            <v-btn v-on:click.native="saveDegree" color="primary">Save</v-btn>
           </v-col>
           <v-col align="center">
             <v-btn
@@ -63,14 +71,15 @@
 import CourseService from "@/services/CourseService.js";
 import router from "@/router/index.js";
 export default {
-  name: "EditCourse",
+  name: "EditDegree",
   props: {
-    TermObject: {
+    DegreeObject: {
       type: Object,
       default() {
         return {
-          term_name: "",
-          term_abbr: "",
+          degree_name: "",
+          degree_dept: "",
+          degree_hours: ""
         };
       },
     },
@@ -84,11 +93,11 @@ export default {
     },
   },
   mounted() {
-    console.log(this.TermObject);
+    console.log(this.DegreeObject);
   },
   methods: {
-    saveTerm() {
-      CourseService.putTerm(this.TermObject.term_id, this.TermObject)
+    saveDegree() {
+      CourseService.putDegree(this.DegreeObject.degree_id, this.DegreeObject)
         .then(() => {
           router.push({
             name: this.returnTo,
@@ -98,8 +107,8 @@ export default {
           console.log("Save class error: " + error.response);
         });
     },
-    addTerm() {
-      CourseService.postTerm(this.TermObject)
+    addDegree() {
+      CourseService.postDegree(this.DegreeObject)
         .then(() => {
           router.push({ name: this.returnTo });
         })
