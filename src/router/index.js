@@ -215,7 +215,7 @@ const routes = [
   {
     path: "/addsemester/",
     name: "AddSemester",
-    component: TestEdit, //need to change later
+    component: EditSemester, //need to change later
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
