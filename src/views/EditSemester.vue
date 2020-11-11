@@ -27,7 +27,7 @@ export default {
   },
   data() {
     return {
-      term: {},
+      semester: {},
     };
   },
   mounted() {
@@ -37,7 +37,7 @@ export default {
     getSemester() {
       CourseService.getSemester(this.index)
         .then((response) => {
-          this.term = response.data[0];
+          this.semester = response.data[0];
         })
         .catch((error) => {
           console.log("created error: " + error.response);
