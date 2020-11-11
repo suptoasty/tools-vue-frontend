@@ -65,7 +65,7 @@ export default {
               }
               if (returnedObject.user_student !== null) {
                 user.roles.push("student");
-                user.studentID = returnedObject.student;
+                user.studentID = returnedObject.user_student;
               }
 
               //store the use role in local storage
