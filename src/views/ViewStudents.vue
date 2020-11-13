@@ -163,6 +163,8 @@ export default {
     students: [],
     page: 1,
     userRoles: [],
+    degrees: undefined,
+    advisors: undefined,
   }),
   methods: {
     onDelete(student) {
@@ -173,6 +175,42 @@ export default {
       CourseService.getStudents()
       .then((response) => {
         this.students = response.data;
+        //set student degree names
+        if (this.degrees == undefined || this.degrees == null) {
+          CourseService.getDegrees().then( (response) => {
+            this.degrees = response.data;
+            for (let i = 0; i < this.students.length; i++) {
+              this.students[i].degreeName = this.degrees.find( (element) => { return element.degree_id == this.students[i].student_degree} ).degree_name;
+              let tempStudent = this.students[i];
+              this.students.splice(i, 1, tempStudent);
+            }
+            console.log(this.students);
+          });
+        } else {
+          for (let i = 0; i < this.students.length; i++) {
+            this.students[i].degreeName = this.degrees.find( (element) => { return element.degree_id == this.students[i].student_degree} ).degree_name;
+            let tempStudent = this.students[i];
+            this.students.splice(i, 1, tempStudent);
+          }
+        }
+        //set student advisor names
+        if (this.advisors == undefined || this.advisors == null) {
+          CourseService.getAdvisors().then( (response) => {
+            this.advisors = response.data;
+            for (let i = 0; i < this.students.length; i++) {
+              this.students[i].advisorName = this.advisors.find( (element) => { return element.advisor_id == this.students[i].student_advisor} ).advisor_fname;
+              let tempStudent = this.students[i];
+              this.students.splice(i, 1, tempStudent);
+            }
+            console.log(this.students);
+          });
+        } else {
+          for (let i = 0; i < this.students.length; i++) {
+            this.students[i].advisorName = this.advisors.find( (element) => { return element.advisor_id == this.students[i].student_advisor} ).advisor_fname;
+            let tempStudent = this.students[i];
+            this.students.splice(i, 1, tempStudent);
+          }
+        }
       })
       .catch((error) => {
         console.log("there was an error:" + error);
@@ -194,7 +232,7 @@ export default {
         },
         {
           text: "Degree",
-          value: "student_degree",
+          value: "degreeName",
           filterable: this.includeInSearch.includes(2),
         },
         {
@@ -204,7 +242,7 @@ export default {
         },
         {
           text: "Advisor",
-          value: "student_advisor",
+          value: "advisorName",
           filterable: this.includeInSearch.includes(4),
         },
         { text: "Actions", value: "actions" },
