@@ -22,23 +22,100 @@
             <p>Start date:</p>
           </v-col>
           <v-col>
-            <v-text-field v-model="SemesterObject.semester_start"></v-text-field>
+            <v-menu
+              ref="startDateMenu"
+              v-model="startDatePickerVisible"
+              :close-on-content-click="false"
+              :return-value.sync="SemesterObject.semester_start"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="SemesterObject.semester_start"
+                  label="Semester Start Date"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="SemesterObject.semester_start"
+                no-title
+                scrollable
+              >
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="startDatePickerVisible = false">
+                  Cancel
+                </v-btn>
+                <v-btn
+                  text
+                  color="primary"
+                  @click="$refs.startDateMenu.save(SemesterObject.semester_start)"
+                >
+                  OK
+                </v-btn>
+              </v-date-picker>
+            </v-menu>
           </v-col>
         </v-row>
        <v-row>
-          <v-col>
+          <v-col><!--SemesterObject.semester_end-->
             <p>End date:</p>
           </v-col>
           <v-col>
-            <v-text-field v-model="SemesterObject.semester_end"></v-text-field>
+            <v-menu
+              ref="endDateMenu"
+              v-model="endDatePickerVisible"
+              :close-on-content-click="false"
+              :return-value.sync="SemesterObject.semester_end"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="SemesterObject.semester_end"
+                  label="Semester End Date"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="SemesterObject.semester_end"
+                no-title
+                scrollable
+              >
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="endDatePickerVisible = false">
+                  Cancel
+                </v-btn>
+                <v-btn
+                  text
+                  color="primary"
+                  @click="$refs.endDateMenu.save(SemesterObject.semester_end)"
+                >
+                  OK
+                </v-btn>
+              </v-date-picker>
+            </v-menu>
           </v-col>
         </v-row>
        <v-row>
-          <v-col>
-            <p>Semester term:</p>
+         <v-col>
+            <p>Term:</p>
           </v-col>
-          <v-col>
-            <v-text-field v-model="SemesterObject.semester_term"></v-text-field>
+         <v-col>
+            <v-select
+                :items="terms"
+                item-text="term_name"
+                label="Semester"
+                v-model="SemesterObject.term_name"
+            ></v-select>
           </v-col>
         </v-row>
        
@@ -88,7 +165,8 @@ export default {
           semester_name: "",
           semester_start: "",
           semester_end: "",
-          semester_term: ""
+          semester_term: "",
+          term_name: "",
         };
       },
     },
@@ -101,11 +179,19 @@ export default {
       default: false,
     },
   },
+  data: () => ({
+    endDatePickerVisible: false,
+    startDatePickerVisible: false,
+    terms: []
+  }),
   mounted() {
-    console.log(this.SemesterObject);
+    CourseService.getTerms().then ( (response) => {
+      this.terms = response.data;
+    });
   },
   methods: {
     saveSemester() {
+      this.SemesterObject.semester_term = this.terms.find(element => element.term_name === this.SemesterObject.term_name).term_id;
       CourseService.putSemester(this.SemesterObject.semester_id, this.SemesterObject)
         .then(() => {
           router.push({
@@ -126,6 +212,5 @@ export default {
         });
     },
   },
-  data: () => ({}),
 };
 </script>

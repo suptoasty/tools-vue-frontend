@@ -7,6 +7,7 @@ import ViewAdvisors from "../views/ViewAdvisors.vue";
 import ViewSemesters from "../views/ViewSemesters.vue";
 import EditSemester from "../views/EditSemester.vue";
 import ViewStudents from "../views/ViewStudents.vue";
+import EditStudent from "../views/EditStudent.vue";
 import ViewDegrees from "../views/ViewDegrees.vue";
 import EditDegree from "../views/EditDegree.vue";
 import CoursePlan from "../views/CoursePlan.vue";
@@ -166,7 +167,7 @@ const routes = [
   {
     path: "/editstudent/:index/",
     name: "EditStudent",
-    component: TestEdit, //need to change later
+    component: EditStudent,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
@@ -176,7 +177,7 @@ const routes = [
   {
     path: "/editdegree/:index/",
     name: "EditDegree",
-    component: EditDegree, //need to change later
+    component: EditDegree,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
@@ -186,7 +187,7 @@ const routes = [
   {
     path: "/editsemester/:index/",
     name: "EditSemester",
-    component: EditSemester, //need to change later
+    component: EditSemester,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
@@ -196,7 +197,7 @@ const routes = [
   {
     path: "/addstudent/",
     name: "AddStudent",
-    component: TestEdit, //need to change later
+    component: EditStudent,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
@@ -206,7 +207,7 @@ const routes = [
   {
     path: "/adddegree/",
     name: "AddDegree",
-    component: EditDegree, //need to change later
+    component: EditDegree,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
@@ -216,7 +217,7 @@ const routes = [
   {
     path: "/addsemester/",
     name: "AddSemester",
-    component: EditSemester, //need to change later
+    component: EditSemester,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
