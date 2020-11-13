@@ -180,14 +180,14 @@ export default {
     },
   },
   data: () => ({
+    endDatePickerVisible: false,
+    startDatePickerVisible: false,
     terms: []
   }),
   mounted() {
     CourseService.getTerms().then ( (response) => {
       this.terms = response.data;
-      this.SemesterObject.term_name = this.terms.find(element => element.term_id == this.SemesterObject.term_id).term_name;
     });
-    console.log(this.SemesterObject);
   },
   methods: {
     saveSemester() {
