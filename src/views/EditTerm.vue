@@ -64,13 +64,9 @@
 <script>
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
-import EditingTerm from "@/components/EditingTerm.vue";
 import router from "@/router/index.js";
 
 export default {
-  components: {
-    EditingTerm,
-  },
   props: {
     index: {
       default: undefined,
