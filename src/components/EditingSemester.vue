@@ -34,11 +34,16 @@
           </v-col>
         </v-row>
        <v-row>
-          <v-col>
-            <p>Semester term:</p>
+         <v-col>
+            <p>Term:</p>
           </v-col>
-          <v-col>
-            <v-text-field v-model="SemesterObject.semester_term"></v-text-field>
+         <v-col>
+            <v-select
+                :items="terms"
+                item-text="term_name"
+                label="Semester"
+                v-model="SemesterObject.term_name"
+            ></v-select>
           </v-col>
         </v-row>
        
@@ -88,7 +93,8 @@ export default {
           semester_name: "",
           semester_start: "",
           semester_end: "",
-          semester_term: ""
+          semester_term: "",
+          term_name: "",
         };
       },
     },
@@ -101,11 +107,19 @@ export default {
       default: false,
     },
   },
+  data: () => ({
+    terms: []
+  }),
   mounted() {
+    CourseService.getTerms().then ( (response) => {
+      this.terms = response.data;
+      this.SemesterObject.term_name = this.terms.find(element => element.term_id == this.SemesterObject.term_id).term_name;
+    });
     console.log(this.SemesterObject);
   },
   methods: {
     saveSemester() {
+      this.SemesterObject.semester_term = this.terms.find(element => element.term_name === this.SemesterObject.term_name).term_id;
       CourseService.putSemester(this.SemesterObject.semester_id, this.SemesterObject)
         .then(() => {
           router.push({
@@ -126,6 +140,5 @@ export default {
         });
     },
   },
-  data: () => ({}),
 };
 </script>
