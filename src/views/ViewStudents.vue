@@ -155,11 +155,9 @@ export default {
     searchOptions: [
       "ID",
       "Name",
-      "Major",
       "GraduationDate",
-      "Advisor"
     ],
-    includeInSearch: [0, 1, 2, 3, 4],
+    includeInSearch: [0, 1, 2],
     students: [],
     page: 1,
     userRoles: [],
@@ -184,19 +182,9 @@ export default {
           filterable: this.includeInSearch.includes(1),
         },
         {
-          text: "Major",
-          value: "student_major",
-          filterable: this.includeInSearch.includes(2),
-        },
-        {
           text: "GraduationDate",
           value: "student_graduation_date",
-          filterable: this.includeInSearch.includes(3),
-        },
-        {
-          text: "Advisor",
-          value: "advisor",
-          filterable: this.includeInSearch.includes(4),
+          filterable: this.includeInSearch.includes(2),
         },
         
         { text: "Actions", value: "actions" },

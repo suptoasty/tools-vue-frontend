@@ -4,37 +4,53 @@
       <v-col cols="7">
         <v-row>
           <v-col>
-            <h1 v-if="isAdd">Add Semester</h1>
-            <h1 v-else>Edit Semester</h1>
+            <h1 v-if="isAdd">Add Student</h1>
+            <h1 v-else>Edit Student</h1>
           </v-col>
         </v-row>
         <v-divider></v-divider>
         <v-row>
           <v-col>
-            <p>Semester name:</p>
+            <p>Student first name:</p>
           </v-col>
           <v-col>
-            <v-text-field v-model="SemesterObject.semester_name"></v-text-field>
+            <v-text-field v-model="StudentObject.student_fname"></v-text-field>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
-            <p>Start date:</p>
+            <p>Student last name:</p>
+          </v-col>
+          <v-col>
+            <v-text-field v-model="StudentObject.student_lname"></v-text-field>
+          </v-col>
+        </v-row>
+       <v-row>
+          <v-col>
+            <p>Student Initial:</p>
+          </v-col>
+          <v-col>
+            <v-text-field v-model="StudentObject.student_initial"></v-text-field>
+          </v-col>
+        </v-row>
+       <v-row>
+          <v-col>
+            <p>Graduation Date:</p>
           </v-col>
           <v-col>
             <v-menu
-              ref="startDateMenu"
-              v-model="startDatePickerVisible"
+              ref="menu"
+              v-model="datePickerVisible"
               :close-on-content-click="false"
-              :return-value.sync="SemesterObject.semester_start"
+              :return-value.sync="StudentObject.student_graduation_date"
               transition="scale-transition"
               offset-y
               min-width="290px"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  v-model="SemesterObject.semester_start"
-                  label="Semester Start Date"
+                  v-model="StudentObject.student_graduation_date"
+                  label="Graduation Date"
                   prepend-icon="mdi-calendar"
                   readonly
                   v-bind="attrs"
@@ -42,18 +58,18 @@
                 ></v-text-field>
               </template>
               <v-date-picker
-                v-model="SemesterObject.semester_start"
+                v-model="StudentObject.student_graduation_date"
                 no-title
                 scrollable
               >
                 <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="startDatePickerVisible = false">
+                <v-btn text color="primary" @click="datePickerVisible = false">
                   Cancel
                 </v-btn>
                 <v-btn
                   text
                   color="primary"
-                  @click="$refs.startDateMenu.save(SemesterObject.semester_start)"
+                  @click="$refs.menu.save(StudentObject.student_graduation_date)"
                 >
                   OK
                 </v-btn>
@@ -61,62 +77,9 @@
             </v-menu>
           </v-col>
         </v-row>
-       <v-row>
-          <v-col><!--SemesterObject.semester_end-->
-            <p>End date:</p>
-          </v-col>
-          <v-col>
-            <v-menu
-              ref="endDateMenu"
-              v-model="endDatePickerVisible"
-              :close-on-content-click="false"
-              :return-value.sync="SemesterObject.semester_end"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="SemesterObject.semester_end"
-                  label="Semester End Date"
-                  prepend-icon="mdi-calendar"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="SemesterObject.semester_end"
-                no-title
-                scrollable
-              >
-                <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="endDatePickerVisible = false">
-                  Cancel
-                </v-btn>
-                <v-btn
-                  text
-                  color="primary"
-                  @click="$refs.endDateMenu.save(SemesterObject.semester_end)"
-                >
-                  OK
-                </v-btn>
-              </v-date-picker>
-            </v-menu>
-          </v-col>
-        </v-row>
-       <v-row>
-          <v-col>
-            <p>Semester term:</p>
-          </v-col>
-          <v-col>
-            <v-text-field v-model="SemesterObject.semester_term"></v-text-field>
-          </v-col>
-        </v-row>
-       
         <v-row v-if="isAdd">
           <v-col align="center">
-            <v-btn v-on:click.native="addSemester" color="primary">Add</v-btn>
+            <v-btn v-on:click.native="addStudent" color="primary">Add</v-btn>
           </v-col>
           <v-col align="center">
             <v-btn
@@ -130,7 +93,7 @@
         </v-row>
         <v-row v-else>
           <v-col align="center">
-            <v-btn v-on:click.native="saveSemester" color="primary">Save</v-btn>
+            <v-btn v-on:click.native="saveStudent" color="primary">Save</v-btn>
           </v-col>
           <v-col align="center">
             <v-btn
@@ -151,16 +114,16 @@
 import CourseService from "@/services/CourseService.js";
 import router from "@/router/index.js";
 export default {
-  name: "EditSemester",
+  name: "EditStudent",
   props: {
-    SemesterObject: {
+    StudentObject: {
       type: Object,
       default() {
         return {
-          semester_name: "",
-          semester_start: "",
-          semester_end: "",
-          semester_term: ""
+          student_fname: "",
+          student_lname: "",
+          student_initial: "",
+          student_graduation_date: ""
         };
       },
     },
@@ -174,11 +137,11 @@ export default {
     },
   },
   mounted() {
-    console.log(this.SemesterObject);
+    console.log(this.StudentObject);
   },
   methods: {
-    saveSemester() {
-      CourseService.putSemester(this.SemesterObject.semester_id, this.SemesterObject)
+    saveStudent() {
+      CourseService.putStudent(this.StudentObject.student_id, this.StudentObject)
         .then(() => {
           router.push({
             name: this.returnTo,
@@ -188,8 +151,8 @@ export default {
           console.log("Save class error: " + error.response);
         });
     },
-    addSemester() {
-      CourseService.postSemester(this.SemesterObject)
+    addStudent() {
+      CourseService.postStudent(this.StudentObject)
         .then(() => {
           router.push({ name: this.returnTo });
         })
