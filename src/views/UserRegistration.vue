@@ -317,15 +317,19 @@ export default {
               router.push({ name: "Login" });
             }
           });
-        });
-      }
-      CourseService.putStudent(this.user.user_student, this.student).then(
-        () => {
-          CourseService.postUser(this.user.user_id, this.user).then(() => {
-            router.push({ name: this.returnTo });
+          CourseService.postCoursePlan({
+            course_plan_last_updated: new Date(),
+            course_plan_student: this.user.user_student
           });
-        }
-      );
+        });
+      } else {
+        CourseService.putStudent(this.user.user_student, this.student).then(() => {
+            CourseService.putUser(this.user.user_id, this.user).then(() => {
+              router.push({ name: this.returnTo });
+            });
+          }
+        );
+      }
     },
   },
 };
