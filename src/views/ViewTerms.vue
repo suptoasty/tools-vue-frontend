@@ -37,7 +37,7 @@
                     name: 'AddTerm',
                     params: {
                       index: undefined,
-                      returnTo: 'TermListing',
+                      returnTo: 'ViewTerms',
                       isAdd: true,
                     },
                   })
@@ -97,7 +97,7 @@
                             name: 'EditTerm',
                             params: {
                               index: item.term_id,
-                              returnTo: 'TermListing',
+                              returnTo: 'ViewTerms',
                               isAdd: false,
                             },
                           })
@@ -143,7 +143,7 @@ import TermDeleteConfirmation from "@/components/TermDeleteConfirmation.vue";
 import { getStore } from "@/config/util.js";
 
 export default {
-  name: "TermListing",
+  name: "ViewTerms",
   components: {
     TermDeleteConfirmation,
   },
