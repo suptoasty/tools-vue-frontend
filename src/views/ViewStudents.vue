@@ -155,9 +155,11 @@ export default {
     searchOptions: [
       "ID",
       "Name",
+      "Degree",
       "GraduationDate",
+      "Advisor",
     ],
-    includeInSearch: [0, 1, 2],
+    includeInSearch: [0, 1, 2, 3, 4],
     students: [],
     page: 1,
     userRoles: [],
@@ -166,6 +168,15 @@ export default {
     onDelete(student) {
       console.log("Emiting Delete for: " + student.student_fname);
       this.$root.$emit("deleteStudent", student);
+    },
+    getStudents() {
+      CourseService.getStudents()
+      .then((response) => {
+        this.students = response.data;
+      })
+      .catch((error) => {
+        console.log("there was an error:" + error);
+      });
     },
   },
   computed: {
@@ -182,32 +193,29 @@ export default {
           filterable: this.includeInSearch.includes(1),
         },
         {
-          text: "GraduationDate",
-          value: "student_graduation_date",
+          text: "Degree",
+          value: "student_degree",
           filterable: this.includeInSearch.includes(2),
         },
-        
+        {
+          text: "GraduationDate",
+          value: "student_graduation_date",
+          filterable: this.includeInSearch.includes(3),
+        },
+        {
+          text: "Advisor",
+          value: "student_advisor",
+          filterable: this.includeInSearch.includes(4),
+        },
         { text: "Actions", value: "actions" },
       ];
     },
   },
   mounted() {
     this.userRoles = getStore("user").roles;
-    CourseService.getStudents()
-      .then((response) => {
-        this.students = response.data;
-      })
-      .catch((error) => {
-        console.log("there was an error:" + error.response);
-      });
+    this.getStudents();
     this.$root.$on("StudentDeleted", () => {
-      CourseService.getStudents()
-        .then((response) => {
-          this.students = response.data;
-        })
-        .catch((error) => {
-          console.log("there was an error:" + error.response);
-        });
+      this.getStudents();
     });
   },
 };
