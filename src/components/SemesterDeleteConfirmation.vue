@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" persistent max-width="400">
     <v-card>
       <v-card-title class="headline" style="word-break: normal">Delete "{{modalTitle}}"?</v-card-title>
-      <v-card-text><em>WARNING: This Cannot Be Undone!</em><br/>
+      <v-card-text><em>WARNING: This Cannot Be Undone!</em><br/><br/>
                   Deleting this semester will also delete any associated:<br/>
                   <ul>
                     <li>Course Plan Items</li>

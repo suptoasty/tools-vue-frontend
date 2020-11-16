@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" persistent max-width="400">
     <v-card>
       <v-card-title class="headline" style="word-break: normal">Delete "{{modalTitle}}"?</v-card-title>
-      <v-card-text>All Contents Will Be Deleted! <br/> This Cannot Be Undone!</v-card-text>
+      <v-card-text><em>WARNING: This Cannot Be Undone!</em><br/><br/></v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="red darken-1" text @click="onDelete(advisorID)">Delete</v-btn>
@@ -24,7 +24,7 @@ export default {
   }),
   methods: {
     onShowModal(advisor) {
-      this.modalTitle = advisor.advisor_fname + ": " + advisor.advisor_id;
+      this.modalTitle = advisor.advisor_fname + " " + advisor.advisor_lname;
       this.advisorID = advisor.advisor_id;
       this.dialog = true;
     },
