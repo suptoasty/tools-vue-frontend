@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="290">
+  <v-dialog v-model="dialog" persistent max-width="400">
     <v-card>
       <v-card-title class="headline" style="word-break: normal">Delete "{{modalTitle}}"?</v-card-title>
       <v-card-text><em>WARNING: This Cannot Be Undone!</em><br/>
