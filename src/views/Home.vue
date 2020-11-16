@@ -131,7 +131,7 @@
           </v-data-table>
         </v-row>
       </v-col>
-      <DeleteConfirmation />
+      <CourseDeleteConfirmation />
     </v-row>
   </v-container>
 </template>
@@ -139,13 +139,13 @@
 <script>
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
-import DeleteConfirmation from "@/components/DeleteConfirmation.vue";
+import CourseDeleteConfirmation from "@/components/CourseDeleteConfirmation.vue";
 import { getStore } from "@/config/util.js";
 
 export default {
   name: "Home",
   components: {
-    DeleteConfirmation,
+    CourseDeleteConfirmation,
   },
   data: () => ({
     search: "",

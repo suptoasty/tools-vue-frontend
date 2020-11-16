@@ -16,7 +16,7 @@
 import CourseService from "@/services/CourseService.js";
 
 export default {
-  name: "DeleteConfirmation",
+  name: "CourseDeleteConfirmation",
   data: () => ({
     dialog: false,
     courseID: null,
