@@ -272,8 +272,6 @@ export default {
     },
     saveUser() {
       if (this.userRole == this.possibleRoles[1]) {
-
-        console.log("saving advisor");
         this.saveAdvisor();
       } else {
         this.saveStudent();
