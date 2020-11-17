@@ -86,7 +86,8 @@ export default {
     };
   },
   mounted() {
-    this.getTerm();
+    if (!this.isAdd)
+      this.getTerm();
   },
   methods: {
     getTerm() {
