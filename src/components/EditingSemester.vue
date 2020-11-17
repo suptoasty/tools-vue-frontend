@@ -203,6 +203,7 @@ export default {
         });
     },
     addSemester() {
+      this.SemesterObject.semester_term = this.terms.find(element => element.term_name === this.SemesterObject.term_name).term_id;
       CourseService.postSemester(this.SemesterObject)
         .then(() => {
           router.push({ name: this.returnTo });
