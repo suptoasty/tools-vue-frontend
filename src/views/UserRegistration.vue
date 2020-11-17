@@ -272,6 +272,8 @@ export default {
     },
     saveUser() {
       if (this.userRole == this.possibleRoles[1]) {
+
+        console.log("saving advisor");
         this.saveAdvisor();
       } else {
         this.saveStudent();
@@ -294,10 +296,12 @@ export default {
           });
         });
       } else {
-        CourseService.putAdvisor(this.userAdvisor, this.advisor).then(() => {
+        CourseService.putAdvisor(this.index, this.advisor).then(() => {
           CourseService.putUser(this.userId, this.user).then(() => {
             router.push({ name: this.returnTo });
           });
+        }).catch( (response) => {
+          console.log("error:" + response);
         });
       }
     },
