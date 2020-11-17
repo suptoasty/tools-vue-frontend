@@ -73,7 +73,13 @@
         </v-row>
         <v-row v-else>
           <v-col align="center">
-            <v-btn v-on:click.native="saveClass" color="primary">Save</v-btn>
+            <v-btn
+              v-on:click.native="saveClass"
+              color="primary"
+              :to="{
+                name: this.returnTo,
+              }"
+              >Save</v-btn>
           </v-col>
           <v-col align="center">
             <v-btn

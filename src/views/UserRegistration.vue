@@ -294,10 +294,12 @@ export default {
           });
         });
       } else {
-        CourseService.putAdvisor(this.userAdvisor, this.advisor).then(() => {
+        CourseService.putAdvisor(this.index, this.advisor).then(() => {
           CourseService.putUser(this.userId, this.user).then(() => {
             router.push({ name: this.returnTo });
           });
+        }).catch( (response) => {
+          console.log("error:" + response);
         });
       }
     },
