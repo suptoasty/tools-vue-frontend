@@ -158,7 +158,14 @@ export default {
   },
   data() {
     return {
-      student: {},
+      student: {
+        student_fname: "",
+        student_lname: "",
+        student_initial: "",
+        student_graduation_date: "",
+        student_degree: undefined,
+        student_advisor: undefined
+      },
       datePickerVisible: false,
       advisors: [],
       degrees: [],
@@ -167,7 +174,8 @@ export default {
     };
   },
   mounted() {
-    CourseService.getStudent(this.index)
+    if (!this.isAdd) {
+      CourseService.getStudent(this.index)
       .then((response) => {
           this.student = response.data[0];
           CourseService.getAdvisors().then( (response) => {
@@ -186,6 +194,8 @@ export default {
       .catch((error) => {
         console.log("created error: " + error);
       });
+    }
+    
   },
   methods: {
     convertNamesToIDs() {
