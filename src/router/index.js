@@ -171,7 +171,7 @@ const routes = [
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["advisor"],
+      authorizedRoles: ["student", "advisor"],
     },
   },
   {

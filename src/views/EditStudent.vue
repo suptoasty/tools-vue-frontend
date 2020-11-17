@@ -158,7 +158,14 @@ export default {
   },
   data() {
     return {
-      student: {},
+      student: {
+        student_fname: "",
+        student_lname: "",
+        student_initial: "",
+        student_graduation_date: "",
+        student_degree: undefined,
+        student_advisor: undefined
+      },
       datePickerVisible: false,
       advisors: [],
       degrees: [],
@@ -167,7 +174,8 @@ export default {
     };
   },
   mounted() {
-    CourseService.getStudent(this.index)
+    if (!this.isAdd) {
+      CourseService.getStudent(this.index)
       .then((response) => {
           this.student = response.data[0];
           CourseService.getAdvisors().then( (response) => {
@@ -186,9 +194,26 @@ export default {
       .catch((error) => {
         console.log("created error: " + error);
       });
+    } else {
+        console.log("Add A Student");
+          CourseService.getAdvisors().then( (response) => {
+            this.advisors = response.data;
+            this.studentAdvisorName = this.advisors[0].advisor_fname;
+
+
+          });
+          CourseService.getDegrees().then( (response) => {
+            this.degrees = response.data;
+            this.studentDegreeName = this.degrees[0].degree_name;
+
+          });
+    }
+    
+    
   },
   methods: {
     convertNamesToIDs() {
+      console.log(this.studentAdvisorName);
       if (this.studentAdvisorName != undefined && this.studentAdvisorName != null)
         this.student.student_advisor = this.advisors.find( (element) => { return element.advisor_fname == this.studentAdvisorName }).advisor_id;
       if (this.studentDegreeName != undefined && this.studentDegreeName != null)
@@ -208,6 +233,7 @@ export default {
         });
     },
     addStudent() {
+      
       this.convertNamesToIDs();
       CourseService.postStudent(this.student)
         .then(() => {
