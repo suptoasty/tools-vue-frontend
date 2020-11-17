@@ -198,13 +198,13 @@ export default {
         console.log("Add A Student");
           CourseService.getAdvisors().then( (response) => {
             this.advisors = response.data;
-            this.studentAdvisorName = this.advisors[0];
+            this.studentAdvisorName = this.advisors[0].advisor_fname;
 
 
           });
           CourseService.getDegrees().then( (response) => {
             this.degrees = response.data;
-            this.studentDegreeName = this.degrees[0];
+            this.studentDegreeName = this.degrees[0].degree_name;
 
           });
     }
@@ -213,6 +213,7 @@ export default {
   },
   methods: {
     convertNamesToIDs() {
+      console.log(this.studentAdvisorName);
       if (this.studentAdvisorName != undefined && this.studentAdvisorName != null)
         this.student.student_advisor = this.advisors.find( (element) => { return element.advisor_fname == this.studentAdvisorName }).advisor_id;
       if (this.studentDegreeName != undefined && this.studentDegreeName != null)
