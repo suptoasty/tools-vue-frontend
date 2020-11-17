@@ -1,7 +1,7 @@
 <template>
   <div>
     <DisplayCourse :courseObject="course" />
-    <DeleteConfirmation />
+    <CourseDeleteConfirmation />
   </div>
 </template>
 
@@ -9,12 +9,12 @@
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
 import DisplayCourse from "@/components/DisplayCourse.vue";
-import DeleteConfirmation from "@/components/DeleteConfirmation.vue";
+import CourseDeleteConfirmation from "@/components/CourseDeleteConfirmation.vue";
 
 export default {
   components: {
     DisplayCourse,
-    DeleteConfirmation
+    CourseDeleteConfirmation
   },
   props: ["index"],
   data() {
