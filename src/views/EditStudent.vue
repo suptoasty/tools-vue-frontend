@@ -194,7 +194,21 @@ export default {
       .catch((error) => {
         console.log("created error: " + error);
       });
+    } else {
+        console.log("Add A Student");
+          CourseService.getAdvisors().then( (response) => {
+            this.advisors = response.data;
+            this.studentAdvisorName = this.advisors[0];
+
+
+          });
+          CourseService.getDegrees().then( (response) => {
+            this.degrees = response.data;
+            this.studentDegreeName = this.degrees[0];
+
+          });
     }
+    
     
   },
   methods: {
@@ -218,6 +232,7 @@ export default {
         });
     },
     addStudent() {
+      
       this.convertNamesToIDs();
       CourseService.postStudent(this.student)
         .then(() => {
