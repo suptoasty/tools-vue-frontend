@@ -47,7 +47,7 @@ export default {
   methods: {
     onDelete(term) {
       console.log("Emiting Delete for: " + term.term_name);
-      this.$root.$emit("deleteCourse", term);
+      this.$root.$emit("deleteTerm", term);
     }
   }
 };
