@@ -2,18 +2,21 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import ViewCourse from "../views/ViewCourse.vue";
+import EditCourse from "../views/EditCourse.vue";
 import ViewAdvisors from "../views/ViewAdvisors.vue";
 import ViewSemesters from "../views/ViewSemesters.vue";
+import EditSemester from "../views/EditSemester.vue";
 import ViewStudents from "../views/ViewStudents.vue";
+import EditStudent from "../views/EditStudent.vue";
 import ViewDegrees from "../views/ViewDegrees.vue";
-import EditCourse from "../views/EditCourse.vue";
+import EditDegree from "../views/EditDegree.vue";
 import CoursePlan from "../views/CoursePlan.vue";
 import Login from "../views/Login.vue";
 import TestEdit from "../views/TestEdit.vue";
 import UserRegistration from "../views/UserRegistration.vue";
 import EditTerm from "@/views/EditTerm.vue";
 import ViewTerm from "@/views/ViewTerm.vue";
-import TermListing from "@/views/TermListing.vue";
+import ViewTerms from "@/views/ViewTerms.vue";
 import { getStore } from "@/config/util.js";
 
 Vue.use(VueRouter);
@@ -72,9 +75,9 @@ const routes = [
     },
   },
   {
-    path: "/termlisting",
-    name: "TermListing",
-    component: TermListing,
+    path: "/viewterms",
+    name: "ViewTerms",
+    component: ViewTerms,
     props: true,
     meta: {
       requiresAuth: true,
@@ -88,8 +91,8 @@ const routes = [
     props: true,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["advisor"]
-    }
+      authorizedRoles: ["advisor"],
+    },
   },
   {
     path: "/viewadvisors",
@@ -108,8 +111,8 @@ const routes = [
     props: true,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["advisor"]
-    }
+      authorizedRoles: ["advisor"],
+    },
   },
   {
     path: "/viewdegrees",
@@ -118,8 +121,8 @@ const routes = [
     props: true,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["advisor"]
-    }
+      authorizedRoles: ["advisor"],
+    },
   },
   {
     path: "/home",
@@ -164,17 +167,17 @@ const routes = [
   {
     path: "/editstudent/:index/",
     name: "EditStudent",
-    component: TestEdit, //need to change later
+    component: EditStudent,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["student"],
+      authorizedRoles: ["student", "advisor"],
     },
   },
   {
     path: "/editdegree/:index/",
     name: "EditDegree",
-    component: TestEdit, //need to change later
+    component: EditDegree,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
@@ -184,7 +187,7 @@ const routes = [
   {
     path: "/editsemester/:index/",
     name: "EditSemester",
-    component: TestEdit, //need to change later
+    component: EditSemester,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
@@ -194,7 +197,7 @@ const routes = [
   {
     path: "/addstudent/",
     name: "AddStudent",
-    component: TestEdit, //need to change later
+    component: EditStudent,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
@@ -204,7 +207,7 @@ const routes = [
   {
     path: "/adddegree/",
     name: "AddDegree",
-    component: TestEdit, //need to change later
+    component: EditDegree,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
@@ -214,7 +217,7 @@ const routes = [
   {
     path: "/addsemester/",
     name: "AddSemester",
-    component: TestEdit, //need to change later
+    component: EditSemester,
     props: dynamicPropsFn,
     meta: {
       requiresAuth: true,
@@ -265,10 +268,10 @@ const routes = [
     path: "/courseplan/:index/",
     name: "CoursePlan",
     component: CoursePlan,
-    props:coursePlanProps,
+    props: coursePlanProps,
     meta: {
       requiresAuth: true,
-      authorizedRoles: ["student"],
+      authorizedRoles: ["student", "advisor"],
     }
   },
   {
@@ -279,8 +282,8 @@ const routes = [
     meta: {
       requiresAuth: false,
       authorizedRoles: [],
-    }
-  }
+    },
+  },
 ];
 
 const router = new VueRouter({

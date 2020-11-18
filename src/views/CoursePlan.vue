@@ -1,7 +1,82 @@
 <template>
   <v-container>
+    <v-dialog
+      v-model="addItemDialog"
+    >
+      <v-card>
+        <v-card-title>
+          Add Course
+        </v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-select
+              class="mx-1"
+              :items="allSemesters"
+              item-text="semester_name"
+              label="Semester"
+              v-model="itemToAdd.semesterData"
+            ></v-select>
+            <v-select
+              class="mx-1"
+              :items="allCourses"
+              item-text="course_name"
+              label="Course"
+              v-model="itemToAdd.courseData"
+            ></v-select>
+            <v-text-field
+                  v-model="itemToAdd.course_plan_item_grade"
+                  label="Grade"
+            ></v-text-field>
+            <v-select
+              class="mx-1"
+              :items="statusItems"
+              label="Status"
+              v-model="itemToAdd.course_plan_item_status"
+            ></v-select>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            color="primary"
+            text
+            @click="addCoursePlanItem"
+          >
+            Add
+          </v-btn>
+          <v-btn
+            color="primary"
+            text
+            @click="addItemDialog = false"
+          >
+            Cancel
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-row align="start">
       <h1>{{ student.student_fname }}'s Course Plan</h1>
+    </v-row>
+    <v-row align="start">
+        <v-btn
+          color="primary"
+          v-on:click.native="saveCoursePlan"
+          >Save</v-btn
+        >
+        <v-btn
+          class="ml-4"
+          color="primary"
+          :to="{
+            name: this.returnTo,
+          }"
+          >Cancel</v-btn
+        >
+        <v-spacer></v-spacer>
+        <v-btn
+          class="ml-4"
+          Normal
+          @click="generatePDF()"
+          >Download PDF</v-btn
+        >
     </v-row>
     <v-row v-for="(semesterItems, index) in sortedCoursePlanItems" :key="index" align="start">
       <v-col cols="12">
@@ -12,6 +87,9 @@
                 flat
                 color="white"
               >
+                <v-icon>
+                  {{semesterShow[index] ? "mdi-chevron-down" : "mdi-chevron-right"}}
+                </v-icon>
                 <v-toolbar-title>
                   {{usedSemesters[index].semester_name}}
                 </v-toolbar-title>
@@ -21,30 +99,32 @@
                 <v-toolbar-title>
                   {{"Total Hours: " + totalHours[index]}}
                 </v-toolbar-title>
-                <v-icon>
-                  {{semesterShow[index] ? "mdi-arrow-up-drop-circle" : "mdi-arrow-down-drop-circle"}}
-                </v-icon>
               </v-app-bar>
             </v-card>
           </v-col>
         </v-row>
         <v-row justify="center" v-show="semesterShow[index]">
           <v-col cols="10">
-            <v-btn
-              color="blue lighten-1 white--text"
-              class="mb-8 ml-3"
-              outlined
-              height="40"
-              x-large
-              right
-              @click="addCoursePlanItem(index)"
-              >Add Course</v-btn>
             <v-data-table
               hide-default-footer
               :headers="headers"
               :items="semesterItems"
               item-key="course_plan_item_id"
+              :options= "{ itemsPerPage: 100 }"
             >
+              <template v-slot:item.course_plan_item_grade="{ item }">
+                <v-text-field
+                  v-model="item.course_plan_item_grade"
+                ></v-text-field>
+              </template>
+              <template v-slot:item.course_plan_item_status="{ item }">
+                <v-select
+                  menu-props="auto"
+                  v-model="item.course_plan_item_status"
+                  :items="statusItems"
+                  item-value="text"
+                ></v-select>
+              </template>
               <template v-slot:item.actions="{ item }">
                 <tr>
                   <td>
@@ -79,38 +159,108 @@
           height="40"
           x-large
           right
-          @click="addCourseGlobal()"
+          @click="showAddItemDialog()"
           >Add Course</v-btn>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import { getStore } from "@/config/util";
 import CourseService from "@/services/CourseService.js";
+import router from "@/router/index.js";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 export default {
   name: "Home",
   props: {
     index: {
       default: undefined,
     },
-    student: {
-      default () {
-        return {
-          student_fname: "Bob",
-        }
-      },
+    returnTo: {
+      default: "ViewStudents",
     },
   },
   data: () => ({
+    addItemDialog: false,
+    itemToAdd: {},
+    statusItems: [
+      "Complete", "Enrolled", "Planned",
+    ],
+    student: { student_fname: "Bob" },
     coursePlan: {},
     totalHours: [],
     sortedCoursePlanItems: [],
+    deletedCoursePlanItemIDs: [],
     usedSemesters: [],
     allSemesters: [],
     allCourses: [],
     semesterShow: [],
   }),
   methods: {
+    generatePDF() {
+      const columns = [
+        { title: "Id", dataKey: "course_plan_item_id" },
+        { title: "Course Name", dataKey: "courseName" },
+        { title: "Course Number", dataKey: "courseNumber" },
+        { title: "Credit Hours", dataKey: "courseHours" },
+        { title: "Grade", dataKey: "course_plan_item_grade" },
+        { title: "Status", dataKey: "course_plan_item_status" },
+      ];
+      const doc = new jsPDF({
+        orientation: "portrait",
+        unit: "in",
+        format: "letter"
+      });
+      const sideMargin = 0.5;
+      const topMargin = 1;
+      let finalY = topMargin;
+
+      // text is placed using x, y coordinates
+      doc.setFontSize(16).text(`${this.student.student_fname}'s Course Plan`, sideMargin, finalY);
+      finalY += 0.1;
+
+      // create a line under heading 
+      doc.setLineWidth(0.01).line(sideMargin, 1.1, doc.internal.pageSize.getWidth() - sideMargin, finalY);
+      finalY += 0.1;
+      
+      // create each semester
+      let pdfCoursePlanItems = this.sortedCoursePlanItems;
+      let i = 0, k = 0;
+      for (i = 0; i < pdfCoursePlanItems.length; i++) {
+        for (k = 0; k < pdfCoursePlanItems[i].length; k++) {
+          pdfCoursePlanItems[i][k].courseName = pdfCoursePlanItems[i][k].courseData.course_name;
+          pdfCoursePlanItems[i][k].courseNumber = pdfCoursePlanItems[i][k].courseData.course_num;
+          pdfCoursePlanItems[i][k].courseHours = pdfCoursePlanItems[i][k].courseData.course_hours;
+        }
+        // Semester title
+        finalY += 0.5
+        doc.setFontSize(12).text(`${this.usedSemesters[i].semester_name}`, sideMargin, finalY);
+        
+        // Semester hours
+        let hoursText = `Total Hours: ${this.totalHours[i]}`
+        let finalX = doc.internal.pageSize.getWidth() - doc.getTextWidth(hoursText) - sideMargin - 0.02;
+        doc.setFontSize(12).text(hoursText, finalX, finalY);
+        finalY += 0.2;
+
+        // Using autoTable plugin
+        doc.autoTable({
+          columns,
+          startY: finalY,
+          body: pdfCoursePlanItems[i],
+          styles: { // doesn't even do anything???
+            overflow: 'hidden'
+          },
+          margin: { left: sideMargin, top: 1.25, right: sideMargin }
+        });
+
+        finalY = doc.lastAutoTable.finalY;
+        console.log(doc.lastAutoTable.finalY);
+      }
+        
+      // Creating footer and saving file
+      doc.save(`${this.student.student_fname}CoursePlan.pdf`);
+    },
     sqlDateTimeToJsDate(dateTime) {
       let dateTimeParts = dateTime.split(/[- :]/); // regular expression split that creates array with: year, month, day, hour, minutes, seconds values
       dateTimeParts[1]--; // monthIndex begins with 0 for January and ends with 11 for December so we need to decrement by one
@@ -121,6 +271,7 @@ export default {
     sqlDateToJsDate(date) {
       let dateParts = date.split("-");
       dateParts[1]--;
+      dateParts[2] = dateParts[2].substr(0, 2);
       const dateObject = new Date(...dateParts, 0, 0, 0, 0);
       return dateObject;
     },
@@ -130,18 +281,119 @@ export default {
       this.sortedCoursePlanItems.pop();
       this.semesterShow[index] = !this.semesterShow[index];
     },
-    addCourseGlobal() {
-      //update usedSemesters
-      console.log("add course global");
+    saveCoursePlan () {
+      let i = 0;
+      let k = 0;
+      for (i = 0; i < this.deletedCoursePlanItemIDs.length; i++) {
+        CourseService.deleteCoursePlanItem(this.coursePlan.course_plan_id, this.deletedCoursePlanItemIDs[i]);
+      }
+      for (i = 0; i < this.sortedCoursePlanItems.length; i++) {
+        for (k = 0; k < this.sortedCoursePlanItems[i].length; k++) {
+          if (this.sortedCoursePlanItems[i][k].isNewItem === true) {
+            this.sortedCoursePlanItems[i][k].isNewItem = false;
+            CourseService.postCoursePlanItem(this.coursePlan.course_plan_id, this.sortedCoursePlanItems[i][k]);
+          } else {
+            CourseService.putCoursePlanItem(this.coursePlan.course_plan_id, this.sortedCoursePlanItems[i][k].course_plan_item_id, this.sortedCoursePlanItems[i][k]);
+          }
+        }
+      }
+
+      let user = getStore("user");
+      if(user && typeof user.roles == typeof []) {
+        if(user.roles.includes("advisor")) {
+          router.push({
+            name: this.returnTo,
+          });
+        } else {
+          router.push({
+            name: "Home",
+          });
+        }
+      }
+
     },
-    addCoursePlanItem(usedSemestersIndex) {
-      //update sortedCoursePlanItems
-      console.log(usedSemestersIndex);
+    showAddItemDialog() {
+      //reset itemToAdd
+      this.itemToAdd = {
+        course_plan_item_grade: "100",
+        course_plan_item_status: this.statusItems[2],
+        course_plan_item_plan: this.coursePlan.course_plan_id,
+        course_plan_item_semester: this.allSemesters[0].semester_id,
+        semesterData: this.allSemesters[0].semester_name,
+        course_plan_item_course: this.allCourses[0].course_id,
+        courseData: this.allCourses[0].course_name,
+        isNewItem: true,
+      };
+      //show the dialog
+      this.addItemDialog = true;
+    },
+    addCoursePlanItem() {
+      //update sortedCoursePlanItems, usedSemesters, totalHours, and semesterShow
+
+      //complete the data in itemToAdd
+      this.itemToAdd.semesterData = this.allSemesters.find(element => element.semester_name === this.itemToAdd.semesterData);
+      this.itemToAdd.courseData = this.allCourses.find(element => element.course_name === this.itemToAdd.courseData);
+      this.itemToAdd.course_plan_item_semester = this.itemToAdd.semesterData.semester_id;
+      this.itemToAdd.course_plan_item_course = this.itemToAdd.courseData.course_id;
+      //hide the dialog
+      this.addItemDialog = false;
+      //find the semester that we are adding the course plan item to
+      let foundSemester = this.usedSemesters.find(element => this.itemToAdd.semesterData.semester_id === element.semester_id)
+      //add a semester to usedSemesters if we didn't find it
+      if (foundSemester === null || foundSemester === undefined) {
+        let insertionIdx = -1;
+        let inserted = false;
+        while (!inserted && insertionIdx < this.usedSemesters.length - 1)
+        {
+          insertionIdx++;
+          //if itemToAdd is less than or equal to the element at insertionIdx, then insert before insertionIdx
+          if (this.sqlDateToJsDate(this.usedSemesters[insertionIdx].semester_start) - this.sqlDateToJsDate(this.itemToAdd.semesterData.semester_start) >= 0) {
+            inserted = true;
+            this.usedSemesters.splice(insertionIdx, 0, this.itemToAdd.semesterData);
+            this.sortedCoursePlanItems.splice(insertionIdx, 0, []);
+            this.totalHours.splice(insertionIdx, 0, 0);
+            this.semesterShow.splice(insertionIdx, 0, true);
+          }
+        }
+        //if we can't insert before any usedSemesters, insert at the end of the array
+        if (!inserted) {
+          this.usedSemesters.push(this.itemToAdd.semesterData);
+          this.sortedCoursePlanItems.push([]);
+          this.totalHours.push(0);
+          this.semesterShow.push(true);
+        }
+        //update foundSemester
+        foundSemester = this.itemToAdd.semesterData;
+      }
+      //insert the course into a used semester
+      let semesterAddIdx = this.usedSemesters.indexOf(foundSemester);
+      this.itemToAdd.innerIndex = this.sortedCoursePlanItems[semesterAddIdx].length;
+      this.sortedCoursePlanItems[semesterAddIdx].push(this.itemToAdd);
+      this.totalHours[semesterAddIdx] += Number(this.itemToAdd.courseData.course_hours);
+      this.semesterShow[semesterAddIdx] = true;
     },
     removeCoursePlanItem(usedSemestersIndex, item) {
-      //update sortedCoursePlanItems
-      let usedItemsIndex = this.sortedCoursePlanItems[usedSemestersIndex].indexOf(item);
-      console.log(usedItemsIndex);
+      //update deletedCoursePlanItemIDs, sortedCoursePlanItems, usedSemesters, totalHours, and semesterShow
+
+      //remove the item
+      if (item.course_plan_item_id !== undefined && item.course_plan_item_id !== null) {
+        if (!this.deletedCoursePlanItemIDs.includes(item.course_plan_item_id)) {
+          this.deletedCoursePlanItemIDs.push(item.course_plan_item_id);
+        }
+      }
+      this.sortedCoursePlanItems[usedSemestersIndex].splice(item.innerIndex, 1);
+      this.totalHours[usedSemestersIndex] -= Number(item.courseData.course_hours);
+      //update inner indexes
+      for (let i = item.innerIndex; i < this.sortedCoursePlanItems[usedSemestersIndex].length; i++) {
+        this.sortedCoursePlanItems[usedSemestersIndex][i].innerIndex--;
+      }
+      //get rid of the usedSemester if there are no more items in that semester
+      if (this.sortedCoursePlanItems[usedSemestersIndex].length < 1) {
+        this.sortedCoursePlanItems.splice(usedSemestersIndex, 1);
+        this.usedSemesters.splice(usedSemestersIndex, 1);
+        this.totalHours.splice(usedSemestersIndex, 1);
+        this.semesterShow.splice(usedSemestersIndex, 1);
+      }
     },
     //call this to sort allCoursePlanItems into an array of arrays for each usedSemester
     buildSemesterCoursePlanItems(allCoursePlanItems) {
@@ -150,7 +402,7 @@ export default {
       tempSemesters = tempSemesters.filter((value) => {
         let found = false;
         allCoursePlanItems.forEach((cpItem) => {
-          if (value.semester_id == cpItem.semester)
+          if (value.semester_id == cpItem.course_plan_item_semester)
             found = true;
         });
         return found;
@@ -162,27 +414,37 @@ export default {
       this.usedSemesters = tempSemesters;
       //split the course plan items by each semester
       this.sortedCoursePlanItems = [];
-      let index = -1;
+      let outerIndex = -1;
       tempSemesters.forEach((semester) => {
         let foundMatch = false;
+        let innerIndex = 0;
         allCoursePlanItems.forEach((coursePlanItem) => {
-          if (coursePlanItem.semester == semester.semester_id)
+          if (coursePlanItem.course_plan_item_semester == semester.semester_id)
           {
             //make an array of arrays in sortedCoursePlanItems. The index of each array matches the index of the semester
             if (!foundMatch) {
-              index++;
+              outerIndex++;
               this.semesterShow.push(false);
               this.totalHours.push(0);
               this.sortedCoursePlanItems.push([]);
               foundMatch = true;
             }
-            coursePlanItem.course = this.allCourses.filter( (value) => coursePlanItem.course == value.course_id)[0];
-            this.totalHours[index] += Number(coursePlanItem.course.course_hours);
-            this.sortedCoursePlanItems[index].push(coursePlanItem);
+            //set the course
+            coursePlanItem.courseData = this.allCourses.filter( (value) => coursePlanItem.course_plan_item_course == value.course_id)[0];
+            //set the inner index
+            coursePlanItem.innerIndex = innerIndex;
+            innerIndex++;
+            //add to total hours at outter index
+            this.totalHours[outerIndex] += Number(coursePlanItem.courseData.course_hours);
+            //make the status title case
+            let temp = coursePlanItem.course_plan_item_status.toLowerCase();
+            temp = temp.charAt(0).toUpperCase() + temp.slice(1);
+            coursePlanItem.course_plan_item_status = temp;
+            //push the item
+            this.sortedCoursePlanItems[outerIndex].push(coursePlanItem);
           }
         });
       });
-      console.log(this.sortedCoursePlanItems);
     }
   },
   computed: {
@@ -191,18 +453,18 @@ export default {
         {
           text: 'Course Name',
           align: 'start',
-          value: 'course.course_name',
+          value: 'courseData.course_name',
         },
         {
           text: 'Course Number',
           align: 'start',
-          value: 'course.course_num',
+          value: 'courseData.course_num',
         },
         //add course times here?
         {
           text: 'Credit Hours',
           align: 'start',
-          value: 'course.course_hours',
+          value: 'courseData.course_hours',
         },
         {
           text: 'Grade',
@@ -219,8 +481,11 @@ export default {
     },
   },
   mounted() {
+    CourseService.getStudent(this.index).then( (response) => {
+      this.student = response.data[0];
+    });
     //get course plan for this student
-    CourseService.getCoursePlan(this.index).then( (response) => {
+    CourseService.getCoursePlanForStudent(this.index).then( (response) => {
       this.coursePlan = response.data[0];
       //get the course plan items
       CourseService.getCoursePlanItems(this.coursePlan.course_plan_id).then( (responseItems) => {

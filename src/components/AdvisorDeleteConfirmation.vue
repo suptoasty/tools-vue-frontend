@@ -5,7 +5,7 @@
       <v-card-text><em>WARNING: This Cannot Be Undone!</em><br/><br/></v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="red darken-1" text @click="onDelete(degreeID)">Delete</v-btn>
+        <v-btn color="red darken-1" text @click="onDelete(advisorID)">Delete</v-btn>
         <v-btn color="primary" text @click="onCancel()">Cancel</v-btn>
       </v-card-actions>
     </v-card>
@@ -16,32 +16,32 @@
 import CourseService from "@/services/CourseService.js";
 
 export default {
-  name: "DegreeDeleteConfirmation",
+  name: "AdvisorDeleteConfirmation",
   data: () => ({
     dialog: false,
-    degreeID: null,
+    advisorID: null,
     modalTitle: ""
   }),
   methods: {
-    onShowModal(degree) {
-      this.modalTitle = degree.degree_name;
-      this.degreeID = degree.degree_id;
+    onShowModal(advisor) {
+      this.modalTitle = advisor.advisor_fname + " " + advisor.advisor_lname;
+      this.advisorID = advisor.advisor_id;
       this.dialog = true;
     },
     async onDelete(id) {
-      console.log("DELETING DEGREE: " + id);
+      console.log("DELETING ADVISOR: " + id);
       this.dialog = false;
-      await CourseService.deleteDegree(id);
-      await this.$root.$emit('DegreeDeleted');
+      await CourseService.deleteAdvisor(id);
+      await this.$root.$emit('AdvisorDeleted');
     },
     onCancel() {
       this.dialog = false;
-      this.degreeID = null;
+      this.semesterID = null;
     }
   },
   mounted() {
-    this.$root.$on("deleteDegree", degree => {
-      this.onShowModal(degree);
+    this.$root.$on("deleteAdvisor", advisor => {
+      this.onShowModal(advisor);
     });
   }
 };

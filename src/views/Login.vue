@@ -48,22 +48,27 @@ export default {
       this.$gAuth
         .signIn()
         .then((GoogleUser) => {
+          console.log(GoogleUser);
           let user = {
-            email: GoogleUser.nt.Wt,
+            email: GoogleUser.tt.$t,
             token: GoogleUser.wc.id_token,
             roles: [],
+            studentID: "",
           };
           CourseService.login(user)
             .then((response) => {
               //get the user role from the response
               console.log(response.data[0]);
               let returnedObject = response.data[0];
-              if (returnedObject.advisor !== null) {
+              console.log(returnedObject);
+              if (returnedObject.user_advisor !== null) {
                 user.roles.push("advisor");
               }
-              if (returnedObject.student !== null) {
+              if (returnedObject.user_student !== null) {
                 user.roles.push("student");
+                user.studentID = returnedObject.user_student;
               }
+
               //store the use role in local storage
               setStore("user", user);
               router.push({ name: "Home" });

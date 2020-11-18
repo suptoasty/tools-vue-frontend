@@ -37,7 +37,7 @@
                     name: 'AddTerm',
                     params: {
                       index: undefined,
-                      returnTo: 'TermListing',
+                      returnTo: 'ViewTerms',
                       isAdd: true,
                     },
                   })
@@ -97,7 +97,7 @@
                             name: 'EditTerm',
                             params: {
                               index: item.term_id,
-                              returnTo: 'TermListing',
+                              returnTo: 'ViewTerms',
                               isAdd: false,
                             },
                           })
@@ -131,7 +131,7 @@
           </v-data-table>
         </v-row>
       </v-col>
-      <DeleteConfirmation />
+      <TermDeleteConfirmation />
     </v-row>
   </v-container>
 </template>
@@ -139,13 +139,13 @@
 <script>
 // @ is an alias to /src
 import CourseService from "@/services/CourseService.js";
-import DeleteConfirmation from "@/components/DeleteConfirmation.vue";
+import TermDeleteConfirmation from "@/components/TermDeleteConfirmation.vue";
 import { getStore } from "@/config/util.js";
 
 export default {
-  name: "TermListing",
+  name: "ViewTerms",
   components: {
-    DeleteConfirmation,
+    TermDeleteConfirmation,
   },
   data: () => ({
     search: "",
@@ -161,7 +161,7 @@ export default {
   methods: {
     onDelete(term) {
       console.log("Emiting Delete for: " + term.term_name);
-      this.$root.$emit("deleteCourse", term);
+      this.$root.$emit("deleteTerm", term);
     },
   },
   computed: {
@@ -191,7 +191,7 @@ export default {
       .catch((error) => {
         console.log("there was an error:" + error.response);
       });
-    this.$root.$on("CourseDeleted", () => {
+    this.$root.$on("TermDeleted", () => {
       CourseService.getTerms()
         .then((response) => {
           this.terms = response.data;

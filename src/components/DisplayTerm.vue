@@ -31,7 +31,7 @@
             <v-btn color="red darken-2 white--text" @click="onDelete(termObject)">Delete</v-btn>
           </v-col>
           <v-col align = "center">
-            <v-btn color="primary" :to="{ name: 'TermListing' }">Back</v-btn>
+            <v-btn color="primary" :to="{ name: 'ViewTerms' }">Back</v-btn>
           </v-col>
         </v-row>
       </v-col>
@@ -47,7 +47,7 @@ export default {
   methods: {
     onDelete(term) {
       console.log("Emiting Delete for: " + term.term_name);
-      this.$root.$emit("deleteCourse", term);
+      this.$root.$emit("deleteTerm", term);
     }
   }
 };

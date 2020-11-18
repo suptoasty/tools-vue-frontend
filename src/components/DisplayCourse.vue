@@ -45,13 +45,13 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col align = "center">
+          <v-col align = "center" v-if="userRoles.includes('advisor')">
             <v-btn
               color="primary"
               :to="{ name: 'EditCourse', params: { index: courseObject.course_id, returnTo: 'ViewCourse' }}"
             >Edit</v-btn>
           </v-col>
-          <v-col align = "center">
+          <v-col align = "center" v-if="userRoles.includes('advisor')">
             <v-btn color="red darken-2 white--text" @click="onDelete(courseObject)">Delete</v-btn>
           </v-col>
           <v-col align = "center">
@@ -64,15 +64,21 @@
 </template>
 
 <script>
+import { getStore } from "@/config/util.js";
 export default {
   name: "ViewCourse",
   props: ["courseObject"],
-  data: () => ({}),
+  data: () => ({
+    userRoles: [],
+  }),
   methods: {
     onDelete(course) {
       console.log("Emiting Delete for: " + course.course_name);
       this.$root.$emit("deleteCourse", course);
     }
+  },
+  mounted() {
+    this.userRoles = getStore("user").roles;
   }
 };
 /*
