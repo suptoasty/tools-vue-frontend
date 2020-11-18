@@ -235,9 +235,19 @@ export default {
     addStudent() {
       
       this.convertNamesToIDs();
+      console.log("Adding Student");
       CourseService.postStudent(this.student)
-        .then(() => {
-          router.push({ name: this.returnTo });
+        .then((response) => {
+          console.log("Adding CoursePlan To Student: "+response.data.id);
+          CourseService.postCoursePlan({
+            course_plan_last_updated: new Date(),
+            course_plan_student: response.data.id
+          }).then((response) => {
+            console.log(JSON.stringify(response));
+            router.push({ name: this.returnTo });
+          }).cath(err => {
+            console.log(err);
+          });
         })
         .catch((error) => {
           console.log("There was an error" + error);
