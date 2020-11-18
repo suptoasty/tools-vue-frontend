@@ -166,6 +166,7 @@
 </template>
 
 <script>
+import { getStore } from "@/config/util";
 import CourseService from "@/services/CourseService.js";
 import router from "@/router/index.js";
 import jsPDF from 'jspdf';
@@ -296,9 +297,20 @@ export default {
           }
         }
       }
-      router.push({
-        name: this.returnTo,
-      });
+
+      let user = getStore("user");
+      if(user && typeof user.roles == typeof []) {
+        if(user.roles.includes("advisor")) {
+          router.push({
+            name: this.returnTo,
+          });
+        } else {
+          router.push({
+            name: "Home",
+          });
+        }
+      }
+
     },
     showAddItemDialog() {
       //reset itemToAdd
