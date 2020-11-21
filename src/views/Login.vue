@@ -50,8 +50,8 @@ export default {
         .then((GoogleUser) => {
           console.log(GoogleUser);
           let user = {
-            email: GoogleUser.tt.$t,
-            token: GoogleUser.wc.id_token,
+            email: GoogleUser.wt.cu,
+            token: GoogleUser.xc.id_token,
             roles: [],
             studentID: "",
           };
